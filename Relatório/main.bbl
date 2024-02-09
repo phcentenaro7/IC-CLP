@@ -1,0 +1,210 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{ASSI2018}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=b9dcafc8f13d26a333947fb5ee24a21f}{%
+           family={Assi},
+           familyi={A\bibinitperiod},
+           given={Maram},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ab6fb651769fa2183da8452e6f6ade04}{%
+           family={Haraty},
+           familyi={H\bibinitperiod},
+           given={Ramzi\bibnamedelima A},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{6a761d5e47457a19fd0619620b467233}
+      \strng{fullhash}{6a761d5e47457a19fd0619620b467233}
+      \strng{bibnamehash}{6a761d5e47457a19fd0619620b467233}
+      \strng{authorbibnamehash}{6a761d5e47457a19fd0619620b467233}
+      \strng{authornamehash}{6a761d5e47457a19fd0619620b467233}
+      \strng{authorfullhash}{6a761d5e47457a19fd0619620b467233}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2018 International Arab Conference on Information Technology (ACIT)}
+      \field{title}{A survey of the knapsack problem}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 6}
+      \range{pages}{6}
+    \endentry
+    \entry{DEMAINE2011}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=9c5f2582dbb7a35c5ef1021b9360a788}{%
+           family={Demaine},
+           familyi={D\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+        {{hash=cdd44a16c334e9b9f9df5e9a8f2a540c}{%
+           family={Devadas},
+           familyi={D\bibinitperiod},
+           given={Srini},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{f971ada4e6b76653d312ded14a646533}
+      \strng{fullhash}{f971ada4e6b76653d312ded14a646533}
+      \strng{bibnamehash}{f971ada4e6b76653d312ded14a646533}
+      \strng{authorbibnamehash}{f971ada4e6b76653d312ded14a646533}
+      \strng{authornamehash}{f971ada4e6b76653d312ded14a646533}
+      \strng{authorfullhash}{f971ada4e6b76653d312ded14a646533}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Polynomial Time vs Pseudo-Polynomial Time}
+      \field{urlday}{23}
+      \field{urlmonth}{11}
+      \field{urlyear}{2011}
+      \field{year}{2011}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://courses.csail.mit.edu/6.006/fall11/rec/rec21_knapsack.pdf
+      \endverb
+      \verb{url}
+      \verb https://courses.csail.mit.edu/6.006/fall11/rec/rec21_knapsack.pdf
+      \endverb
+    \endentry
+    \entry{FEOFILOFF2020a}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=cd921c136fea481375cc54c373dc423f}{%
+           family={Feofiloff},
+           familyi={F\bibinitperiod},
+           given={Paulo},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{fullhash}{cd921c136fea481375cc54c373dc423f}
+      \strng{bibnamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authorbibnamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authornamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authorfullhash}{cd921c136fea481375cc54c373dc423f}
+      \field{extraname}{1}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Mochila booleana}
+      \field{urlday}{21}
+      \field{urlmonth}{11}
+      \field{urlyear}{2020}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-bool
+      \endverb
+      \verb{url}
+      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-bool
+      \endverb
+    \endentry
+    \entry{FEOFILOFF2020b}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=cd921c136fea481375cc54c373dc423f}{%
+           family={Feofiloff},
+           familyi={F\bibinitperiod},
+           given={Paulo},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{fullhash}{cd921c136fea481375cc54c373dc423f}
+      \strng{bibnamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authorbibnamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authornamehash}{cd921c136fea481375cc54c373dc423f}
+      \strng{authorfullhash}{cd921c136fea481375cc54c373dc423f}
+      \field{extraname}{2}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Subset sum}
+      \field{urlday}{2}
+      \field{urlmonth}{11}
+      \field{urlyear}{2020}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-subsetsum
+      \endverb
+      \verb{url}
+      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-subsetsum
+      \endverb
+    \endentry
+    \entry{HRISTAKEVA2005}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=040c3967ce47564bb4ee697936a09645}{%
+           family={Hristakeva},
+           familyi={H\bibinitperiod},
+           given={Maya},
+           giveni={M\bibinitperiod}}}%
+        {{hash=128f8c04a99881bb47191f5560838abc}{%
+           family={Shrestha},
+           familyi={S\bibinitperiod},
+           given={Dipti},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{5a549be0c149edad9665852f6e8417bc}
+      \strng{fullhash}{5a549be0c149edad9665852f6e8417bc}
+      \strng{bibnamehash}{5a549be0c149edad9665852f6e8417bc}
+      \strng{authorbibnamehash}{5a549be0c149edad9665852f6e8417bc}
+      \strng{authornamehash}{5a549be0c149edad9665852f6e8417bc}
+      \strng{authorfullhash}{5a549be0c149edad9665852f6e8417bc}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{The Midwest Instruction and Computing Symposium}
+      \field{title}{Different approaches to solve the 0/1 knapsack problem}
+      \field{year}{2005}
+    \endentry
+    \entry{WAGNER1995}{article}{}
+      \name{author}{1}{}{%
+        {{hash=4a66bce1a6f526e106f2b2b9ae885ce1}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={David\bibnamedelima B},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \strng{fullhash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \strng{bibnamehash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \strng{authorbibnamehash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \strng{authornamehash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \strng{authorfullhash}{4a66bce1a6f526e106f2b2b9ae885ce1}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Mathematica Journal}
+      \field{number}{4}
+      \field{title}{Dynamic programming}
+      \field{volume}{5}
+      \field{year}{1995}
+      \field{pages}{42\bibrangedash 51}
+      \range{pages}{10}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

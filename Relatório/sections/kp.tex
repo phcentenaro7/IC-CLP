@@ -1,0 +1,158 @@
+\section{Knapsack problems}
+
+Informally, knapsack problems (KPs) may be described as finding the optimal combination of items from a set. Usually, this decision involves a certain value intrinsic to each item, and the objective is to maximize the total value of the selected items. To complicate this decision, items may have certain limiting values associated with them, which means not all of them may be selected.
+
+The simplest example of a KP is the binary knapsack problem (BKP), also known as 0-1 knapsack problem \cite{ASSI2018}. It consists of a list of $n$ items, each with a value $v_i$ and a weight $w_i$ associated with them, for $i \in \{1,\dots,n\}$. A subset of items must be selected in order to maximize the total value, subject to a maximum weight capacity\footnote{This limiting factor, which can be interpreted as a bag or a container, is what gives the KP its name.} $C$. One may thus formulate the BKP as \cref{eq:ip:bkp},
+
+\begin{align}
+    \label[ip]{eq:ip:bkp}
+    \begin{split}
+        \max &\sum_{i=1}^{n}x_iv_i\\
+        \textrm{s. t.}&\\
+        &\sum_{i=1}^{n}x_iw_i \leq C,\\
+        &x_i \in \{0,1\},
+    \end{split}
+\end{align}
+where $x_i$ are decision variables that specify whether item $i \in \{1,\dots,n\}$ has been selected or not.
+
+By introducing slight variations to this formulation, it is possible to obtain many different uses for the KP:
+
+\begin{itemize}
+    \item Unbounded knapsack problem (UKP): By letting $x_i \in \mathbb{N}$, the number of units of each item available is unlimited.
+    \item Fractional knapsack problem (FKP): By letting $x_i \in [0, 1]$, a fraction of each item can be selected.
+    \item Subset sum problem (SSP): When $v_i = w_i \, \forall i \in \{1,\dots,n\}$, the objective can be interpreted as maximizing the weight of the knapsack. Furthermore, if we demand that $\sum_{i=1}^{n}x_iw_i = C$, then the problem becomes finding the combination of items that produces sum $C$ exactly \cite{FEOFILOFF2020b}.
+\end{itemize}
+
+The KP can be further complicated by taking into account multiple knapsacks and constraints. In this section, we focus on the latter.
+
+\subsection{Simple algorithms for the Binary Knapsack Problem}
+
+The selection of subsets implies that an upper bound on the number of solutions to the BKP is $2^n$. Therefore, a natural first solution to the problem is a recursive binary tree algorithm \cite{FEOFILOFF2020a}. Let $I = \{1,\dots,n\}$ be the set of items to be put in the knapsack. Then, by representing the values and weights of items as entries in vectors $v, w \in \mathbb{R}^n$, respectively, and the remaining knapsack weight capacity as $c \in \mathbb{R}$, we arrive at \cref{alg:kp tree algorithm} for an instance $\phi(n, c, X, s)$ of the problem, where $X \subseteq I$ is the set of selected items and $s$ is the sum of said items' values at the node.
+
+\begin{algorithm}
+    \caption{Recursive binary tree algorithm for the KP: $\phi(n, c, X, s)$}
+    \label{alg:kp tree algorithm}
+    \begin{algorithmic}[1]
+        \If{$n=0$} \label{alg:kp tree algorithm ln1}
+            \State return $(X, s)$
+        \EndIf
+        \State $X_1, s_1 \coloneqq \phi(n - 1, c, X, s)$ \label{alg:kp tree algorithm ln2}
+        \State $X_2, s_2 \gets (\emptyset, \emptyset)$
+        \If{$w_n \leq c$}
+            \State $X_2, s_2 \coloneqq \phi(n - 1, c - w_n, X \cup \{n\}, s + v_n)$
+        \EndIf
+        \State $s \coloneqq max(s_1, s_2)$ \label{alg:kp tree algorithm ln3}
+        \State $X_3 \gets 0$
+        \If{$v = v_1$}
+            \State $X_3 \coloneqq X_1$
+        \Else
+            \State $X_3 \coloneqq X_2$
+        \EndIf
+        \State return $(X_3, s)$
+    \end{algorithmic}
+\end{algorithm}
+
+The algorithm consists of a top-bottom phase, in which the nodes are generated, and a bottom-top phase, in which the optimal solution is found. The top-bottom phase begins at \cref{alg:kp tree algorithm ln2}, where a new instance of $\phi$ is called with item $n$ discarded from the solution. Subsequently, if there is enough capacity left in the knapsack, a second node is generated, with $n$ included in the solution.
+
+When $n = 0$ (\cref{alg:kp tree algorithm ln1}), it is impossible to generate a new node. Thus, the only remaining action is to return the solution set at the node and its value sum. Once the whole tree has been generated, \cref{alg:kp tree algorithm ln3} is reached. From this point on, the bottom-top phase begins, with each node selecting the best solution its children have to offer. Hence, the optimal solution is returned by the root node.
+
+Due to the combinatorial nature of the KP, \cref{alg:kp tree algorithm} is only efficient at solving small problems \cite{FEOFILOFF2020a}.
+
+\begin{example}
+    Suppose we have a knapsack with maximum capacity $C = 5$ and three items. The weight vector is $w = [1, 2, 3]$ and the value vector is $v = [2, 4, 3]$. By applying \cref{alg:kp tree algorithm} to this problem, we obtain the tree in \cref{fig:kp tree example}.
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[>=Stealth]
+            \graph[binary tree layout]{
+              l0n1[as=0] -> {
+                l1n1[as=0] -> {
+                    l2n1[as=0] -> {
+                        l3n1[as=0],
+                        l3n2[as=2]
+                    },
+                    l2n2[as=4] -> {
+                        l3n3[as=4],
+                        l3n4[as=6]
+                    }
+                },
+                l1n2[as=3] -> {
+                    l2n3[as=3] -> {
+                        l3n5[as=3],
+                        l3n6[as=5]
+                    },
+                    l2n4[as=7] -> l3n7[as=7]
+                }
+              }
+            };
+        \end{tikzpicture}
+        \caption{BKP binary tree algorithm example.}
+        \label{fig:kp tree example}
+    \end{figure}
+    Each node in the tree represents the value sum of a feasible combination of items. It immediately becomes clear that the optimal solution in this case is $7$, with the combination of items $2$ and $3$. However, this is not obvious to the computer, which must solve every recursion and return to the root node first.
+\end{example}
+
+Dynamic programming \cite{WAGNER1995} approaches to the KP exist \cite{FEOFILOFF2020a,HRISTAKEVA2005,DEMAINE2011}. The idea behind these approaches is to generate a table with solutions to subproblems of the KP, using previous calculations to shorten the path to the optimal solution.
+
+Let $T \in \mathbb{R}^{(n+1) \times (c+1)}$ be the dynamic programming table for the KP. \cref{alg:kp dynamic programming} exemplifies how $T$ can be constructed and used to arrive at the optimal KP solution.
+
+\begin{algorithm}
+    \caption{Dynamic programming algorithm for the KP: $\Phi(n, c)$}
+    \label{alg:kp dynamic programming}
+    \begin{algorithmic}[1]
+        \For{$i$ from $1$ to $n+1$} \label{dpln1}
+            \State $T_{i,1} \coloneqq 0$
+        \EndFor
+        \For{$j$ from $2$ to $c+1$}
+            \State $T_{1,j} \coloneqq 0$ \label{dpln2}
+            \For{$i$ from $2$ to $n+1$} \label{dpln3}
+                \State $T_{i,j} \gets T_{i-1,j}$
+                \If{$w_i \leq j$}
+                    \State $T_{i,j} \gets \max{(T_{i,j}, v_{i-1} + T_{i-1,j-w_{i-1}})}$\label{dpln4}
+                \EndIf
+            \EndFor
+        \EndFor
+        \State $n_i, c_i, X \gets (n, c, \emptyset)$
+        \While{$c_i > 0$} \label{dpln5}
+            \If{$T_{n_i+1, c_i+1} \neq T_{n_i, c_i+1}$}
+                \State $X \gets X \cup n_i$
+                \State $c_i \gets c_i - w_n$
+            \EndIf
+            \State $n_i \gets n_i - 1$
+        \EndWhile
+        \State return X
+    \end{algorithmic}
+\end{algorithm}
+
+$T_{i,j}$ represents the optimal value for a subproblem of the KP with $i - 1$ items and knapsack capacity $j - 1$. Consequently, no set of items can satisfy $j = 1$, and so $T_{i,1} = 0 \, \forall i \in \{1,\dots,n + 1\}$. Furthermore, since there are no items to select when $i = 1$, it follows that $T_{1,j} = 0 \, \forall j \in \{1,\dots,c + 1\}$. This explains lines \ref{dpln1} through \ref{dpln2}.
+
+Lines \ref{dpln3} through \ref{dpln4} fill the remaining entries in the table. If $w_{i-1} > j - 1$, we simply keep the best solution found so far for capacity $j - 1$. Otherwise, we compare said solution with what would be obtained if $i - 1$ was selected. The larger value becomes entry $T_{i,j}$.
+
+Once table $T$ is finished, starting at \cref{dpln5}, the process of determining what items constitute an optimal solution occurs. Following the logic of lines \ref{dpln3} through \ref{dpln4}, if $T_{i,j} = T_{i-1,j}$, then the current item has not been selected and we may move on to the next item. Otherwise, the item is included in the final solution and we move on to the next item with less capacity, $T_{i-1,j-w_i}$.
+
+Though better than the binary tree approach, the dynamic programming algorithm's complexity is exponential as well \cite{FEOFILOFF2020a}. In fact, this approach is notably inefficient for large capacity values \cite{HRISTAKEVA2005}.
+
+\begin{example}
+    Suppose the following problem suggested by \textcite{FEOFILOFF2020a}: We have $4$ items and a capacity $5$. The weights and values of items are, respectively, $w = [4, 2, 1, 3]$ and $v = [500, 400, 300, 450]$. To find the optimal solution to this BKP, we start by applying the part of \cref{alg:kp dynamic programming} to generate \cref{tab:kp dynamic programming table}.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|c c c c c c|}
+            \hline
+            0 & 0 & 0 & 0 & 0 & 0\\
+            \hline
+            0 & 0 & 0 & 0 & 500 & 500\\
+            \hline
+            0 & 0 & 400 & 400 & 500 & 500\\
+            \hline
+            0 & 300 & 400 & 700 & 700 & 800\\
+            \hline
+            0 & 300 & 400 & 700 & 750 & 850\\
+            \hline
+        \end{tabular}
+        \caption{BKP dynamic programming table example.}
+        \label{tab:kp dynamic programming table}
+    \end{table}
+
+    Next, we start looking for the solution from the table's bottom right entry. We note that $T_{5,6} \neq T_{4,6}$. This means that item $4 \in X$ (the solution set). Next, we investigate item $3$. Since $4 \in X$, that means the capacity is now at $5 - w_4 = 2$. So we look at $T_{4,3}$, which is equal to $T_{3,3}$. We conclude that $3 \notin X$. Moving up a row, $T_{3,3} \neq T_{2,3}$, which means $2 \in X$. By repeating this one more time, we conclude that $X = \{2,4\}$.
+\end{example}
