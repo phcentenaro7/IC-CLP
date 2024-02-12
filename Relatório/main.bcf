@@ -2351,6 +2351,7 @@
     <bcf:citekey order="2">FEOFILOFF2020b</bcf:citekey>
     <bcf:citekey order="3">FEOFILOFF2020a</bcf:citekey>
     <bcf:citekey order="4">FEOFILOFF2020a</bcf:citekey>
+    <bcf:citekey order="5">BRADLEY1977</bcf:citekey>
     <bcf:citekey order="5">WAGNER1995</bcf:citekey>
     <bcf:citekey order="6">FEOFILOFF2020a</bcf:citekey>
     <bcf:citekey order="6">HRISTAKEVA2005</bcf:citekey>
@@ -2359,12 +2360,33 @@
     <bcf:citekey order="8">HRISTAKEVA2005</bcf:citekey>
     <bcf:citekey order="9">FEOFILOFF2020a</bcf:citekey>
     <bcf:citekey order="10">FEOFILOFF2020a</bcf:citekey>
-    <bcf:citekey order="11">ASSI2018</bcf:citekey>
-    <bcf:citekey order="12">FEOFILOFF2020b</bcf:citekey>
-    <bcf:citekey order="13">FEOFILOFF2020a</bcf:citekey>
-    <bcf:citekey order="14">WAGNER1995</bcf:citekey>
-    <bcf:citekey order="15">HRISTAKEVA2005</bcf:citekey>
-    <bcf:citekey order="16">DEMAINE2011</bcf:citekey>
+    <bcf:citekey order="11">LAABADI2018</bcf:citekey>
+    <bcf:citekey order="12">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="13">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="14">BRADLEY1977</bcf:citekey>
+    <bcf:citekey order="15">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="16">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="17">BRADLEY1977</bcf:citekey>
+    <bcf:citekey order="18">BRADLEY1977</bcf:citekey>
+    <bcf:citekey order="19">BAZARAA2010</bcf:citekey>
+    <bcf:citekey order="19">BERTSIMAS1997</bcf:citekey>
+    <bcf:citekey order="20">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="21">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="22">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="23">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="24">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="25">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="26">ASSI2018</bcf:citekey>
+    <bcf:citekey order="27">FEOFILOFF2020b</bcf:citekey>
+    <bcf:citekey order="28">FEOFILOFF2020a</bcf:citekey>
+    <bcf:citekey order="29">BRADLEY1977</bcf:citekey>
+    <bcf:citekey order="30">WAGNER1995</bcf:citekey>
+    <bcf:citekey order="31">HRISTAKEVA2005</bcf:citekey>
+    <bcf:citekey order="32">DEMAINE2011</bcf:citekey>
+    <bcf:citekey order="33">LAABADI2018</bcf:citekey>
+    <bcf:citekey order="34">KALVELAGEN2021</bcf:citekey>
+    <bcf:citekey order="35">BAZARAA2010</bcf:citekey>
+    <bcf:citekey order="36">BERTSIMAS1997</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

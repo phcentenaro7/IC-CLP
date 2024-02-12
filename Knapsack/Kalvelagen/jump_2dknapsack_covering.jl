@@ -102,16 +102,16 @@ end
 
 ##
 container_dims = [30, 20]
-items = [ItemInfoCovering2D(20, 4, 2, 338.984),
-         ItemInfoCovering2D(12, 17, 6, 849.246),
-         ItemInfoCovering2D(20, 12, 2, 524.022),
-         ItemInfoCovering2D(16, 7, 9, 263.303),
-         ItemInfoCovering2D(3, 6  , 3, 113.436),
-         ItemInfoCovering2D(13, 5, 3, 551.076),
-         ItemInfoCovering2D(4, 7, 6, 86.166),
-         ItemInfoCovering2D(6, 18, 8, 755.094),
-         ItemInfoCovering2D(14, 2, 7, 223.516),
-         ItemInfoCovering2D(9, 11, 5, 369.560)]
+# items = [ItemInfoCovering2D(8.4, 5.3, 4, 5),
+#          ItemInfoCovering2D(6.2, 6.8, 3, 6),
+#          ItemInfoCovering2D(4.9, 10, 4, 5.5),
+#          ItemInfoCovering2D(13.7, 16.3, 2, 12),
+#          ItemInfoCovering2D(5.1, 4.9, 6, 3)]
+items = [ItemInfoCovering2D(9, 6, 4, 5),
+         ItemInfoCovering2D(7, 7, 3, 6),
+         ItemInfoCovering2D(5, 10, 4, 5.5),
+         ItemInfoCovering2D(14, 17, 2, 12),
+         ItemInfoCovering2D(6, 5, 6, 3)]
 x = jump_2dknapsack_covering(container_dims, items, max_solve_time=60);
 x = Array(Int.(value.(x)))
 draw_covering_model_solution(container_dims, items, x)

@@ -51,6 +51,112 @@
       \field{pages}{1\bibrangedash 6}
       \range{pages}{6}
     \endentry
+    \entry{BAZARAA2010}{book}{}
+      \name{author}{3}{}{%
+        {{hash=d49fc6bf7e7df63e3aa0d0c0defdc8c6}{%
+           family={Bazaraa},
+           familyi={B\bibinitperiod},
+           given={Mokhtar\bibnamedelima S.},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=7a16d0f3804df9927248f786155f816d}{%
+           family={Jarvis},
+           familyi={J\bibinitperiod},
+           given={John\bibnamedelima J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=c7a93a377090566041bd7086145bd015}{%
+           family={Sherali},
+           familyi={S\bibinitperiod},
+           given={Hanif\bibnamedelima D.},
+           giveni={H\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Hoboken, New Jersey}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \strng{fullhash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \strng{bibnamehash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \strng{authorbibnamehash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \strng{authornamehash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \strng{authorfullhash}{9a57fbc471e9662e27e7b3edac3fbeb0}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{isbn}{978-0-470-46272-0}
+      \field{title}{Linear Programming and Network Flows}
+      \field{year}{2010}
+    \endentry
+    \entry{BERTSIMAS1997}{book}{}
+      \name{author}{2}{}{%
+        {{hash=5b57425178d5ae2d2835ef44cb330e42}{%
+           family={Bertsimas},
+           familyi={B\bibinitperiod},
+           given={Dimitris},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c68e0327319b548306afacf417d06ebf}{%
+           family={Tsitsiklis},
+           familyi={T\bibinitperiod},
+           given={John\bibnamedelima N.},
+           giveni={J\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Belmont, Massachusetts}%
+      }
+      \list{publisher}{2}{%
+        {Athena Scientific}%
+        {Dynamic Ideas}%
+      }
+      \strng{namehash}{c45925647d08f7da29491319a56e359a}
+      \strng{fullhash}{c45925647d08f7da29491319a56e359a}
+      \strng{bibnamehash}{c45925647d08f7da29491319a56e359a}
+      \strng{authorbibnamehash}{c45925647d08f7da29491319a56e359a}
+      \strng{authornamehash}{c45925647d08f7da29491319a56e359a}
+      \strng{authorfullhash}{c45925647d08f7da29491319a56e359a}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{isbn}{978-1-886529-19-9}
+      \field{title}{Introduction to Linear Optimization}
+      \field{year}{1997}
+    \endentry
+    \entry{BRADLEY1977}{article}{}
+      \name{author}{3}{}{%
+        {{hash=2fd7e314da0e38b7a203f88d94270d66}{%
+           family={Bradley},
+           familyi={B\bibinitperiod},
+           given={Stephen\bibnamedelima P},
+           giveni={S\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=53df56482c59c859ef8dbf9efbe37281}{%
+           family={Hax},
+           familyi={H\bibinitperiod},
+           given={Arnoldo\bibnamedelima C},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=f6e8c4984cd7ea26c48dd6fb208edc1b}{%
+           family={Magnanti},
+           familyi={M\bibinitperiod},
+           given={Thomas\bibnamedelima L},
+           giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \strng{fullhash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \strng{bibnamehash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \strng{authorbibnamehash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \strng{authornamehash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \strng{authorfullhash}{8efc5b3ddafe35cbb8972ade9e55fa43}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{(No Title)}
+      \field{title}{Applied mathematical programming}
+      \field{year}{1977}
+    \endentry
     \entry{DEMAINE2011}{misc}{}
       \name{author}{2}{}{%
         {{hash=9c5f2582dbb7a35c5ef1021b9360a788}{%
@@ -75,9 +181,9 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Polynomial Time vs Pseudo-Polynomial Time}
-      \field{urlday}{23}
-      \field{urlmonth}{11}
-      \field{urlyear}{2011}
+      \field{urlday}{9}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
       \field{year}{2011}
       \field{urldateera}{ce}
       \verb{urlraw}
@@ -107,9 +213,9 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Mochila booleana}
-      \field{urlday}{21}
-      \field{urlmonth}{11}
-      \field{urlyear}{2020}
+      \field{urlday}{9}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
       \field{year}{2020}
       \field{urldateera}{ce}
       \verb{urlraw}
@@ -139,9 +245,9 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Subset sum}
-      \field{urlday}{2}
-      \field{urlmonth}{11}
-      \field{urlyear}{2020}
+      \field{urlday}{9}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
       \field{year}{2020}
       \field{urldateera}{ce}
       \verb{urlraw}
@@ -177,6 +283,83 @@
       \field{booktitle}{The Midwest Instruction and Computing Symposium}
       \field{title}{Different approaches to solve the 0/1 knapsack problem}
       \field{year}{2005}
+    \endentry
+    \entry{KALVELAGEN2021}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=1d84eb6a4369af84beebe562b6ebdec2}{%
+           family={Kalvelagen},
+           familyi={K\bibinitperiod},
+           given={Erwin},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \strng{fullhash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \strng{bibnamehash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \strng{authorbibnamehash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \strng{authornamehash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \strng{authorfullhash}{1d84eb6a4369af84beebe562b6ebdec2}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{2d knapsack problem}
+      \field{urlday}{10}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb http://yetanothermathprogrammingconsultant.blogspot.com/2021/10/2d-knapsack-problem.html
+      \endverb
+      \verb{url}
+      \verb http://yetanothermathprogrammingconsultant.blogspot.com/2021/10/2d-knapsack-problem.html
+      \endverb
+    \endentry
+    \entry{LAABADI2018}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{4}{}{%
+        {{hash=d30b55fde604570d1456b03c9b08fe9f}{%
+           family={Laabadi},
+           familyi={L\bibinitperiod},
+           given={Soukaina},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9e025d7af3140d6c7acb9d0929e6c3c7}{%
+           family={Naimi},
+           familyi={N\bibinitperiod},
+           given={Mohamed},
+           giveni={M\bibinitperiod}}}%
+        {{hash=dba157ba01e90aa7da4df7beaefdb1da}{%
+           family={El\bibnamedelima Amri},
+           familyi={E\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Hassan},
+           giveni={H\bibinitperiod}}}%
+        {{hash=81edcc4ced8c5e6f9e554331da4a0cf6}{%
+           family={Achchab},
+           familyi={A\bibinitperiod},
+           given={Boujemâa},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Scientific Research Publishing}%
+      }
+      \strng{namehash}{85753f733c490ff51744086934f11040}
+      \strng{fullhash}{7d190bd44af7dd7fb27c1f60c2cf8803}
+      \strng{bibnamehash}{7d190bd44af7dd7fb27c1f60c2cf8803}
+      \strng{authorbibnamehash}{7d190bd44af7dd7fb27c1f60c2cf8803}
+      \strng{authornamehash}{85753f733c490ff51744086934f11040}
+      \strng{authorfullhash}{7d190bd44af7dd7fb27c1f60c2cf8803}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Operations Research}
+      \field{number}{05}
+      \field{title}{The 0/1 multidimensional knapsack problem and its variants: A survey of practical models and heuristic approaches}
+      \field{volume}{8}
+      \field{year}{2018}
+      \field{pages}{395}
+      \range{pages}{1}
     \endentry
     \entry{WAGNER1995}{article}{}
       \name{author}{1}{}{%

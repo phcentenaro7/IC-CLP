@@ -84,26 +84,11 @@ end
 
 ##
 
-# container_dims = [30, 20]
-# items = [ItemInfoContinuous2D(20, 4, 2, 338.984),
-#          ItemInfoContinuous2D(12, 17, 6, 849.246),
-#          ItemInfoContinuous2D(20, 12, 2, 524.022),
-#          ItemInfoContinuous2D(16, 7, 9, 263.303),
-#          ItemInfoContinuous2D(3, 6, 3, 113.436),
-#          ItemInfoContinuous2D(13, 5, 3, 551.076),
-#          ItemInfoContinuous2D(4, 7, 6, 86.166),
-#          ItemInfoContinuous2D(6, 18, 8, 755.094),
-#          ItemInfoContinuous2D(14, 2, 7, 223.516),
-#          ItemInfoContinuous2D(9, 11, 5, 369.560)]
-# model = jump_2dknapsack_continuous(container_dims, items, max_solve_time=3600);
-#x = Array(Int.(value.(x)))
-#println(sum(num_constraints(model, F, S) for (F, S) in list_of_constraint_types(model)))
-
-container_dims = [30, 30]
-items = [ItemInfoContinuous2D(10, 10, 3, 5)
-         ItemInfoContinuous2D(15, 10, 3, 6)
-         ItemInfoContinuous2D(15, 15, 2, 10)
-         ItemInfoContinuous2D(5, 3, 2, 10)
-        ]
-model = jump_2dknapsack_continuous(container_dims, items)
+container_dims = [30, 20]
+items = [ItemInfoContinuous2D(8.4, 5.3, 4, 5),
+         ItemInfoContinuous2D(6.2, 6.8, 3, 6),
+         ItemInfoContinuous2D(4.9, 10, 4, 5.5),
+         ItemInfoContinuous2D(13.7, 16.3, 2, 12),
+         ItemInfoContinuous2D(5.1, 4.9, 6, 3)]
+model = jump_2dknapsack_continuous(container_dims, items, max_solve_time=36000)
 draw_continuous_model_solution(container_dims, items, model)
