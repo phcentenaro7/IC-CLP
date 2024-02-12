@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1707664178 "main.bcf" "main.bbl" "main" 1707664195
+["biber main"] 1707664178 "main.bcf" "main.bbl" "main" 1707764317
   "bibliography.bib" 1707596367 2862 c4912b08e9b45c87f9080a7d3bf839cf ""
-  "main.bcf" 1707664195 109399 bace6e1ebda9aa0c410cb2eb5b690b6e "lualatex"
+  "main.bcf" 1707764316 109399 bace6e1ebda9aa0c410cb2eb5b690b6e "lualatex"
   (generated)
   "main.bbl"
   "main.blg"
-["lualatex"] 1707664189 "/home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex" "main.pdf" "main" 1707664195
+["lualatex"] 1707764309 "/home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex" "main.pdf" "main" 1707764317
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-Bold.ttf:1" 1707225440 245338 07fa5b5ac35c6438e45ebc2504f294d2 ""
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-BoldOblique.ttf:1" 1707225440 200741 c7cdf1161e47d204e07608eded4620b2 ""
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-Oblique.ttf:1" 1707225440 200413 beabca220dd6beee2936660db31ef68f ""
@@ -520,16 +520,16 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1707226268 4379155 98693266ff65f58d9f98aff394de12d2 ""
   "/var/lib/texmf/tex/generic/config/language.dat.lua" 1707226271 17334 07d52aca52ebbc3e961666fe8a3f1956 ""
   "/var/lib/texmf/web2c/luahbtex/lualatex.fmt" 1707226295 4555382 59b8577d1c39467dd6615341c59e040d ""
-  "main.aux" 1707664195 6211 5dc7a0a3bb70454ab27a103a96474674 "lualatex"
+  "main.aux" 1707764316 6211 5dc7a0a3bb70454ab27a103a96474674 "lualatex"
   "main.bbl" 1707664179 15350 12ce75ca309d542578573185ecfacbc2 "biber main"
   "main.glsdefs" 1707471657 1776 95c9940d63ebdc27b3f26fe77ab0e9ec ""
-  "main.out" 1707664193 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
-  "main.run.xml" 1707664195 2415 50de7693698e472fdd8fe73f457ed6e3 "lualatex"
+  "main.out" 1707764314 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
+  "main.run.xml" 1707764316 2415 50de7693698e472fdd8fe73f457ed6e3 "lualatex"
   "main.tex" 1707472831 642 add23ec0cea58100384a4ebb5a4a241e ""
-  "sections/introduction.aux" 1707664193 5265 0de26131dce46608ae7b65f67b6810e3 "lualatex"
+  "sections/introduction.aux" 1707764314 5265 0de26131dce46608ae7b65f67b6810e3 "lualatex"
   "sections/introduction.tex" 1707383539 27 58f01a41c31b4656fcb996c9c0906eea ""
-  "sections/kp.aux" 1707664194 12317 a14ac777846b0994108ac399f4c110f8 "lualatex"
-  "sections/kp.tex" 1707664189 23935 28d3640056455466c14b4f65e7520eea ""
+  "sections/kp.aux" 1707764316 12317 abba3a592a83406f910b3c4186ec94e0 "lualatex"
+  "sections/kp.tex" 1707764301 23971 ceb1ca8989be47a1768dcb71d77e0d45 ""
   "settings/preamble.sty" 1707652930 7278 e52f2640637e307d24e45583e310d7b5 ""
   (generated)
   "main.aux"
