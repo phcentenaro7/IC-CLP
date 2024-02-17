@@ -990,6 +990,9 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/rsfs/rsfs7.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
 INPUT /home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-italic.luc
+INPUT ./images/Egeblad3Dexample.png
+INPUT ./images/Egeblad3Dexample.png
+INPUT ./images/Egeblad3Dexample.png
 INPUT /home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/otl/lmromancaps10-regular.luc
 INPUT ./main.aux
 INPUT ./sections/introduction.aux

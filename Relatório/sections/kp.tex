@@ -357,5 +357,120 @@ Lastly, we make the decision variables $s_{k,r,i,j}$, since item placement is ba
 We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/957b87062cb846a6e30e7c0a9246ad8b6f7bd189/Knapsack/Kalvelagen/jump_2dknapsack_covering.jl}{implementation} of this model. The model we implemented is the one presented by \textcite{KALVELAGEN2021}, which is more memory-efficient than \cref{eq:ip:2DKP covering}, since it groups items of the same type together in the matrices.
 
 \begin{example}
-    
+    Say we wish to place as many items as possible in a $30 \times 20$ container, from the following list:
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{cccc}
+            \textbf{type} & \textbf{width} & \textbf{height} & \textbf{quantity}\\
+            \hline
+            \textbf{1} & 9 & 6 & 4\\
+            \hline
+            \textbf{2} & 7 & 7 & 3\\
+            \hline
+            \textbf{3} & 5 & 10 & 4\\
+            \hline
+            \textbf{4} & 14 & 14 & 2\\
+            \hline
+            \textbf{5} & 6 & 5 & 6\\
+            \hline
+            \textbf{6} & 3 & 8 & 5\\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    Since the idea is to maximize the number of items in the container, we consider all the items to be of equal value. By applying these data to \cref{eq:ip:2DKP covering}, we obtain the packing in \cref{fig:2DKP packing example}.
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[scale=1.5]
+            \begin{axis}[xmin=0, xmax=30, ymin=0, ymax=20, xtick={0,10,...,30}, ytick={10,20}]
+                \filldraw[fill=blue!40,draw=black] (axis cs:0,0) rectangle (axis cs:7, 7);
+                \node [black] at (axis cs:3.5, 3.5){\small{2}};
+                \filldraw[fill=blue!40,draw=black] (axis cs:0,7) rectangle (axis cs:7, 14);
+                \node [black] at (axis cs:3.5, 10.5){\small{2}};
+                \filldraw[fill=blue!40,draw=black] (axis cs:18,13) rectangle (axis cs:25, 20);
+                \node [black] at (axis cs:21.5, 16.5){\small{2}};
+                \filldraw[fill=green!40,draw=black] (axis cs:0,14) rectangle (axis cs:5, 20);
+                \node [black] at (axis cs:2.5, 17){\small{5}};
+                \filldraw[fill=green!40,draw=black] (axis cs:5,14) rectangle (axis cs:10, 20);
+                \node [black] at (axis cs:7.5, 17){\small{5}};
+                \filldraw[fill=green!40,draw=black] (axis cs:7,8) rectangle (axis cs:12, 14);
+                \node [black] at (axis cs:9.5, 11){\small{5}};
+                \filldraw[fill=green!40,draw=black] (axis cs:12,8) rectangle (axis cs:17, 14);
+                \node [black] at (axis cs:14.5, 11){\small{5}};
+                \filldraw[fill=green!40,draw=black] (axis cs:18,5) rectangle (axis cs:24, 10);
+                \node [black] at (axis cs:21, 7.5){\small{5}};
+                \filldraw[fill=green!40,draw=black] (axis cs:24,5) rectangle (axis cs:30, 10);
+                \node [black] at (axis cs:27, 7.5){\small{5}};
+                \filldraw[fill=red!40,draw=black] (axis cs:10,0) rectangle (axis cs:20,5);
+                \node [black] at (axis cs:15, 2.5){\small{3}};
+                \filldraw[fill=red!40,draw=black] (axis cs:20,0) rectangle (axis cs:30,5);
+                \node [black] at (axis cs:25, 2.5){\small{3}};
+                \filldraw[fill=red!40,draw=black] (axis cs:25,10) rectangle (axis cs:30,20);
+                \node [black] at (axis cs:27.5, 15){\small{3}};
+                \filldraw[fill=purple!40,draw=black] (axis cs:7,0) rectangle (axis cs:10,8);
+                \node [black] at (axis cs:8.5, 4){\small{6}};
+                \filldraw[fill=purple!40,draw=black] (axis cs:10,5) rectangle (axis cs:18,8);
+                \node [black] at (axis cs:14, 6.5){\small{6}};
+                \filldraw[fill=purple!40,draw=black] (axis cs:17,10) rectangle (axis cs:25,13);
+                \node [black] at (axis cs:21, 11.5){\small{6}};
+                \filldraw[fill=purple!40,draw=black] (axis cs:10,14) rectangle (axis cs:18,17);
+                \node [black] at (axis cs:14, 15.5){\small{6}};
+                \filldraw[fill=purple!40,draw=black] (axis cs:10,17) rectangle (axis cs:18,20);
+                \node [black] at (axis cs:14, 18.5){\small{6}};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Covering solution to a 2D knapsack example.}
+        \label{fig:2DKP packing example}
+    \end{figure}
 \end{example}
+
+With similar ideas to those behind \cref{eq:ip:2DKP continuous,eq:ip:2DKP covering}, a tridimensional model is possible. \cref{eq:mip:3DKP Egeblad} is one such model, presented by \textcite{EGEBLAD2009}.
+
+The container in this problem has volume $W \times H \times D$ (width, height and depth). Similarly, each item has associated dimensions $(w_i,h_i,d_i)$ and is positioned at coordinates $(x_i,y_i,z_i)$.
+
+To handle no-overlap, this model has six binary variables that state where item $i$ is in regards to item $j$: $\ell_{ij}$ (left), $r_{ij}$ (right), $u_{ij}$ (under), $o_{ij}$ (over), $b_{ij}$ (behind), $f_{ij}$ (in front of).
+
+Positioning constraints in this model are similar to \cref{eq:ip:2DKP continuous}. For example, if $\ell_{ij} = 1$, then \cref{eq:mip:3DKP Egeblad 2} may be rewritten as $x_i + w_i \leq x_j$.
+
+It should be noted that \cref{eq:mip:3DKP Egeblad 1} does \emph{not} work in an actual implementation. This constraint only makes sense if at least $i$ or $j$ is selected, and will result in an unfeasible model if $s_i + s_j = 0$. This is why we rewrite this constraint as $\ell_{ij} + r_{ij} + u_{ij} + o_{ij} + b_{ij} + f_{ij} = s_i s_j$ in our \href{https://github.com/phcentenaro7/IC-Knapsack/blob/5a6cb381dc20d3dbfcf1a31c8181aadd1a6c9988/Knapsack/Egeblad/knapsack_model.jl#L47}{implementation} of this model.
+
+One notable limitation of this model is that it does not support item rotations.
+
+\begin{subequations}
+    \label[mip]{eq:mip:3DKP Egeblad}
+    \begin{align}
+        \max &\sum_{i=1}^{n}v_i s_i\\
+        \text{s. t. } & \ell_{ij} + r_{ij} + u_{ij} + o_{ij} + b_{ij} + f_{ij} = s_i + s_j - 1, \, i, j \in \{1,\dots,n\}, \label[constraint]{eq:mip:3DKP Egeblad 1}\\
+        & x_i - x_j + W\ell_{ij} \leq W - w_i, \, i, j \in \{1,\dots,n\}, \label[constraints]{eq:mip:3DKP Egeblad 2}\\
+        & x_j - x_i + Wr_{ij} \leq W - w_i, \, i, j \in \{1,\dots,n\},\\
+        & y_i - y_j + Hu_{ij} \leq H - h_i, \, i, j \in \{1,\dots,n\},\\
+        & y_j - y_i + Ho_{ij} \leq H - h_i, \, i, j \in \{1,\dots,n\},\\
+        & z_i - z_j + Db_{ij} \leq D - d_i, \, i, j \in \{1,\dots,n\},\\
+        & z_j - z_i + Df_{ij} \leq D - d_i, \, i, j \in \{1,\dots,n\},\\
+        & 0 \leq x_i \leq W - w_i, \, i \in \{1,\dots,n\},\\
+        & 0 \leq y_i \leq H - h_i, \, i \in \{1,\dots,n\},\\
+        & 0 \leq z_i \leq Z - d_i, \, i \in \{1,\dots,n\},\\
+        & \ell_{ij}, r_{ij}, u_{ij}, o_{ij}, b_{ij}, f_{ij} \in \{0,1\}, \, i \in \{1,\dots,n\},\\
+        & s_i \in \{0,1\}, \, i \in \{1,\dots,n\},\\
+        & x_i, y_i, z_i \geq 0, \, i \in \{1,\dots,n\}.
+    \end{align}
+\end{subequations}
+
+Testing this model with a \href{function draw_3d_knapsack_solution(kv::KnapsackVectors)}{method} developed to visualize solutions to this formulation of the 3D knapsack, we obtain results such as the one in \cref{fig:3DKP Egeblad solution example}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.75]{images/Egeblad3Dexample.png}
+    \caption{Solution example to a 3D knapsack problem.}
+    \label{fig:3DKP Egeblad solution example}
+\end{figure}
+
+\subsection{Complexity of knapsack problems}
+
+The BKP is an NP-hard problem \cite{PISINGER2005}, which means that no algorithm is known that can solve it in polynomial time, and that if such an algorithm can be found, then all other problems in the NP category can also be solved in polynomial time (P = NP) \cite{ERICKSON2019}.
+
+The dynamic programming solution to the BKP (\cref{alg:kp dynamic programming}) might elicit doubt about this affirmation. Recall that this algorithm creates a table that grows according to $nC$, and then updates each entry once. Then, the algorithm performs even fewer steps of backtracking to determine which items constitute the optimal solution. Hence, the algorithm's time complexity is $\mathcal{O}(nC)$.
+
+However, for an algorithm to be \emph{truly polynomial}, it must also be polynomial when the \emph{length in bits} of the input is used as a metric. Otherwise, we have only a \emph{pseudo-polinomial} algorithm \cite{WENDLAND}, bounded above by a unary representation of the problem's values \cite{VAZIRANI2001}. As this is the case for dynamic programming approaches to the BKP, no true polynomial time algorithm is known for it \cite{DUDLEY2016,PISINGER2005}.

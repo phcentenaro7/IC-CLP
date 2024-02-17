@@ -10,9 +10,9 @@ struct ItemInfoCovering2D
 end
 
 #rotation constants for each item
-const not_rotated = 1
-const rotated = 2
-const rotations = 2
+#const not_rotated = 1
+#const rotated = 2
+#const rotations = 2
 
 """
     Returns the following ranges based on the arguments:
@@ -107,11 +107,12 @@ container_dims = [30, 20]
 #          ItemInfoCovering2D(4.9, 10, 4, 5.5),
 #          ItemInfoCovering2D(13.7, 16.3, 2, 12),
 #          ItemInfoCovering2D(5.1, 4.9, 6, 3)]
-items = [ItemInfoCovering2D(9, 6, 4, 5),
-         ItemInfoCovering2D(7, 7, 3, 6),
-         ItemInfoCovering2D(5, 10, 4, 5.5),
-         ItemInfoCovering2D(14, 17, 2, 12),
-         ItemInfoCovering2D(6, 5, 6, 3)]
+items = [ItemInfoCovering2D(9, 6, 4, 1),
+         ItemInfoCovering2D(7, 7, 3, 1),
+         ItemInfoCovering2D(5, 10, 4, 1),
+         ItemInfoCovering2D(14, 17, 2, 1),
+         ItemInfoCovering2D(6, 5, 6, 1),
+         ItemInfoCovering2D(3, 8, 5, 1)]
 x = jump_2dknapsack_covering(container_dims, items, max_solve_time=60);
 x = Array(Int.(value.(x)))
-draw_covering_model_solution(container_dims, items, x)
+p = draw_covering_model_solution(container_dims, items, x)

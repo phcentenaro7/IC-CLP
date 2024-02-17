@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'main.blg'
-[103] biber:340> INFO - === dom fev 11, 2024, 12:09:39
-[116] Biber.pm:418> INFO - Reading 'main.bcf'
-[182] Biber.pm:972> INFO - Found 11 citekeys in bib section 0
-[193] Biber.pm:4383> INFO - Processing section 0
-[203] Biber.pm:4574> INFO - Looking for bibtex file 'bibliography.bib' for section 0
-[204] bibtex.pm:1713> INFO - LaTeX decoding ...
-[214] bibtex.pm:1518> INFO - Found BibTeX data source 'bibliography.bib'
-[309] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[310] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[310] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
-[310] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[322] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[328] bbl.pm:757> INFO - Output to main.bbl
+[165] biber:340> INFO - === sáb fev 17, 2024, 19:30:58
+[192] Biber.pm:418> INFO - Reading 'main.bcf'
+[325] Biber.pm:972> INFO - Found 17 citekeys in bib section 0
+[349] Biber.pm:4383> INFO - Processing section 0
+[368] Biber.pm:4574> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[370] bibtex.pm:1713> INFO - LaTeX decoding ...
+[402] bibtex.pm:1518> INFO - Found BibTeX data source 'bibliography.bib'
+[648] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[648] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[648] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[648] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[681] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[696] bbl.pm:757> INFO - Output to main.bbl

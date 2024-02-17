@@ -55,6 +55,7 @@ function jump_2dknapsack_continuous(container_dims::Vector{T}, items::Vector{Ite
     @constraint(model, [k ∈ k₀, n ∈ n₀, k′ ∈ k₀, n′ ∈ n₀; [(k, n), (k′, n′)] ∈ C], sum(δ[k, n, k′, n′, xy, 1] + δ[k, n, k′, n′, xy, 2] for xy ∈ 1:2) ≥ 1)
     @constraint(model, [xy ∈ 1:2, c ∈ C, k = c[1][1], n = c[1][2], k′ = c[2][1], n′ = c[2][2]], p₀[k, n, xy] ≥ p₁[k′, n′, xy] - M * (3 - δ[k, n, k′, n′, xy, 1] - x[k, n] - x[k′, n′]))
     @constraint(model, [xy ∈ 1:2, c ∈ C, k = c[1][1], n = c[1][2], k′ = c[2][1], n′ = c[2][2]], p₀[k′, n′, xy] ≥ p₁[k, n, xy] - M * (3 - δ[k, n, k′, n′, xy, 2] - x[k, n] - x[k′, n′]))
+    @constraint(model, sum(x[k, n] for kns in kn for k = kns[1], n = kns[2]) ≤ prod(container_dims))
     set_time_limit_sec(model, max_solve_time) 
     optimize!(model)
     return model
@@ -88,7 +89,6 @@ container_dims = [30, 20]
 items = [ItemInfoContinuous2D(8.4, 5.3, 4, 5),
          ItemInfoContinuous2D(6.2, 6.8, 3, 6),
          ItemInfoContinuous2D(4.9, 10, 4, 5.5),
-         ItemInfoContinuous2D(13.7, 16.3, 2, 12),
-         ItemInfoContinuous2D(5.1, 4.9, 6, 3)]
-model = jump_2dknapsack_continuous(container_dims, items, max_solve_time=36000)
+         ItemInfoContinuous2D(13.7, 16.3, 2, 12)]
+model = jump_2dknapsack_continuous(container_dims, items, max_solve_time=60)
 draw_continuous_model_solution(container_dims, items, model)

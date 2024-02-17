@@ -193,6 +193,99 @@
       \verb https://courses.csail.mit.edu/6.006/fall11/rec/rec21_knapsack.pdf
       \endverb
     \endentry
+    \entry{DUDLEY2016}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6e52b0fc941bcdf8efc3e7045a0cd329}{%
+           family={Dudley},
+           familyi={D\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \strng{fullhash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \strng{bibnamehash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \strng{authorbibnamehash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \strng{authornamehash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \strng{authorfullhash}{6e52b0fc941bcdf8efc3e7045a0cd329}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Why is the knapsack problem pseudo-polynomial?}
+      \field{urlday}{17}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
+      \field{year}{2016}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.youtube.com/watch?v=9oI7fg-MIpE
+      \endverb
+      \verb{url}
+      \verb https://www.youtube.com/watch?v=9oI7fg-MIpE
+      \endverb
+    \endentry
+    \entry{EGEBLAD2009}{article}{}
+      \name{author}{2}{}{%
+        {{hash=2fb397a5e603c419d6572c4fdda407dc}{%
+           family={Egeblad},
+           familyi={E\bibinitperiod},
+           given={Jens},
+           giveni={J\bibinitperiod}}}%
+        {{hash=27c28bde78e62d4964a22364b7887154}{%
+           family={Pisinger},
+           familyi={P\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \strng{fullhash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \strng{bibnamehash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \strng{authorbibnamehash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \strng{authornamehash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \strng{authorfullhash}{1aba5c9a72ef9f6011b16aeba245bc3f}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computers \& Operations Research}
+      \field{number}{4}
+      \field{title}{Heuristic approaches for the two-and three-dimensional knapsack packing problem}
+      \field{volume}{36}
+      \field{year}{2009}
+      \field{pages}{1026\bibrangedash 1049}
+      \range{pages}{24}
+    \endentry
+    \entry{ERICKSON2019}{book}{}
+      \name{author}{1}{}{%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           familyi={E\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{fullhash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{bibnamehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{authorbibnamehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{authornamehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{authorfullhash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{1}
+      \field{title}{Algorithms}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb http://jeffe.cs.illinois.edu/teaching/algorithms/
+      \endverb
+      \verb{url}
+      \verb http://jeffe.cs.illinois.edu/teaching/algorithms/
+      \endverb
+    \endentry
     \entry{FEOFILOFF2020a}{misc}{}
       \name{author}{1}{}{%
         {{hash=cd921c136fea481375cc54c373dc423f}{%
@@ -361,6 +454,60 @@
       \field{pages}{395}
       \range{pages}{1}
     \endentry
+    \entry{PISINGER2005}{article}{}
+      \name{author}{1}{}{%
+        {{hash=27c28bde78e62d4964a22364b7887154}{%
+           family={Pisinger},
+           familyi={P\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{27c28bde78e62d4964a22364b7887154}
+      \strng{fullhash}{27c28bde78e62d4964a22364b7887154}
+      \strng{bibnamehash}{27c28bde78e62d4964a22364b7887154}
+      \strng{authorbibnamehash}{27c28bde78e62d4964a22364b7887154}
+      \strng{authornamehash}{27c28bde78e62d4964a22364b7887154}
+      \strng{authorfullhash}{27c28bde78e62d4964a22364b7887154}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computers \& Operations Research}
+      \field{number}{9}
+      \field{title}{Where are the hard knapsack problems?}
+      \field{volume}{32}
+      \field{year}{2005}
+      \field{pages}{2271\bibrangedash 2284}
+      \range{pages}{14}
+    \endentry
+    \entry{VAZIRANI2001}{book}{}
+      \name{author}{1}{}{%
+        {{hash=4391dea254c3bbcaff1fefed241caed0}{%
+           family={Vazirani},
+           familyi={V\bibinitperiod},
+           given={Vijay\bibnamedelima V},
+           giveni={V\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{4391dea254c3bbcaff1fefed241caed0}
+      \strng{fullhash}{4391dea254c3bbcaff1fefed241caed0}
+      \strng{bibnamehash}{4391dea254c3bbcaff1fefed241caed0}
+      \strng{authorbibnamehash}{4391dea254c3bbcaff1fefed241caed0}
+      \strng{authornamehash}{4391dea254c3bbcaff1fefed241caed0}
+      \strng{authorfullhash}{4391dea254c3bbcaff1fefed241caed0}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Approximation algorithms}
+      \field{volume}{1}
+      \field{year}{2001}
+    \endentry
     \entry{WAGNER1995}{article}{}
       \name{author}{1}{}{%
         {{hash=4a66bce1a6f526e106f2b2b9ae885ce1}{%
@@ -386,6 +533,36 @@
       \field{year}{1995}
       \field{pages}{42\bibrangedash 51}
       \range{pages}{10}
+    \endentry
+    \entry{WENDLAND}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=9d121792b1309871fad1b0f80aa48067}{%
+           family={Wendland},
+           familyi={W\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{9d121792b1309871fad1b0f80aa48067}
+      \strng{fullhash}{9d121792b1309871fad1b0f80aa48067}
+      \strng{bibnamehash}{9d121792b1309871fad1b0f80aa48067}
+      \strng{authorbibnamehash}{9d121792b1309871fad1b0f80aa48067}
+      \strng{authornamehash}{9d121792b1309871fad1b0f80aa48067}
+      \strng{authorfullhash}{9d121792b1309871fad1b0f80aa48067}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Pseudo-polynomial time}
+      \field{urlday}{17}
+      \field{urlmonth}{2}
+      \field{urlyear}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://obsidian.awendland.co.uk/general/Pseudo-polynomial+time
+      \endverb
+      \verb{url}
+      \verb https://obsidian.awendland.co.uk/general/Pseudo-polynomial+time
+      \endverb
     \endentry
   \enddatalist
 \endrefsection
