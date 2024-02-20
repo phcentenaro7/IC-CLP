@@ -3,82 +3,69 @@ using Gurobi
 using Plots
 using Combinatorics
 
-const nr = not_rotated = 1
-const r = rotated = rotations = 2
-const dimx = 1
-const dimy = dims = 2
-
-struct ItemInfoContinuous2D
-    width::Float32
-    height::Float32
-    available::Int
-    value::Float32
+mutable struct ContinuousItem
+    width::Float64
+    height::Float64
+    value::Float64
+    color::String
 end
 
-function get_decision_matrix_ranges(items::Vector{ItemInfoContinuous2D})
-    k = length(items)
-    n, _ = findmax([item.available for item in items])
-    return 1:k, 1:n
-end
+add_items_to_list(item::ContinuousItem, item_list::Vector{ContinuousItem}, quantity::Int) = append!(item_list, repeat([item], quantity))
 
-function create_item_set(items::Vector{ItemInfoContinuous2D})
-    return [(k, n) for k in 1:length(items) for n in 1:items[k].available]
-end
+add_items_to_list(item::Vector, item_list::Vector{ContinuousItem}, quantity::Int) = add_items_to_list(ContinuousItem(item...), item_list, quantity)
 
-function create_width_height_matrix(items::Vector{ItemInfoContinuous2D})
-    k₀ = length(items)
-    wh = Array{Float32}(undef, k₀, 2, dims)
-    for k ∈ 1:k₀
-        wh[k, nr, dimx] = wh[k, r, dimy] = items[k].width
-        wh[k, nr, dimy] = wh[k, r, dimx] = items[k].height
-    end
-    return wh
-end
-
-function jump_2dknapsack_continuous(container_dims::Vector{T}, items::Vector{ItemInfoContinuous2D}; optimizer=Gurobi.Optimizer, max_solve_time::Int=90) where {T <: Real}
-    k₀, n₀ = get_decision_matrix_ranges(items)
-    kn = create_item_set(items)
-    C = collect(combinations(kn, 2))
-    wh = create_width_height_matrix(items)
-    v = [item.value for item in items]
-    q = [item.available for item in items]
-    M = prod(container_dims)
-    model = Model(optimizer)
-    @variable(model, x[k₀, n₀], Bin)
-    @variable(model, rot[k₀, n₀], Bin)
-    @variable(model, p₀[k₀, n₀, 1:dims] ≥ 0)
-    @variable(model, p₁[k₀, n₀, 1:dims] ≥ 0)
-    @variable(model, δ[k₀, n₀, k₀, n₀, 1:dims, 1:2], Bin)
-    @objective(model, Max, sum(v[k] * x[k, n] for k ∈ k₀, n ∈ n₀ if (k, n) ∈ kn))
-    @constraint(model, [k ∈ k₀, n ∈ n₀, xy ∈ 1:2], p₁[k, n, xy] <= container_dims[xy])
-    @constraint(model, [(k, n) ∈ kn, xy ∈ 1:2], p₁[k, n, xy] == p₀[k, n, xy] + wh[k, r, xy] * rot[k, n] + wh[k, nr, xy] * (1 - rot[k, n]))
-    @constraint(model, [k ∈ k₀, n ∈ n₀, k′ ∈ k₀, n′ ∈ n₀; [(k, n), (k′, n′)] ∈ C], sum(δ[k, n, k′, n′, xy, 1] + δ[k, n, k′, n′, xy, 2] for xy ∈ 1:2) ≥ 1)
-    @constraint(model, [xy ∈ 1:2, c ∈ C, k = c[1][1], n = c[1][2], k′ = c[2][1], n′ = c[2][2]], p₀[k, n, xy] ≥ p₁[k′, n′, xy] - M * (3 - δ[k, n, k′, n′, xy, 1] - x[k, n] - x[k′, n′]))
-    @constraint(model, [xy ∈ 1:2, c ∈ C, k = c[1][1], n = c[1][2], k′ = c[2][1], n′ = c[2][2]], p₀[k′, n′, xy] ≥ p₁[k, n, xy] - M * (3 - δ[k, n, k′, n′, xy, 2] - x[k, n] - x[k′, n′]))
-    @constraint(model, sum(x[k, n] for kns in kn for k = kns[1], n = kns[2]) ≤ prod(container_dims))
-    set_time_limit_sec(model, max_solve_time) 
-    optimize!(model)
+function jump_2dknapsack_continuous(container_dims::Vector{T}, item_list::Vector{ContinuousItem}) where {T <: Real}
+    n = length(item_list)
+    W, H = container_dims
+    w = [item.width for item in item_list]
+    h = [item.height for item in item_list]
+    v = [item.value for item in item_list]
+    M = max(W, H)
+    model = Model()
+    @variables(model, begin
+        s[1:n], Bin
+        σ[1:n], Bin
+        δ[1:n,1:n,1:4], Bin
+        0 ≤ x[1:n] ≤ W
+        0 ≤ x′[1:n] ≤ W
+        0 ≤ y[1:n] ≤ H
+        0 ≤ y′[1:n] ≤ H
+    end)
+    @objective(model, Max, sum(v[i]*s[i] for i ∈ 1:n))
+    @constraints(model, begin
+        [i ∈ 1:n], x′[i] == x[i] + (1 - σ[i]) * w[i] + σ[i] * h[i]
+        [i ∈ 1:n], y′[i] == y[i] + σ[i] * w[i] + (1 - σ[i]) * h[i]
+        [i ∈ 1:n, j ∈ 1:n; i < j], x′[i] - M * (3 - δ[i,j,1] - s[i] - s[j]) ≤ x[j]
+        [i ∈ 1:n, j ∈ 1:n; i < j], x′[j] - M * (3 - δ[i,j,2] - s[i] - s[j]) ≤ x[i]
+        [i ∈ 1:n, j ∈ 1:n; i < j], y′[i] - M * (3 - δ[i,j,3] - s[i] - s[j]) ≤ y[j]
+        [i ∈ 1:n, j ∈ 1:n; i < j], y′[j] - M * (3 - δ[i,j,4] - s[i] - s[j]) ≤ y[i]
+        [i ∈ 1:n, j ∈ 1:n; i < j], sum(δ[i,j,k] for k ∈ 1:4) ≥ 1
+    end)
     return model
 end
 
-function draw_continuous_model_solution(container_dims::Vector{T}, items::Vector{ItemInfoContinuous2D}, model) where {T <: Real}
-    x = Array(round.(value.(model[:x])))
-    p₀ = Array(round.(value.(model[:p₀]))) 
-    rot = Array(round.(value.(model[:rot]))) 
-    p = plot(xlims=[1, container_dims[1] + 1], xticks=0:container_dims[1]/10:container_dims[1],
-            ylims=[1, container_dims[2] + 1], yticks=0:container_dims[2]/10:container_dims[2])
-    indices = sort(findall(isone, x), by=x->x[1])
-    rectangle(w, h, x, y) = Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
-    prev_k = 0
-    for index in indices
-        k, n = Tuple(index)
-        prim = prev_k == k ? false : true
-        if rot[k, n] == 0
-            plot!(p, rectangle(items[k].width, items[k].height, p₀[k, n, 1], p₀[k, n, 2]), label="item $k", primary=prim)
+function draw_continuous_model_solution(container_dims::Vector{T}, items::Vector{ContinuousItem}, model) where {T <: Real}
+    W, H = container_dims
+    s = value.(model[:s])
+    x = value.(model[:x])
+    y = value.(model[:y])
+    σ = value.(model[:σ]) 
+    p = Plots.plot(xlims=[1, W + 1], xticks=0:W/10:W,
+            ylims=[1, H + 1], yticks=0:H/10:H)
+    indices = sort(findall(isone, s), by=s->s[1])
+    rectangle(w, h, x, y) = Plots.Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
+    prim = true
+    for (i, sᵢ) in enumerate(s)
+        if i > 1 && items[i] == items[i-1]
+            prim = false
         else
-            plot!(p, rectangle(items[k].height, items[k].width, p₀[k, n, 1], p₀[k, n, 2]), label="item $k", primary=prim)
+            prim = true
         end
-        prev_k = k
+        if σ == 0
+            Plots.plot!(p, rectangle(items[i].width, items[i].height, x[i], y[i]), fillcolor = items[i].color, primary=prim, legend=false)
+        else
+            Plots.plot!(p, rectangle(items[i].height, items[i].width, y[i], x[i]), fillcolor = items[i].color, primary=prim, legend=false)
+        end
     end
     return p
 end
@@ -86,9 +73,19 @@ end
 ##
 
 container_dims = [30, 20]
-items = [ItemInfoContinuous2D(8.4, 5.3, 4, 5),
-         ItemInfoContinuous2D(6.2, 6.8, 3, 6),
-         ItemInfoContinuous2D(4.9, 10, 4, 5.5),
-         ItemInfoContinuous2D(13.7, 16.3, 2, 12)]
-model = jump_2dknapsack_continuous(container_dims, items, max_solve_time=60)
+items = Vector{ContinuousItem}()
+add_items_to_list([20., 4, 338.984, "rgb(255,0,0)"], items, 2)
+add_items_to_list([12., 17, 849.246, "rgb(0,255,0)"], items, 6)
+add_items_to_list([20., 12, 524.022, "rgb(0,0,155)"], items, 2)
+add_items_to_list([16., 7, 263.303, "rgb(128,128,128)"], items, 9)
+add_items_to_list([3., 6, 113.436, "rgb(255,255,0)"], items, 3)
+add_items_to_list([13., 5, 551.072, "rgb(255,0,255)"], items, 3)
+add_items_to_list([4., 7, 86.166, "rgb(0,255,255)"], items, 6)
+add_items_to_list([6., 18, 755.094, "rgb(128,0,128)"], items, 8)
+add_items_to_list([14., 2, 223.516, "rgb(128,128,0)"], items, 7)
+add_items_to_list([9., 11, 369.56, "rgb(0,128,128)"], items, 5)
+model = jump_2dknapsack_continuous(container_dims, items)
+set_optimizer(model, Gurobi.Optimizer)
+set_time_limit_sec(model, 90.)
+optimize!(model)
 draw_continuous_model_solution(container_dims, items, model)

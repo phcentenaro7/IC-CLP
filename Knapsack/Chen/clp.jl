@@ -128,27 +128,11 @@ function visualize_container(container_number::Int, container_list::Vector{Conta
         if s == 1
             x, y, z = [value(solution[k][i]) for k in [:x, :y, :z]]
             item = item_list[i]
-            lx, lz, wy, hz = [value(solution[k][i]) for k in [:lx, :lz, :wy, :hz]]
-            orientation = []
-            if lx == 1
-                if wy == 1
-                    orientation = [item.length, item.width, item.height]
-                else
-                    orientation = [item.length, item.height, item.width]
-                end
-            elseif lz == 1
-                if wy == 1
-                    orientation = [item.height, item.width, item.length]
-                else
-                    orientation = [item.width, item.height, item.length]
-                end
-            else
-                if hz == 1
-                    orientation = [item.width, item.length, item.height]
-                else
-                    orientation = [item.height, item.length, item.width]
-                end
-            end
+            lx, ly, lz, wx, wy, wz = [value(solution[k][i]) for k in [:lx, :ly, :lz, :wx, :wy, :wz]]
+            o1 = lx == 1 ? item.length : wx == 1 ? item.width : item.height
+            o2 = ly == 1 ? item.length : wy == 1 ? item.width : item.height
+            o3 = lz == 1 ? item.length : wz == 1 ? item.width : item.height
+            orientation = [o1, o2, o3]
             push!(meshes, create_box_mesh((x, y, z), Tuple(orientation), item.color))
             append!(outlines, create_box_outline_vector((x, y, z), Tuple(orientation), "rgb(0,0,0)"))
         end
@@ -161,20 +145,22 @@ function visualize_container(container_number::Int, container_list::Vector{Conta
         zaxis=attr(title="height"#=, range=[0,H + 1]=#))))
 end
 
-# item_list = Vector{CLPItem}()
-# add_clp_items([2., 4, 5, "rgb(255,0,0)"], item_list, 6)
-# add_clp_items([6., 8, 4, "rgb(0,255,0)"], item_list, 2)
-# add_clp_items([5., 10, 7, "rgb(0,0,255)"], item_list, 2)
-# add_clp_items([2., 2, 2, "rgb(128,128,128)"], item_list, 4)
-# add_clp_items([8., 9, 10, "rgb(255,255,0)"], item_list, 6)
-# add_clp_items([12., 12, 12, "rgb(255,0,255)"], item_list, 1)
-# add_clp_items([3., 7, 10, "rgb(0,255,255)"], item_list, 2)
-# add_clp_items([4., 8, 6, "rgb(255,255,255)"], item_list, 3)
-# container_list = Vector{Container}()
-# add_containers([20., 20, 20], container_list, 2)
-# model = create_clp_model(container_list, item_list)
-# set_optimizer(model, Gurobi.Optimizer)
-# optimize!(model)
+##
+
+item_list = Vector{CLPItem}()
+add_clp_items([2., 4, 5, "rgb(255,0,0)"], item_list, 6)
+add_clp_items([6., 8, 4, "rgb(0,255,0)"], item_list, 2)
+add_clp_items([5., 10, 7, "rgb(0,0,255)"], item_list, 2)
+add_clp_items([2., 2, 2, "rgb(128,128,128)"], item_list, 4)
+add_clp_items([8., 9, 10, "rgb(255,255,255)"], item_list, 6)
+add_clp_items([12., 12, 12, "rgb(0,0,0)"], item_list, 1)
+add_clp_items([3., 7, 10, "rgb(128,128,0)"], item_list, 2)
+add_clp_items([4., 8, 6, "rgb(0,128,128)"], item_list, 3)
+container_list = Vector{Container}()
+add_containers([20., 20, 20], container_list, 2)
+model = create_clp_model(container_list, item_list)
+set_optimizer(model, Gurobi.Optimizer)
+optimize!(model)
 
 # item_list = Vector{CLPItem}()
 # add_clp_items([.43, .32, .27, "rgb(255,0,0)"], item_list, 124)

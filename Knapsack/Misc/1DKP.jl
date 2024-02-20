@@ -13,5 +13,5 @@ end
 ##
 model = create_1d_knapsack_model([4, 2, 1, 3], [500, 400, 300, 450], 5)
 set_optimizer(model, Gurobi.Optimizer)
-optimize!(model)
-print(value.(model[:x]))
+#optimize!(model)
+#print(value.(model[:x]))

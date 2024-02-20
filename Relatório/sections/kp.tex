@@ -62,6 +62,8 @@ Due to the combinatorial nature of the KP, \cref{alg:kp tree algorithm} is only 
 
     \begin{figure}[h]
         \centering
+        \caption{BKP binary tree algorithm example.}
+        \label{fig:kp tree example}
         \begin{tikzpicture}[>=Stealth]
             \graph[binary tree layout]{
               l0n1[as=0] -> {
@@ -85,8 +87,6 @@ Due to the combinatorial nature of the KP, \cref{alg:kp tree algorithm} is only 
               }
             };
         \end{tikzpicture}
-        \caption{BKP binary tree algorithm example.}
-        \label{fig:kp tree example}
     \end{figure}
     Each node in the tree represents the value sum of a feasible combination of items. It immediately becomes clear that the optimal solution in this case is $7$, with the combination of items $2$ and $3$. However, this is not obvious to the computer, which must solve every recursion and return to the root node first.
 \end{example}
@@ -136,6 +136,8 @@ Though better than the binary tree approach, the dynamic programming algorithm's
 
     \begin{table}[h]
         \centering
+        \caption{BKP dynamic programming table example.}
+        \label{tab:kp dynamic programming table}
         \begin{tabular}{|c c c c c c|}
             \hline
             0 & 0 & 0 & 0 & 0 & 0\\
@@ -149,8 +151,6 @@ Though better than the binary tree approach, the dynamic programming algorithm's
             0 & 300 & 400 & 700 & 750 & 850\\
             \hline
         \end{tabular}
-        \caption{BKP dynamic programming table example.}
-        \label{tab:kp dynamic programming table}
     \end{table}
 
     Next, we start looking for the solution from the table's bottom right entry. We note that $T_{5,6} \neq T_{4,6}$. This means that item $4 \in X$ (the solution set). Next, we investigate item $3$. Since $4 \in X$, that means the capacity is now at $5 - w_4 = 2$. So we look at $T_{4,3}$, which is equal to $T_{3,3}$. We conclude that $3 \notin X$. Moving up a row, $T_{3,3} \neq T_{2,3}$, which means $2 \in X$. By repeating this one more time, we conclude that $X = \{2,4\}$.
@@ -195,6 +195,8 @@ Our MKP formulation begs to differ: Only items $1$ and $2$ are selected, for an 
 
 \begin{figure}[h]
     \centering
+    \caption{Bidimensional items within a $30 \times 20$ container.}
+    \label{fig:mkp2d example}
     \begin{tikzpicture}
         % \begin{pgfonlayer}{background}
         %     \includegraphics[scale=0.3]{Hero-20Pedigree-20Cats_jpg.png}
@@ -218,8 +220,6 @@ Our MKP formulation begs to differ: Only items $1$ and $2$ are selected, for an 
             \addplot [draw=none] coordinates{(0,0)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Bidimensional items within a $30 \times 20$ container.}
-    \label{fig:mkp2d example}
 \end{figure}
 
 We need to sophisticate our model's constraints in order to solve 2D knapsack problems. We begin by introducing variables $x_i, y_i \in \mathbb{R}$, which describe the position of each item's bottom-left corner. It immediately becomes clear that every selected item $i \in \{1,\dots,n\}$ must obey \cref{eq:2DKP item corner constraints},
@@ -237,15 +237,15 @@ where $W$ and $H$ are the width and height of the container, respectively.
 
 Our task is complicated by the need to avoid item overlap. To accomplish this, we adopt the approach described by \textcite{KALVELAGEN2021}. For every selected item $i, j \in \{1,\dots,n\}$ with $i \neq j$, at least one inequality from \cref{eq:2DKP no-overlap intro} must hold true.
 
-\begin{align}
+\begin{subequations}
     \label[constraint set]{eq:2DKP no-overlap intro}
-    \begin{split}
+    \begin{align}
         x_i + w_i \leq x_j,\\
         x_j + w_j \leq x_i,\\
         y_i + h_i \leq y_j,\\
         y_j + h_j \leq y_i.
-    \end{split}
-\end{align}
+    \end{align}
+\end{subequations}
 
 If we force all of these constraints upon the model, that might result in slower solve times. Thus, we need a way to enforce one constraint \emph{or} another. In other words, we have \emph{alternative constraints} \cite{BRADLEY1977}.
 
@@ -323,14 +323,14 @@ This initial process allows for the interpretation of items as collections of ce
 
 \begin{figure}[h]
     \centering
+    \caption{Discretization of an item for the 2DKP covering model.}
+    \label{fig:2DKP covering discretization example}
     \begin{tikzpicture}
         \begin{axis}[xshift=0.7cm, xmin=0, xmax=10, ymin=0, ymax=10, grid=both, minor tick num=1]
             \filldraw[draw=black,fill=blue!20] (axis cs:0, 0) rectangle (axis cs:8, 6);
             \filldraw[draw=black,fill=blue!40,dashed] (axis cs:0,0) rectangle (axis cs:7.23, 5.55);
         \end{axis}
     \end{tikzpicture}
-    \caption{Discretization of an item for the 2DKP covering model.}
-    \label{fig:2DKP covering discretization example}
 \end{figure}
 
 In the covering model, we introduce binary matrix $A \in \mathbb{R}^{n \times 2 \times W \times H}$. If item $k$ can be placed at cell $(i,j)$ with rotation $r$ without leaving the boundaries of the container, then $A_{k,i,j,r} = 1$. Otherwise, $A_{k,r,i,j} = 0$. By convention,
@@ -362,20 +362,16 @@ We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/9
     \begin{table}[h]
         \centering
         \begin{tabular}{cccc}
+            \toprule
             \textbf{type} & \textbf{width} & \textbf{height} & \textbf{quantity}\\
-            \hline
+            \midrule
             \textbf{1} & 9 & 6 & 4\\
-            \hline
             \textbf{2} & 7 & 7 & 3\\
-            \hline
             \textbf{3} & 5 & 10 & 4\\
-            \hline
             \textbf{4} & 14 & 14 & 2\\
-            \hline
             \textbf{5} & 6 & 5 & 6\\
-            \hline
             \textbf{6} & 3 & 8 & 5\\
-            \hline
+            \bottomrule
         \end{tabular}
     \end{table}
 
@@ -383,6 +379,8 @@ We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/9
 
     \begin{figure}[h]
         \centering
+        \caption{Covering solution to a 2D knapsack example.}
+        \label{fig:2DKP packing example}
         \begin{tikzpicture}[scale=1.5]
             \begin{axis}[xmin=0, xmax=30, ymin=0, ymax=20, xtick={0,10,...,30}, ytick={10,20}]
                 \filldraw[fill=blue!40,draw=black] (axis cs:0,0) rectangle (axis cs:7, 7);
@@ -421,8 +419,6 @@ We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/9
                 \node [black] at (axis cs:14, 18.5){\small{6}};
             \end{axis}
         \end{tikzpicture}
-        \caption{Covering solution to a 2D knapsack example.}
-        \label{fig:2DKP packing example}
     \end{figure}
 \end{example}
 
@@ -442,7 +438,7 @@ One notable limitation of this model is that it does not support item rotations.
     \label[mip]{eq:mip:3DKP Egeblad}
     \begin{align}
         \max &\sum_{i=1}^{n}v_i s_i\\
-        \text{s. t. } & \ell_{ij} + r_{ij} + u_{ij} + o_{ij} + b_{ij} + f_{ij} = s_i + s_j - 1, \, i, j \in \{1,\dots,n\}, \label[constraint]{eq:mip:3DKP Egeblad 1}\\
+        \text{s. t.} & \ell_{ij} + r_{ij} + u_{ij} + o_{ij} + b_{ij} + f_{ij} = s_i + s_j - 1, \, i, j \in \{1,\dots,n\}, \label[constraint]{eq:mip:3DKP Egeblad 1}\\
         & x_i - x_j + W\ell_{ij} \leq W - w_i, \, i, j \in \{1,\dots,n\}, \label[constraints]{eq:mip:3DKP Egeblad 2}\\
         & x_j - x_i + Wr_{ij} \leq W - w_i, \, i, j \in \{1,\dots,n\},\\
         & y_i - y_j + Hu_{ij} \leq H - h_i, \, i, j \in \{1,\dots,n\},\\
@@ -458,13 +454,33 @@ One notable limitation of this model is that it does not support item rotations.
     \end{align}
 \end{subequations}
 
-Testing this model with a \href{function draw_3d_knapsack_solution(kv::KnapsackVectors)}{method} developed to visualize solutions to this formulation of the 3D knapsack, we obtain results such as the one in \cref{fig:3DKP Egeblad solution example}.
+Testing this model with a \href{function draw_3d_knapsack_solution(kv::KnapsackVectors)}{method} developed to visualize solutions to this formulation of the 3D knapsack, we obtain results such as the one in \cref{fig:3DKP Egeblad solution example} for a $20\times20\times20$ container and the items in \cref{tab:3DKP example items}. The best solution includes everything, except for the black item.
+
+\begin{table}[h]
+    \centering
+    \caption{Set of items for the 3DKP.}
+    \label{tab:3DKP example items}
+    \begin{tabular}{cccccc}
+        \toprule
+        \textbf{color} & \textbf{length} & \textbf{width} & \textbf{height} & \textbf{quantity} & \textbf{value}\\
+        \midrule
+        \textbf{red} & 2 & 4 & 5 & 6 & 10\\
+        \textbf{green} & 6 & 8 & 4 & 2 & 12\\
+        \textbf{blue} & 5 & 10 & 7 & 2 & 15\\
+        \textbf{gray} & 2 & 2 & 2 & 4 & 5\\
+        \textbf{white} & 8 & 9 & 10 & 6 & 13\\
+        \textbf{black} & 12 & 12 & 12 & 1 & 20\\
+        \textbf{olive} & 3 & 7 & 10 & 2 & 15\\
+        \textbf{teal} & 4 & 8 & 6 & 3 & 11\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.75]{images/Egeblad3Dexample.png}
     \caption{Solution example to a 3D knapsack problem.}
     \label{fig:3DKP Egeblad solution example}
+    \includegraphics[scale=0.7]{images/Egeblad3Dexample.png}
 \end{figure}
 
 \subsection{Complexity of knapsack problems}
@@ -473,4 +489,50 @@ The BKP is an NP-hard problem \cite{PISINGER2005}, which means that no algorithm
 
 The dynamic programming solution to the BKP (\cref{alg:kp dynamic programming}) might elicit doubt about this affirmation. Recall that this algorithm creates a table that grows according to $nC$, and then updates each entry once. Then, the algorithm performs even fewer steps of backtracking to determine which items constitute the optimal solution. Hence, the algorithm's time complexity is $\mathcal{O}(nC)$.
 
-However, for an algorithm to be \emph{truly polynomial}, it must also be polynomial when the \emph{length in bits} of the input is used as a metric. Otherwise, we have only a \emph{pseudo-polinomial} algorithm \cite{WENDLAND}, bounded above by a unary representation of the problem's values \cite{VAZIRANI2001}. As this is the case for dynamic programming approaches to the BKP, no true polynomial time algorithm is known for it \cite{DUDLEY2016,PISINGER2005}.
+However, for an algorithm to be \emph{truly} polynomial, it must also be polynomial when the \emph{length in bits} of the input is used as a metric. Otherwise, we have only a \emph{pseudo-polinomial} algorithm \cite{WENDLAND}, bounded above by a unary representation of the problem's values \cite{ERICKSON2019,VAZIRANI2001}. As this is the case for dynamic programming approaches to the BKP, no true polynomial time algorithm is known for it \cite{DUDLEY2016,PISINGER2005}.
+
+\begin{example}
+
+    We will show that the dynamic programming approach is pseudo-polynomial. Consider a BKP with $n > 0$ (the specific value is unimportant), and let us vary the value of $C$ in powers of 2, as shown in \cref{tab:kp runtimes table}.
+
+    \begin{table}[h]
+        \centering
+        \caption{Comparison between unary and binary input lengths with regards to runtime.}
+        \label{tab:kp runtimes table}
+        \begin{tabular}{cccc}
+            \toprule
+            \multicolumn{3}{c}{$C$} & Runtime\\
+            \cmidrule(lr){1-3}
+            Decimal & Unary & Binary &\\
+            \midrule
+            2 & 11 & 10 & 2\\
+            4 & 1111 & 100 & 4\\
+            8 & 11111111 & 1000 & 8\\
+            16 & 1111111111111111 & 10000 & 16\\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    By counting, we see that there is a one-to-one relation between runtime and the number of ones in a unary representation of $C$. Hence, the dynamic programming solution is polynomial in this sense. For $b$ binary digits, though, runtime is $2^{b-1}$, which is exponential behavior. \cref{fig:unary vs binary time} illustrates both behaviors for larger values of $C$.
+
+    \begin{figure}[h]
+        \centering
+        \caption{Unary vs binary time for the dynamic programming solution to the BKP}
+        \label{fig:unary vs binary time}
+        \begin{tikzpicture}
+            \begin{axis}[legend pos=south east, xmode=log, ymode=log, grid=major, xmin=1, xmax=1000, ymin=1, ymax=1000, ytick={10,100,1000}, xlabel={Length of input $C$}, ylabel={Runtime}]
+                \addplot[domain=1:1000,samples=100,color=red]{x};
+                \addlegendentry{Unary time};
+                \addplot[domain=1:1000, samples=100,color=blue]{2^x};
+                \addlegendentry{Binary time};
+            \end{axis}
+        \end{tikzpicture}
+    \end{figure}
+
+\end{example}
+
+The 2D, 3D and any multidimensional KP are \emph{strongly} NP-hard \cite{CAPRARA2004,GHOMI2013}, which means that not even a pseudo-polynomial algorithm is known for them.
+
+So how do integer and mixed-integer formulations of these problems fare? Typically, solvers approach such problems with branch-and-bound algorithms, at least. These algorithms usually attempt to \emph{tighten}\footnote{The smaller the gap between the optimal solutions for a relaxation of a problem and its integer solution, the \emph{tighter} the problem is.} the problem with cutting planes that only remove fractional solutions from feasibility \cite{OKTAY2018}. The problem is then \emph{relaxed}\footnote{That is, all constraints of the form $x \in N \subseteq \mathbb{N}_0$ become $x \geq 0$.} and solved, usually via an implementation of the simplex method. The solver then repeats this process, generating a tree of subproblems to be solved the same way, until it can determine that the solution to one such subproblem is the optimal solution to the original problem.
+
+How quickly the simplex method can solve each node in the branch-and-bound tree depends on factors such as the chosen pivoting method and the geometry of the problem. In fact, as shown by \textcite{BERTSIMAS1997}, under certain circumstances, the simplex method visits every vertex in the solution set.

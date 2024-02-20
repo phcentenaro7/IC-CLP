@@ -157,6 +157,86 @@
       \field{title}{Applied mathematical programming}
       \field{year}{1977}
     \endentry
+    \entry{CAPRARA2004}{article}{}
+      \name{author}{2}{}{%
+        {{hash=7fc8f5d00abfb5214777eac168ad4ed4}{%
+           family={Caprara},
+           familyi={C\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod}}}%
+        {{hash=8548d54bd4ed7263715de583bd4cc51c}{%
+           family={Monaci},
+           familyi={M\bibinitperiod},
+           given={Michele},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{1a2231630b44bcc753d41beac7a6752d}
+      \strng{fullhash}{1a2231630b44bcc753d41beac7a6752d}
+      \strng{bibnamehash}{1a2231630b44bcc753d41beac7a6752d}
+      \strng{authorbibnamehash}{1a2231630b44bcc753d41beac7a6752d}
+      \strng{authornamehash}{1a2231630b44bcc753d41beac7a6752d}
+      \strng{authorfullhash}{1a2231630b44bcc753d41beac7a6752d}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0167-6377}
+      \field{journaltitle}{Operations Research Letters}
+      \field{number}{1}
+      \field{title}{On the two-dimensional Knapsack Problem}
+      \field{volume}{32}
+      \field{year}{2004}
+      \field{pages}{5\bibrangedash 14}
+      \range{pages}{10}
+      \verb{doi}
+      \verb https://doi.org/10.1016/S0167-6377(03)00057-9
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167637703000579
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167637703000579
+      \endverb
+    \endentry
+    \entry{CHEN1995}{article}{}
+      \name{author}{3}{}{%
+        {{hash=e8f308d6fefd066cb4a79b332a3d3ac7}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Chin-Sheng},
+           giveni={C\bibinithyphendelim S\bibinitperiod}}}%
+        {{hash=41d73540e7fb39536868115c6447b320}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Shen-Ming},
+           giveni={S\bibinithyphendelim M\bibinitperiod}}}%
+        {{hash=e86d8491d9b7b3f4f0dd3cfdeb4e5ab5}{%
+           family={Shen},
+           familyi={S\bibinitperiod},
+           given={QS},
+           giveni={Q\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{233030a410663cfb83f61d1ba5d672aa}
+      \strng{fullhash}{233030a410663cfb83f61d1ba5d672aa}
+      \strng{bibnamehash}{233030a410663cfb83f61d1ba5d672aa}
+      \strng{authorbibnamehash}{233030a410663cfb83f61d1ba5d672aa}
+      \strng{authornamehash}{233030a410663cfb83f61d1ba5d672aa}
+      \strng{authorfullhash}{233030a410663cfb83f61d1ba5d672aa}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{European Journal of operational research}
+      \field{number}{1}
+      \field{title}{An analytical model for the container loading problem}
+      \field{volume}{80}
+      \field{year}{1995}
+      \field{pages}{68\bibrangedash 76}
+      \range{pages}{9}
+    \endentry
     \entry{DEMAINE2011}{misc}{}
       \name{author}{2}{}{%
         {{hash=9c5f2582dbb7a35c5ef1021b9360a788}{%
@@ -350,6 +430,37 @@
       \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-subsetsum
       \endverb
     \endentry
+    \entry{OKTAY2018}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=cd787a4ad67763233aec3b095b7fcd03}{%
+           family={Günlük},
+           familyi={G\bibinitperiod},
+           given={Oktay},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{cd787a4ad67763233aec3b095b7fcd03}
+      \strng{fullhash}{cd787a4ad67763233aec3b095b7fcd03}
+      \strng{bibnamehash}{cd787a4ad67763233aec3b095b7fcd03}
+      \strng{authorbibnamehash}{cd787a4ad67763233aec3b095b7fcd03}
+      \strng{authornamehash}{cd787a4ad67763233aec3b095b7fcd03}
+      \strng{authorfullhash}{cd787a4ad67763233aec3b095b7fcd03}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Cutting Planes for Mixed-Integer Programming: Theory and Practice}
+      \field{urlday}{18}
+      \field{urlmonth}{2}
+      \field{urlyear}{2023}
+      \field{year}{2018}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.princeton.edu/~aaa/Public/Teaching/ORF523/ORF523_Lec17_guest.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.princeton.edu/~aaa/Public/Teaching/ORF523/ORF523_Lec17_guest.pdf
+      \endverb
+    \endentry
     \entry{HRISTAKEVA2005}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=040c3967ce47564bb4ee697936a09645}{%
@@ -453,6 +564,36 @@
       \field{year}{2018}
       \field{pages}{395}
       \range{pages}{1}
+    \endentry
+    \entry{GHOMI2013}{article}{}
+      \name{author}{1}{}{%
+        {{hash=77d4086539abc9aca2b1ee6be657d61e}{%
+           family={Mostaghimi\bibnamedelima Ghomi},
+           familyi={M\bibinitperiod\bibinitdelim G\bibinitperiod},
+           given={Hanan},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {University of Windsor}%
+      }
+      \strng{namehash}{77d4086539abc9aca2b1ee6be657d61e}
+      \strng{fullhash}{77d4086539abc9aca2b1ee6be657d61e}
+      \strng{bibnamehash}{77d4086539abc9aca2b1ee6be657d61e}
+      \strng{authorbibnamehash}{77d4086539abc9aca2b1ee6be657d61e}
+      \strng{authornamehash}{77d4086539abc9aca2b1ee6be657d61e}
+      \strng{authorfullhash}{77d4086539abc9aca2b1ee6be657d61e}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Three-Dimensional Knapsack Problem with Pre-Placed Boxes and Vertical Stability}
+      \field{year}{2013}
+      \verb{urlraw}
+      \verb https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=5986&context=etd
+      \endverb
+      \verb{url}
+      \verb https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=5986&context=etd
+      \endverb
     \endentry
     \entry{PISINGER2005}{article}{}
       \name{author}{1}{}{%
