@@ -1,4 +1,5 @@
 using JuMP
+using GLPK
 using Gurobi
 using Plotly
 using PlotlyJS
@@ -77,7 +78,6 @@ function create_clp_model(container_list::Vector{Container}, item_list::Vector{C
         #=(10')=# [i=1:N,j=1:m], x[i] + p[i] * lx[i] + q[i] * (lz[i] - wy[i] + hz[i]) + r[i] * (1 - lx[i] - lz[i] + wy[i] - hz[i]) ≤ L[j] + (1 - s[i,j]) * M
         #=(11')=# [i=1:N,j=1:m], y[i] + q[i] * wy[i] + p[i] * (1 - lx[i] - lz[i]) + r[i] * (lx[i] + lz[i] - wy[i]) ≤ W[j] + (1 - s[i,j]) * M
         #=(12')=# [i=1:N,j=1:m], z[i] + r[i] * hz[i] + q[i] * (1 - lz[i] - hz[i]) + p[i] * lz[i] ≤ H[j] + (1 - s[i,j]) * M
-        #=(A)=# [j=1:m], sum(p[i] * q[i] * r[i] * s[i,j] for i ∈ 1:N) ≤ W[j] * H[j] * L[j]
     end)
     return model
 end
@@ -140,6 +140,7 @@ function visualize_container(container_number::Int, container_list::Vector{Conta
     append!(drawables, meshes)
     append!(drawables, outlines)
     return Plotly.plot(drawables, Layout(scene=attr(
+        aspectmode="data",
         xaxis=attr(title="length", #=range=[0,W + 1],=#),
         yaxis=attr(title="width"#=, range=[0,D + 1]=#),
         zaxis=attr(title="height"#=, range=[0,H + 1]=#))))
@@ -159,15 +160,17 @@ add_clp_items([4., 8, 6, "rgb(0,128,128)"], item_list, 3)
 container_list = Vector{Container}()
 add_containers([20., 20, 20], container_list, 2)
 model = create_clp_model(container_list, item_list)
-set_optimizer(model, Gurobi.Optimizer)
-optimize!(model)
-
-# item_list = Vector{CLPItem}()
-# add_clp_items([.43, .32, .27, "rgb(255,0,0)"], item_list, 124)
-# add_clp_items([.40, .50, .40, "rgb(0,255,0)"], item_list, 122)
-# add_clp_items([.60, .40, .50, "rgb(0,0,255)"], item_list, 1383)
-# container_list = Vector{Container}()
-# add_containers([14, 2.6, 4.4], container_list, 20)
-# model = create_clp_model(container_list, item_list)
 # set_optimizer(model, Gurobi.Optimizer)
 # optimize!(model)
+
+##
+
+item_list = Vector{CLPItem}()
+add_clp_items([.43, .32, .27, "rgb(255,0,0)"], item_list, 12)
+add_clp_items([.40, .50, .40, "rgb(0,255,0)"], item_list, 12)
+add_clp_items([.60, .40, .50, "rgb(0,0,255)"], item_list, 138)
+container_list = Vector{Container}()
+add_containers([14, 2.6, 4.4], container_list, 2)
+model = create_clp_model(container_list, item_list)
+set_optimizer(model, Gurobi.Optimizer)
+optimize!(model)
