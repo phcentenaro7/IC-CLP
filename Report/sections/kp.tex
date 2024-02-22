@@ -211,7 +211,10 @@ Our MKP formulation begs to differ: Only items $1$ and $2$ are selected, for an 
             \addplot [draw=none] coordinates{(0,0)};
         \end{axis}
         \begin{axis}[at=(optimal.right of east), anchor=west, title=MKP solution, xmin=0, xmax=30, ymin=0, ymax=20, xtick={0, 10, 20, 30}, ytick={10, 20}, name=wrong,  xshift=0.7cm]
+            \fill [yellow!20] (axis cs:0,0) rectangle (axis cs:20,15);
             \filldraw [draw=black, fill=red!40] (axis cs:0,0) rectangle (axis cs:10, 5);
+            \draw (axis cs:0,5) -- (axis cs:0,15);
+            \draw (axis cs:10,0) -- (axis cs:20,0);
             \node [black] at (axis cs:5, 2.5){\small{1}};
             \filldraw [draw=black, fill=green!40] (axis cs:10, 5) rectangle (axis cs:20, 15);
             \node [black] at (axis cs:15, 10){\small{2}};
@@ -328,7 +331,7 @@ This initial process allows for the interpretation of items as collections of ce
     \begin{tikzpicture}
         \begin{axis}[xshift=0.7cm, xmin=0, xmax=10, ymin=0, ymax=10, grid=both, minor tick num=1]
             \filldraw[draw=black,fill=blue!20] (axis cs:0, 0) rectangle (axis cs:8, 6);
-            \filldraw[draw=black,fill=blue!40,dashed] (axis cs:0,0) rectangle (axis cs:7.23, 5.55);
+            \filldraw[draw=black,fill=blue!60,dashed] (axis cs:0,0) rectangle (axis cs:7.23, 5.55);
         \end{axis}
     \end{tikzpicture}
 \end{figure}
@@ -521,7 +524,7 @@ However, for an algorithm to be \emph{truly} polynomial, it must also be polynom
         \label{fig:unary vs binary time}
         \begin{tikzpicture}
             \begin{axis}[legend pos=south east, xmode=log, ymode=log, grid=major, xmin=1, xmax=1000, ymin=1, ymax=1000, ytick={10,100,1000}, xlabel={Length of input $C$}, ylabel={Runtime}]
-                \addplot[domain=1:1000,samples=100,color=red]{x};
+                \addplot[domain=1:1000,samples=100,color=red,style=densely dashed]{x};
                 \addlegendentry{Unary time};
                 \addplot[domain=1:1000, samples=100,color=blue]{2^x};
                 \addlegendentry{Binary time};

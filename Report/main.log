@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  20 FEB 2024 18:42
+This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  21 FEB 2024 15:01
  system commands enabled.
  file:line:error style messages enabled.
 **/home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex
@@ -2041,14 +2041,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <images/Egeblad3Dexample.png, id=261, 515.9275pt x 472.76625pt>
 File: images/Egeblad3Dexample.png Graphic file (type png)
 <use images/Egeblad3Dexample.png>
-Package luatex.def Info: images/Egeblad3Dexample.png  used on input line 483.
+Package luatex.def Info: images/Egeblad3Dexample.png  used on input line 486.
 (luatex.def)             Requested size: 361.14679pt x 330.93411pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [14]
-Overfull \hbox (0.86014pt too wide) in paragraph at lines 496--497
+Overfull \hbox (0.86014pt too wide) in paragraph at lines 499--500
 []\TU/lmr/m/it/12 Ex-am-ple \TU/lmr/m/n/12 2.4\TU/lmr/m/it/12 . []\TU/lmr/m/n/12 We will show that the dy-namic pro-gram-ming ap-proach is pseudo-polynomial.
  []
 
@@ -2142,14 +2142,14 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 72574 strings out of 477805
+ 72579 strings out of 477805
  100000,2848258 words of node,token memory allocated
  2342 words of node memory still in use:
    39 hlist, 8 vlist, 7 rule, 10 math, 52 glue, 19 kern, 45 glyph, 52 attribute, 126 glue_spec, 52 attribute_list, 2 write, 17 pdf_action nodes
-   avail lists: 1:12,2:2945,3:1439,4:284,5:583,6:77,7:6037,8:99,9:1058,10:12,11:325,12:2
- 90490 multiletter control sequences out of 65536+600000
+   avail lists: 1:12,2:2945,3:1443,4:284,5:583,6:77,7:6037,8:99,9:1058,10:12,11:325,12:2
+ 90495 multiletter control sequences out of 65536+600000
  98 fonts using 16987463 bytes
- 118i,19n,132p,10683b,2512s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 118i,19n,132p,10683b,2529s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.5'
 
@@ -2161,7 +2161,7 @@ warning  (pdf backend): unreferenced destination with name 'Hfootnote.2'
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.1'
 </usr/share/texlive/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></usr/share/texmf/fonts/opentype/public/lm/lmromancaps10-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman10-italic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-italic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman8-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman10-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman7-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-bold.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman17-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmsans10-bold.otf></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (22 pages, 393010 bytes).
+Output written on main.pdf (22 pages, 393067 bytes).
 
 PDF statistics: 589 PDF objects out of 1000 (max. 8388607)
  501 compressed objects within 6 object streams

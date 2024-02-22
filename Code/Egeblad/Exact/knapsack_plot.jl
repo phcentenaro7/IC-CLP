@@ -77,6 +77,7 @@ function draw_3d_knapsack_solution(kv::KnapsackVectors)
     append!(drawables, meshes)
     append!(drawables, outlines)
     return Plotly.plot(drawables, Layout(scene=attr(
+        aspectmode="data",
         xaxis=attr(title="width", #=range=[0,W + 1],=# autorange="reversed"),
         yaxis=attr(title="depth"#=, range=[0,D + 1]=#),
         zaxis=attr(title="height"#=, range=[0,H + 1]=#))))
