@@ -73,9 +73,9 @@ function determine_new_layer_depth(bl::BoxList; k=Inf)
         #first ranking: indices of item types with the maximum smallest dimension
         Imaxd = findall(Min[i] == maximum(Min) for i in eachindex(Min))
         #second ranking: indices of item types with the maximum stock quantity
-        Imaxq = findall(B[i,4] == maximum(B[Imaxd,4]) for i in eachindex(B[:,1]))
+        Imaxq = findall(i in Imaxd && B[i,4] == maximum(B[Imaxd,4]) for i in eachindex(B[:,1]))
         #third ranking: maximum biggest dimension among tied items
-        n = findfirst(Max[i] == maximum(Max[Imaxq]) for i in eachindex(Max))
+        n = findfirst(i in Imaxq && Max[i] == maximum(Max[Imaxq]) for i in eachindex(Max))
     end
     ##### Depth selection
     Bs = sort(B[n,1:3], rev=true)
