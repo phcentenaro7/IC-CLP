@@ -1,8 +1,8 @@
-This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  21 FEB 2024 15:01
+This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  23 FEB 2024 11:06
  system commands enabled.
  file:line:error style messages enabled.
-**/home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex
-(/home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex
+**/home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex
+(/home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex
 LaTeX2e <2021-11-15> patch level 1
 Lua module: luaotfload 2021-05-21 3.18 Lua based OpenType font support
 Lua module: lualibs 2021-05-20 2.74 ConTeXt Lua standard libraries.
@@ -2149,7 +2149,7 @@ Here is how much of LuaTeX's memory you used:
    avail lists: 1:12,2:2945,3:1443,4:284,5:583,6:77,7:6037,8:99,9:1058,10:12,11:325,12:2
  90495 multiletter control sequences out of 65536+600000
  98 fonts using 16987463 bytes
- 118i,19n,132p,10683b,2529s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 118i,19n,132p,10674b,2529s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.5'
 

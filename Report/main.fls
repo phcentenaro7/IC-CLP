@@ -1,6 +1,6 @@
-PWD /home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório
+PWD /home/pcentenaro/Documents/UFSC/IC-CLP/Report
 INPUT /var/lib/texmf/web2c/luahbtex/lualatex.fmt
-INPUT /home/pcentenaro/Documents/UFSC/IC-Knapsack/Relatório/main.tex
+INPUT /home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex
 OUTPUT main.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/latexconfig/lualatexquotejobname.lua
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ltluatex.lua
