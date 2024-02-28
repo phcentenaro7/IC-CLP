@@ -380,7 +380,6 @@
       \strng{authorbibnamehash}{cd921c136fea481375cc54c373dc423f}
       \strng{authornamehash}{cd921c136fea481375cc54c373dc423f}
       \strng{authorfullhash}{cd921c136fea481375cc54c373dc423f}
-      \field{extraname}{1}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
       \field{labelnamesource}{author}
@@ -396,69 +395,6 @@
       \endverb
       \verb{url}
       \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-bool
-      \endverb
-    \endentry
-    \entry{FEOFILOFF2020b}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=cd921c136fea481375cc54c373dc423f}{%
-           family={Feofiloff},
-           familyi={F\bibinitperiod},
-           given={Paulo},
-           giveni={P\bibinitperiod}}}%
-      }
-      \strng{namehash}{cd921c136fea481375cc54c373dc423f}
-      \strng{fullhash}{cd921c136fea481375cc54c373dc423f}
-      \strng{bibnamehash}{cd921c136fea481375cc54c373dc423f}
-      \strng{authorbibnamehash}{cd921c136fea481375cc54c373dc423f}
-      \strng{authornamehash}{cd921c136fea481375cc54c373dc423f}
-      \strng{authorfullhash}{cd921c136fea481375cc54c373dc423f}
-      \field{extraname}{2}
-      \field{sortinit}{F}
-      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Subset sum}
-      \field{urlday}{9}
-      \field{urlmonth}{2}
-      \field{urlyear}{2024}
-      \field{year}{2020}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-subsetsum
-      \endverb
-      \verb{url}
-      \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-subsetsum
-      \endverb
-    \endentry
-    \entry{OKTAY2018}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=cd787a4ad67763233aec3b095b7fcd03}{%
-           family={Günlük},
-           familyi={G\bibinitperiod},
-           given={Oktay},
-           giveni={O\bibinitperiod}}}%
-      }
-      \strng{namehash}{cd787a4ad67763233aec3b095b7fcd03}
-      \strng{fullhash}{cd787a4ad67763233aec3b095b7fcd03}
-      \strng{bibnamehash}{cd787a4ad67763233aec3b095b7fcd03}
-      \strng{authorbibnamehash}{cd787a4ad67763233aec3b095b7fcd03}
-      \strng{authornamehash}{cd787a4ad67763233aec3b095b7fcd03}
-      \strng{authorfullhash}{cd787a4ad67763233aec3b095b7fcd03}
-      \field{sortinit}{G}
-      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Cutting Planes for Mixed-Integer Programming: Theory and Practice}
-      \field{urlday}{18}
-      \field{urlmonth}{2}
-      \field{urlyear}{2023}
-      \field{year}{2018}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://www.princeton.edu/~aaa/Public/Teaching/ORF523/ORF523_Lec17_guest.pdf
-      \endverb
-      \verb{url}
-      \verb https://www.princeton.edu/~aaa/Public/Teaching/ORF523/ORF523_Lec17_guest.pdf
       \endverb
     \endentry
     \entry{HRISTAKEVA2005}{inproceedings}{}
@@ -623,6 +559,108 @@
       \field{year}{2005}
       \field{pages}{2271\bibrangedash 2284}
       \range{pages}{14}
+    \endentry
+    \entry{SANTOS2019}{article}{}
+      \name{author}{7}{}{%
+        {{hash=ffdb9a16c2fd89ef5a7f21ee8fa7f204}{%
+           family={Santos},
+           familyi={S\bibinitperiod},
+           given={Luiz\bibnamedelimb FO\bibnamedelima Moura},
+           giveni={L\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=907e93919aa68f1cc14331a91be4da30}{%
+           family={Iwayama},
+           familyi={I\bibinitperiod},
+           given={Renan\bibnamedelima Sallai},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=1129f9607ee6c9a7ee40bc6076659cb4}{%
+           family={Cavalcanti},
+           familyi={C\bibinitperiod},
+           given={Luı́sa\bibnamedelima Brandão},
+           giveni={L\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=797fa60d2f9fa5babd902f3fcbfe4726}{%
+           family={Turi},
+           familyi={T\bibinitperiod},
+           given={Leandro\bibnamedelima Maciel},
+           giveni={L\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=995489b273fa22fbb4be7bc0ef83bca1}{%
+           family={Souza\bibnamedelima Morais},
+           familyi={S\bibinitperiod\bibinitdelim M\bibinitperiod},
+           given={Fabio\bibnamedelima Emanuel},
+           giveni={F\bibinitperiod\bibinitdelim E\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=286fbf3331998c2a022f0e353d8e03d8}{%
+           family={Mormilho},
+           familyi={M\bibinitperiod},
+           given={Gabriel},
+           giveni={G\bibinitperiod}}}%
+        {{hash=c4e261bcd6948e742c17edad39609c9b}{%
+           family={Cunha},
+           familyi={C\bibinitperiod},
+           given={Claudio\bibnamedelima B},
+           giveni={C\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{ee0f908aac70c9bc4468410d6f065b20}
+      \strng{fullhash}{172322f611214af5fed160894fd89d00}
+      \strng{bibnamehash}{ee0f908aac70c9bc4468410d6f065b20}
+      \strng{authorbibnamehash}{ee0f908aac70c9bc4468410d6f065b20}
+      \strng{authornamehash}{ee0f908aac70c9bc4468410d6f065b20}
+      \strng{authorfullhash}{172322f611214af5fed160894fd89d00}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Expert Systems with Applications}
+      \field{title}{A variable neighborhood search algorithm for the bin packing problem with compatible categories}
+      \field{volume}{124}
+      \field{year}{2019}
+      \field{pages}{209\bibrangedash 225}
+      \range{pages}{17}
+    \endentry
+    \entry{TSAO2024}{article}{}
+      \name{author}{4}{}{%
+        {{hash=65240024e7736b54e7b2cd18820105e6}{%
+           family={Tsao},
+           familyi={T\bibinitperiod},
+           given={Yu-Chung},
+           giveni={Y\bibinithyphendelim C\bibinitperiod}}}%
+        {{hash=b8a43150a20d4da3654ef0f8f2c9d1dd}{%
+           family={Tai},
+           familyi={T\bibinitperiod},
+           given={Jo-Ying},
+           giveni={J\bibinithyphendelim Y\bibinitperiod}}}%
+        {{hash=363eab6a66326c9a1a7c33aa342bf7ac}{%
+           family={Vu},
+           familyi={V\bibinitperiod},
+           given={Thuy-Linh},
+           giveni={T\bibinithyphendelim L\bibinitperiod}}}%
+        {{hash=de739f6161195519e5254147f3081fe3}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Tsung-Hui},
+           giveni={T\bibinithyphendelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{a65e9656826462cc23df7d8d11a78280}
+      \strng{fullhash}{6fec937d66bbbb7562c38ec73837e489}
+      \strng{bibnamehash}{6fec937d66bbbb7562c38ec73837e489}
+      \strng{authorbibnamehash}{6fec937d66bbbb7562c38ec73837e489}
+      \strng{authornamehash}{a65e9656826462cc23df7d8d11a78280}
+      \strng{authorfullhash}{6fec937d66bbbb7562c38ec73837e489}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Expert Systems with Applications}
+      \field{title}{Multiple bin-size bin packing problem considering incompatible product categories}
+      \field{year}{2024}
+      \field{pages}{123340}
+      \range{pages}{1}
     \endentry
     \entry{VAZIRANI2001}{book}{}
       \name{author}{1}{}{%

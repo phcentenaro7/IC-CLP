@@ -1,4 +1,6 @@
-\section{Knapsack problems}
+\section{Exact models for packing problems}
+
+\subsection{The binary knapsack problem}
 
 Informally, knapsack problems (KPs) may be described as finding the optimal combination of items from a set. Usually, this decision involves a certain value intrinsic to each item, and the objective is to maximize the total value of the selected items. To complicate this decision, items may have certain limiting values associated with them, which means not all of them may be selected.
 
@@ -13,20 +15,16 @@ The simplest example of a KP is the binary knapsack problem (BKP), also known as
     \end{split}
 \end{align}
 where $x_i$ are decision variables that specify whether item $i \in \{1,\dots,n\}$ has been selected or not.
+% 
+% By introducing slight variations to this formulation, it is possible to obtain different uses for the KP:
 
-By introducing slight variations to this formulation, it is possible to obtain many different uses for the KP:
+% \begin{itemize}
+%     \item Unbounded knapsack problem (UKP): By letting $x_i \in \mathbb{N}$, the number of units of each item available is unlimited.
+%     \item Fractional knapsack problem (FKP): By letting $x_i \in [0, 1]$, a fraction of each item can be selected.
+%     \item Subset sum problem (SSP): When $v_i = w_i \, \forall i \in \{1,\dots,n\}$, the objective can be interpreted as maximizing the weight of the knapsack. Furthermore, if we demand that $\sum_{i=1}^{n}x_iw_i = C$, then the problem becomes finding the combination of items that produces sum $C$ exactly \cite{FEOFILOFF2020b}.
+% \end{itemize}
 
-\begin{itemize}
-    \item Unbounded knapsack problem (UKP): By letting $x_i \in \mathbb{N}$, the number of units of each item available is unlimited.
-    \item Fractional knapsack problem (FKP): By letting $x_i \in [0, 1]$, a fraction of each item can be selected.
-    \item Subset sum problem (SSP): When $v_i = w_i \, \forall i \in \{1,\dots,n\}$, the objective can be interpreted as maximizing the weight of the knapsack. Furthermore, if we demand that $\sum_{i=1}^{n}x_iw_i = C$, then the problem becomes finding the combination of items that produces sum $C$ exactly \cite{FEOFILOFF2020b}.
-\end{itemize}
-
-The KP can be further complicated by taking into account multiple knapsacks and constraints. In this section, we focus on the latter.
-
-\subsection{Simple algorithms for the binary knapsack problem}
-
-The selection of subsets implies that an upper bound on the number of solutions to the BKP is $2^n$. Therefore, a natural first solution to the problem is a recursive binary tree algorithm \cite{FEOFILOFF2020a}. Let $I = \{1,\dots,n\}$ be the set of items to be put in the knapsack. Then, by representing the values and weights of items as entries in vectors $v, w \in \mathbb{R}^n$, respectively, and the remaining knapsack weight capacity as $c \in \mathbb{R}$, we arrive at \cref{alg:kp tree algorithm} for an instance $\phi(n, c, X, s)$ of the problem, where $X \subseteq I$ is the set of selected items and $s$ is the sum of said items' values at the node.
+The selection of subsets implies that an upper bound on the number of solutions to the BKP is $2^n$. Therefore, a natural first solution to the problem is a recursive binary tree algorithm \cite{FEOFILOFF2020a}. Let $I = \{1,\dots,n\}$ be a set enumerating the items that may be put in the knapsack. Then, by representing the values and weights of items as entries in vectors $v, w \in \mathbb{R}^n$, respectively, and the remaining knapsack weight capacity as $c \in \mathbb{R}$, we arrive at \cref{alg:kp tree algorithm} for an instance $\phi(n, c, X, s)$ of the problem, where $X \subseteq I$ is the set of selected items and $s$ is the sum of said items' values at the node.
 
 \begin{algorithm}
     \caption{\href{https://github.com/phcentenaro7/IC-Knapsack/blob/main/Knapsack/USP/recursive_knapsack.jl}{Recursive binary tree algorithm for the KP: $\phi(n, c, X, s)$}}
@@ -62,8 +60,6 @@ Due to the combinatorial nature of the KP, \cref{alg:kp tree algorithm} is only 
 
     \begin{figure}[h]
         \centering
-        \caption{BKP binary tree algorithm example.}
-        \label{fig:kp tree example}
         \begin{tikzpicture}[>=Stealth]
             \graph[binary tree layout]{
               l0n1[as=0] -> {
@@ -87,6 +83,8 @@ Due to the combinatorial nature of the KP, \cref{alg:kp tree algorithm} is only 
               }
             };
         \end{tikzpicture}
+        \caption{BKP binary tree algorithm example.}
+        \label{fig:kp tree example}
     \end{figure}
     Each node in the tree represents the value sum of a feasible combination of items. It immediately becomes clear that the optimal solution in this case is $7$, with the combination of items $2$ and $3$. However, this is not obvious to the computer, which must solve every recursion and return to the root node first.
 \end{example}
@@ -127,7 +125,7 @@ $T_{i,j}$ represents the optimal value for a subproblem of the KP with $i - 1$ i
 
 Lines \ref{dpln3} through \ref{dpln4} fill the remaining entries in the table. If $w_{i-1} > j - 1$, we simply keep the best solution found so far for capacity $j - 1$. Otherwise, we compare said solution with what would be obtained if $i - 1$ was selected. The larger value becomes entry $T_{i,j}$.
 
-Once table $T$ is finished, starting at \cref{dpln5}, the process of determining what items constitute an optimal solution occurs. Following the logic of lines \ref{dpln3} through \ref{dpln4}, if $T_{i,j} = T_{i-1,j}$, then the current item has not been selected and we may move on to the next item. Otherwise, the item is included in the final solution and we move on to the next item with less capacity, $T_{i-1,j-w_i}$.
+Once table $T$ is finished, starting at \cref{dpln5}, the process of determining what items constitute an optimal solution occurs. Following the logic of lines \ref{dpln3} through \ref{dpln4}, if $T_{i,j} = T_{i-1,j}$, then the current item has not been selected, and we may move on to the next item. Otherwise, the item is included in the final solution, and we move on to the next item with less capacity, $T_{i-1,j-w_i}$.
 
 Though better than the binary tree approach, the dynamic programming algorithm's complexity is exponential as well \cite{FEOFILOFF2020a}. In fact, this approach is notably inefficient for large capacity values \cite{HRISTAKEVA2005}.
 
@@ -156,9 +154,9 @@ Though better than the binary tree approach, the dynamic programming algorithm's
     Next, we start looking for the solution from the table's bottom right entry. We note that $T_{5,6} \neq T_{4,6}$. This means that item $4 \in X$ (the solution set). Next, we investigate item $3$. Since $4 \in X$, that means the capacity is now at $5 - w_4 = 2$. So we look at $T_{4,3}$, which is equal to $T_{3,3}$. We conclude that $3 \notin X$. Moving up a row, $T_{3,3} \neq T_{2,3}$, which means $2 \in X$. By repeating this one more time, we conclude that $X = \{2,4\}$.
 \end{example}
 
-Along with these algorithms, an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/main/Knapsack/Misc/1DKP.jl}{integer programming model} of the BKP was implemented in JuMP.
+Along with these algorithms, an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/main/Knapsack/Misc/1DKP.jl}{integer programming model} of the BKP was implemented in \texttt{JuMP}.
 
-\subsection{Models for multidimensional knapsack problems}
+\subsection{The two-dimensional knapsack problem}
 
 Since the BKP contains a single capacity constraint (see \cref{eq:ip:bkp}), we can think of each item as a line segment whose length is $w_i$. It follows that the sum of lengths of the items must not exceed capacity $C$.
 
@@ -189,14 +187,12 @@ Specifically in the case of two dimensions, we may rewrite this formulation as \
 
 Here, $w_i$ and $h_i$ represent the width and height of item $i$, while $W$ and $H$ represent the width and height of the container where we wish to place the items. We assume both the items and the container to be rectangular.
 
-Suppose we want to place three items within a $30 \times 20$ container. The width, height and value vectors for this problem are $w = [10, 10, 5]$, $h = [5, 10, 15]$ and $v = [10, 15, 5]$. Through the plot on the left in \cref{fig:mkp2d example}, we can see that this is a trivial task. All items are selected and the optimal value is $30$.
+Suppose we want to place three items within a $30 \times 20$ container. The width, height and value vectors for this problem are $w = [10, 10, 5]$, $h = [5, 10, 15]$ and $v = [10, 15, 5]$. Through the plot on the left in \cref{fig:mkp2d example}, we can see that this is a trivial task. All items are selected, and the optimal value is $30$.
 
 Our MKP formulation begs to differ: Only items $1$ and $2$ are selected, for an optimal value of $25$. Why? The plot on the right illustrates the issue: The MKP is applying the line segment logic to multiple dimensions, as if each chosen subset of items ended up constituting a larger rectangle of dimensions $\sum_{i=1}^{n}w_i \times \sum_{i=1}^{n}h_i$.
 
 \begin{figure}[h]
     \centering
-    \caption{Bidimensional items within a $30 \times 20$ container.}
-    \label{fig:mkp2d example}
     \begin{tikzpicture}
         % \begin{pgfonlayer}{background}
         %     \includegraphics[scale=0.3]{Hero-20Pedigree-20Cats_jpg.png}
@@ -223,6 +219,8 @@ Our MKP formulation begs to differ: Only items $1$ and $2$ are selected, for an 
             \addplot [draw=none] coordinates{(0,0)};
         \end{axis}
     \end{tikzpicture}
+    \caption{Two-dimensional items within a $30 \times 20$ container.}
+    \label{fig:mkp2d example}
 \end{figure}
 
 We need to sophisticate our model's constraints in order to solve 2D knapsack problems. We begin by introducing variables $x_i, y_i \in \mathbb{R}$, which describe the position of each item's bottom-left corner. It immediately becomes clear that every selected item $i \in \{1,\dots,n\}$ must obey \cref{eq:2DKP item corner constraints},
@@ -326,14 +324,14 @@ This initial process allows for the interpretation of items as collections of ce
 
 \begin{figure}[h]
     \centering
-    \caption{Discretization of an item for the 2DKP covering model.}
-    \label{fig:2DKP covering discretization example}
     \begin{tikzpicture}
         \begin{axis}[xshift=0.7cm, xmin=0, xmax=10, ymin=0, ymax=10, grid=both, minor tick num=1]
             \filldraw[draw=black,fill=blue!20] (axis cs:0, 0) rectangle (axis cs:8, 6);
             \filldraw[draw=black,fill=blue!60,dashed] (axis cs:0,0) rectangle (axis cs:7.23, 5.55);
         \end{axis}
     \end{tikzpicture}
+    \caption{Discretization of an item for the 2DKP covering model.}
+    \label{fig:2DKP covering discretization example}
 \end{figure}
 
 In the covering model, we introduce binary matrix $A \in \mathbb{R}^{n \times 2 \times W \times H}$. If item $k$ can be placed at cell $(i,j)$ with rotation $r$ without leaving the boundaries of the container, then $A_{k,i,j,r} = 1$. Otherwise, $A_{k,r,i,j} = 0$. By convention,
@@ -382,9 +380,7 @@ We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/9
 
     \begin{figure}[h]
         \centering
-        \caption{Covering solution to a 2D knapsack example.}
-        \label{fig:2DKP packing example}
-        \begin{tikzpicture}[scale=1.5]
+        \begin{tikzpicture}
             \begin{axis}[xmin=0, xmax=30, ymin=0, ymax=20, xtick={0,10,...,30}, ytick={10,20}]
                 \filldraw[fill=blue!40,draw=black] (axis cs:0,0) rectangle (axis cs:7, 7);
                 \node [black] at (axis cs:3.5, 3.5){\small{2}};
@@ -422,10 +418,14 @@ We have also written an \href{https://github.com/phcentenaro7/IC-Knapsack/blob/9
                 \node [black] at (axis cs:14, 18.5){\small{6}};
             \end{axis}
         \end{tikzpicture}
+        \caption{Covering solution to a 2D knapsack example.}
+        \label{fig:2DKP packing example}
     \end{figure}
 \end{example}
 
-With similar ideas to those behind \cref{eq:ip:2DKP continuous,eq:ip:2DKP covering}, a tridimensional model is possible. \cref{eq:mip:3DKP Egeblad} is one such model, presented by \textcite{EGEBLAD2009}.
+\subsection{The three-dimensional knapsack problem}
+
+With similar ideas to those behind \cref{eq:ip:2DKP continuous,eq:ip:2DKP covering}, a three-dimensional model is possible. \cref{eq:mip:3DKP Egeblad} is one such model, presented by \textcite{EGEBLAD2009}.
 
 The container in this problem has volume $W \times H \times D$ (width, height and depth). Similarly, each item has associated dimensions $(w_i,h_i,d_i)$ and is positioned at coordinates $(x_i,y_i,z_i)$.
 
@@ -481,18 +481,95 @@ Testing this model with a \href{function draw_3d_knapsack_solution(kv::KnapsackV
 
 \begin{figure}[h]
     \centering
+    \includegraphics[scale=0.55]{images/Egeblad3Dexample.png}
     \caption{Solution example to a 3D knapsack problem.}
     \label{fig:3DKP Egeblad solution example}
-    \includegraphics[scale=0.7]{images/Egeblad3Dexample.png}
 \end{figure}
 
-\subsection{Complexity of knapsack problems}
+\subsection{Container loading problems}
+
+When the KP is generalized to multiple containers of varying volumes, it becomes a multi-container loading problem\footnote{When these dimensions are the same for all containers, the KP becomes a bin-packing problem.} (CLP). A model for solving such problems has been proposed by \textcite{CHEN1995}. The model concerns $m$ containers and $N$ items. To each item are assigned positioning variables $(x_i, y_i, z_i)$ and dimensions $(p_i, q_i, r_i)$ representing length, width and height, respectively. Much like \cref{eq:mip:3DKP Egeblad}, this model uses binary variables to represent the placement of item $i$ relative to item $k$: $a_{ik}$ (left), $b_{ik}$ (right), $c_{ik}$ (behind), $d_{ik}$ (front), $e_{ik}$ (below), $f_{ik}$ (above).
+
+If item $i$ is assigned to container $j$, then $s_{ij} = 1$; otherwise, $s_{ij} = 0$. Rotations are introduced to the model through nine binary variables: $l_{xi}, l_{yi}, l_{zi}, w_{xi}, w_{yi}, w_{zi}, h_{xi}, h_{yi}, h_{zi}$. These variables determine which axis an item's length, width or height is parallel to. For example, if $l_{xi} = 1$, then item $i$ has its length parallel to the X axis.Evidently, the rotation variables must obey \cref{eq:clp rotation variable constraints}.
+
+\begin{subequations}
+    \label[constraint set]{eq:clp rotation variable constraints}
+    \begin{align}
+        &l_{xi} + l_{yi} + l_{zi} = 1,\\
+        &w_{xi} + w_{yi} + w_{zi} = 1,\\
+        &h_{xi} + h_{yi} + h_{zi} = 1,\\
+        &l_{xi} + w_{xi} + h_{xi} = 1,\\
+        &l_{yi} + w_{yi} + h_{yi} = 1,\\
+        &l_{zi} + w_{zi} + h_{zi} = 1.
+    \end{align}
+\end{subequations}
+
+From this set of equations, \textcite{CHEN1995} obtain the following equalities:
+
+\begin{subequations}
+    \label[equation set]{eq:clp rotation equation set}
+    \begin{align}
+        &l_{yi} = 1 - l_{xi} - l_{zi},\\
+        &w_{xi} = l_{zi} - w_{yi} + h_{zi},\\
+        &w_{zi} = 1 - l_{zi} - h_{zi},\\
+        &h_{xi} = 1 - l_{xi} - l_{zi} + w_{yi} - h_{zi},\\
+        &h_{yi} = l_{xi} + l_{zi} - w_{yi}.
+    \end{align}
+\end{subequations}
+
+The model that \textcite{CHEN1995} propose is \cref{eq:mip:CLP Chen}. By replacing the rotation variables with the equations in \cref{eq:clp rotation equation set}, this model becomes simpler to solve.
+
+\begin{subequations}
+    \label[mip]{eq:mip:CLP Chen}
+    \begin{align}
+        \min &\sum_{j=1}^{m}L_jW_jH_jn_j - \sum_{i=1}^{N}p_iq_ir_i \label[expression]{eq:objective chen}\\
+        \text{s. t.} &x_i + p_i l_{xi} + q_i w_{xi} + r_i h_{xi} \leq x_k + (1 - a_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 1}\\
+        &x_k + p_k l_{xk} + q_k w_{xk} + r_k h_{xk} \leq x_i + (1 - b_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 2}\\
+        &y_i + q_i w_{yi} + p_i l_{yi} + r_i h_{yi} \leq y_k + (1 - c_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 3}\\
+        &y_k + q_k w_{yk} + p_k l_{yk} + r_k h_{yk} \leq y_i + (1 - d_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 4}\\
+        &z_i + r_i h_{zi} + q_i w_{zi} + p_i l_{zi} \leq z_k + (1 - e_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 5}\\
+        &z_k + r_k h_{zk} + q_k w_{zk} + p_k l_{zk} \leq z_i + (1 - f_{ik}) M, \, \forall i, k, \, i < k, \label[constraints]{eq:comp chen 6}\\
+        &a_{ik} + b_{ik} + c_{ik} + d_{ik} + e_{ik} + f_{ik} \geq s_{ij} + s_{kj} - 1, \, \forall i, k, j, \, i < k \label[constraints]{eq:comp chen 7}\\
+        &\sum_{j=1}^{m} s_{ij} = 1, \, \forall i, \label[constraints]{eq:all items in containers chen}\\
+        &\sum_{i=1}^{N} s_{ij} \leq M n_j, \, \forall j, \label[constraints]{eq:items only in selected containers chen}\\
+        &x_i + p_i l_{xi} + q_i w_{xi} + r_i h_{xi} \leq L_j + (1 - s_{ij}) M, \, \forall i, j, \label[constraints]{eq:items bound x chen}\\
+        &y_i + q_i w_{yi} + p_i l_{yi} + r_i h_{yi} \leq W_j + (1 - s_{ij}) M, \, \forall i, j, \label[constraints]{eq:items bound y chen}\\
+        &z_i + r_i h_{zi} + q_i w_{zi} + p_i l_{zi} \leq H_j + (1 - s_{ij}) M, \, \forall i, j, \label[constraints]{eq:items bound z chen}\\
+        &l_{xi}, l_{yi}, l_{zi}, w_{xi}, w_{yi}, w_{zi}, h_{xi}, h_{yi}, h_{zi} \in \{0,1\}, \, \forall i\\
+        &a_{ik}, b_{ik}, c_{ik}, d_{ik}, e_{ik}, f_{ik}, s_{ij}, n_j \in \{0,1\}, \, \forall i\\
+        &x_i, y_i, z_i \geq 0.
+    \end{align}
+\end{subequations}
+
+\cref{eq:objective chen} defines the CLP's objective to minimize the container volume that goes unused. Decision variables $n_j$ indicate whether a container has been selected or not. \cref{eq:comp chen 1,eq:comp chen 2,eq:comp chen 3,eq:comp chen 4,eq:comp chen 5,eq:comp chen 6} establish the relative placements of items in container $j$, in the same vein as \cref{eq:mip:3DKP Egeblad}. To guarantee that these alternative constraints work, \cref{eq:comp chen 7} force at least one of the positional variables to equal one, whenever two items share the same container.
+
+\cref{eq:all items in containers chen} make it so every item is assigned to exactly one container. \cref{eq:items only in selected containers chen} ensure that items are only assigned to selected containers. Finally, \cref{eq:items bound x chen,eq:items bound y chen,eq:items bound z chen} make it impossible for items to breach their container's boundaries.
+
+Our \href{https://github.com/phcentenaro7/IC-Knapsack/blob/7f581ff02334992a6181a06adbce668b528caeba/Knapsack/Chen/clp.jl#L27}{implementation} of this model and a \href{https://github.com/phcentenaro7/IC-Knapsack/blob/7f581ff02334992a6181a06adbce668b528caeba/Knapsack/Chen/clp.jl#L122}{visualization method} allows us to verify that this CLP model works when tested with the item set in \cref{tab:3DKP example items} and two $20\times20\times20$ containers. \cref{fig:clp example solution} shows the solution to this problem.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ChenExampleContainer1.png}
+        \caption{Container 1}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{images/ChenExampleContainer2.png}
+        \caption{Container 2}
+    \end{subfigure}
+    \caption{Containers in an example solution to the CLP.}
+    \label{fig:clp example solution}
+\end{figure}
+
+\subsection{Complexity of exact solutions}
 
 The BKP is an NP-hard problem \cite{PISINGER2005}, which means that no algorithm is known that can solve it in polynomial time, and that if such an algorithm can be found, then all other problems in the NP category can also be solved in polynomial time (P = NP) \cite{ERICKSON2019}.
 
 The dynamic programming solution to the BKP (\cref{alg:kp dynamic programming}) might elicit doubt about this affirmation. Recall that this algorithm creates a table that grows according to $nC$, and then updates each entry once. Then, the algorithm performs even fewer steps of backtracking to determine which items constitute the optimal solution. Hence, the algorithm's time complexity is $\mathcal{O}(nC)$.
 
-However, for an algorithm to be \emph{truly} polynomial, it must also be polynomial when the \emph{length in bits} of the input is used as a metric. Otherwise, we have only a \emph{pseudo-polinomial} algorithm \cite{WENDLAND}, bounded above by a unary representation of the problem's values \cite{ERICKSON2019,VAZIRANI2001}. As this is the case for dynamic programming approaches to the BKP, no true polynomial time algorithm is known for it \cite{DUDLEY2016,PISINGER2005}.
+However, for an algorithm to be \emph{truly} polynomial, it must also be polynomial when the \emph{length in bits} of the input is used as a metric. Otherwise, we have only a \emph{pseudo-polynomial} algorithm \cite{WENDLAND}, bounded above by a unary representation of the problem's values \cite{ERICKSON2019,VAZIRANI2001}. As this is the case for dynamic programming approaches to the BKP, no true polynomial time algorithm is known for it \cite{DUDLEY2016,PISINGER2005}.
 
 \begin{example}
 
@@ -500,7 +577,7 @@ However, for an algorithm to be \emph{truly} polynomial, it must also be polynom
 
     \begin{table}[h]
         \centering
-        \caption{Comparison between unary and binary input lengths with regards to runtime.}
+        \caption{Comparison between unary and binary input lengths regarding runtime.}
         \label{tab:kp runtimes table}
         \begin{tabular}{cccc}
             \toprule
@@ -520,8 +597,6 @@ However, for an algorithm to be \emph{truly} polynomial, it must also be polynom
 
     \begin{figure}[h]
         \centering
-        \caption{Unary vs binary time for the dynamic programming solution to the BKP}
-        \label{fig:unary vs binary time}
         \begin{tikzpicture}
             \begin{axis}[legend pos=south east, xmode=log, ymode=log, grid=major, xmin=1, xmax=1000, ymin=1, ymax=1000, ytick={10,100,1000}, xlabel={Length of input $C$}, ylabel={Runtime}]
                 \addplot[domain=1:1000,samples=100,color=red,style=densely dashed]{x};
@@ -530,12 +605,74 @@ However, for an algorithm to be \emph{truly} polynomial, it must also be polynom
                 \addlegendentry{Binary time};
             \end{axis}
         \end{tikzpicture}
+        \caption{Unary vs binary time for the dynamic programming solution to the BKP}
+        \label{fig:unary vs binary time}
     \end{figure}
 
 \end{example}
 
 The 2D, 3D and any multidimensional KP are \emph{strongly} NP-hard \cite{CAPRARA2004,GHOMI2013}, which means that not even a pseudo-polynomial algorithm is known for them.
 
-So how do integer and mixed-integer formulations of these problems fare? Typically, solvers approach such problems with branch-and-bound algorithms, at least. These algorithms usually attempt to \emph{tighten}\footnote{The smaller the gap between the optimal solutions for a relaxation of a problem and its integer solution, the \emph{tighter} the problem is.} the problem with cutting planes that only remove fractional solutions from feasibility \cite{OKTAY2018}. The problem is then \emph{relaxed}\footnote{That is, all constraints of the form $x \in N \subseteq \mathbb{N}_0$ become $x \geq 0$.} and solved, usually via an implementation of the simplex method. The solver then repeats this process, generating a tree of subproblems to be solved the same way, until it can determine that the solution to one such subproblem is the optimal solution to the original problem.
+To further complicate this matter, exact methods are notably inefficient at solving large-scale packing problems \cite{TSAO2024,SANTOS2019,PISINGER2005}. This is due to a multitude of reasons, the first being that KPs and CLPs make heavy use of binary (integer) variables to decide which items to select, which rotations to apply, where an item stands compared to another, etc. \textcite{BRADLEY1977} show the issue with this through the following example. Consider the problem
 
-How quickly the simplex method can solve each node in the branch-and-bound tree depends on factors such as the chosen pivoting method and the geometry of the problem. In fact, as shown by \textcite{BERTSIMAS1997}, under certain circumstances, the simplex method visits every vertex in the solution set.
+\begin{subequations}
+    \begin{align}
+        \max \, &z = 5x_1 + 8x_2,\\
+        \text{s. t. } &x_1 + x_2 \leq 6,\\
+        &5x_1 + 9x_2 \leq 45,\\
+        &x_1, x_2 \in \mathbb{N}_0. \label[constraints]{eq:branch-and-bound integer constraints}
+    \end{align}
+\end{subequations}
+
+\cref{fig:branch-and-bound example} shows part of the steps towards an exact solution to this problem, using a branch-and-bound approach. First, the problem is relaxed, which means  \cref{eq:branch-and-bound integer constraints} become $x_1, x_2 \in \mathbb{R}^+_0$. The problem is then solved with a linear programming method (e.g. simplex), yielding solution $(2.25,3.75)$. This is not a solution to the original problem, and no reliable rounding procedure exists in this circumstance, since the optimal integer solution is at $(0,5)$. So we must keep searching. Since both coordinates of the optimal solution to the relaxation are fractional, four subproblems may be derived from the original problem, by introducing constraints $x_1 \leq 2$, $x_1 \geq 3$, $x_2 \leq 3$ and $x_2 \geq 4$ to the problem. From this, we arrive at the four new polyhedra in \cref{fig:branch-and-bound example 2}.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[title=Relaxed problem, xmin=0,xmax=9.5,ymin=0,ymax=6.5, minor tick num=1, grid=both, name=relaxed]
+            \filldraw[fill=green!80!black, fill opacity=0.4] (axis cs:0,0) -- (axis cs:0,5) -- (axis cs:2.25,3.75) -- (axis cs:6,0) -- cycle;
+            \addplot[domain=0:9,samples=2]{6-x};
+            \addplot[domain=0:9,samples=2]{5-0.55555*x};
+            \addplot[domain=0:9,samples=2,dashed,draw=red]{5.15625 - 0.625*x};
+            \addplot[only marks, color=red] (2.25, 3.75);
+            \addplot[only marks, color=blue] (0, 5);
+            \node[right,color=red] at (axis cs:6.8, 1.3) {$z = 41.25$};
+            \node[right,color=red] at (axis cs:2.5, 4) {$(2.25, 3.75)$};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Linear programming relaxation}
+    \label{fig:branch-and-bound example}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[title=Subproblems constrained in $x_1$, xmin=0,xmax=9.5,ymin=0,ymax=6.5, minor tick num=1, grid=both,name=constrinx1]
+            \filldraw[fill=green!80!black, fill opacity=0.4] (axis cs:0,0) -- (axis cs:0,5) -- (axis cs:2,3.88888) -- (axis cs:2,0) -- cycle;
+            \filldraw[fill=green!80!black, fill opacity=0.4] (axis cs:3,0) -- (axis cs:3,3) -- (axis cs:6,0) -- cycle;
+            \addplot[domain=0:9,samples=2]{6-x};
+            \addplot[domain=0:9,samples=2]{5-0.55555*x};
+            \addplot[domain=0:9,samples=2,dashed,draw=red]{5 - 0.625*x};
+            \addplot[only marks, color=blue] (0, 5);
+            \node[right,color=red] at (axis cs:6.8, 1.3) {$z = 40$};
+        \end{axis}
+        \begin{axis}[at=(constrinx1.right of east), anchor=west, title=Subproblems constrained in $x_2$, xshift=0.7cm, xmin=0,xmax=9.5,ymin=0,ymax=6.5, minor tick num=1, grid=both]
+            \filldraw[fill=green!80!black, fill opacity=0.4] (axis cs:0,0) -- (axis cs:0,3) -- (axis cs:3,3) -- (axis cs:6,0) -- cycle;
+            \filldraw[fill=green!80!black, fill opacity=0.4] (axis cs:0,4) -- (axis cs:0,5) -- (axis cs:1.8,4) -- cycle;
+            \addplot[domain=0:9,samples=2]{6-x};
+            \addplot[domain=0:9,samples=2]{5-0.55555*x};
+            \addplot[domain=0:9,samples=2,dashed,draw=red]{5 - 0.625*x};
+            \addplot[only marks, color=blue] (0, 5);
+            \node[right,color=red] at (axis cs:6.8, 1.3) {$z = 40$};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Branch-and-bound subproblems}
+    \label{fig:branch-and-bound example 2}
+\end{figure}
+
+Effectively, a tree is generated with subproblems for nodes. Since the subproblems themselves can be cut into other subproblems, a real problem's tree may quickly grow thousands of nodes. Though there are procedures to determine if the integer solution to a subproblem is an optimal solution to the original problem, this does not guarantee that exact solutions can be found in a reasonable amount of time.
+
+One particularly bad characteristic of the continuous 2DKP, the 3DKP and the CLP formulations presented in this section (\cref{eq:ip:2DKP continuous,eq:mip:3DKP Egeblad,eq:mip:CLP Chen}) is that their alternative constraints rely on big M constants that reduce the models' \emph{tightness}. As \textcite{EGEBLAD2009} remark, "These [constraints] will loose their effect when solving the LP-relaxation, and thus bounds from LP-relaxation are in general
+far from the MIP-optimal solution value."
+
+An important consequence of these issues is that contemporary approaches to real KP and CLP problems involve the use of heuristics to determine near-optimal solutions in an adequate amount of time. Nonetheless, exact methods can still aid heuristics by providing important solution bounds that can be found quickly \cite{SANTOS2019,EGEBLAD2009}.
