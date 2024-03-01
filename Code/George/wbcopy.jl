@@ -63,7 +63,7 @@ function create_new_layer(db::Database)
         container = first(container_candidates)
         z = container[:depth] - container[:remaining_depth]
         layer = add_layer!(db, container[:id], item_id, z, layer_depth)
-        add_space!(db, layer[:id], [container[:width], container[:height], layer_depth], [0, 0, 0], :depthwise)
+        add_space!(db, layer[:id], [container[:width], container[:height], layer_depth], [0, 0, z], :primary)
         db.containers[container[:id], :remaining_depth] -= layer_depth
         return layer
     end
@@ -115,7 +115,7 @@ end
 
 function add_placement!(db::Database, item_id, space_id, dims, coords)
     push!(db.placements, [space_id, item_id, dims..., coords...])
-    return db.placements[size(db.placements)]
+    return db.placements[size(db.placements, 1),:]
 end
 
 function find_fitting_items(db::Database, space_id)
@@ -138,7 +138,7 @@ end
 function select_fitting_item(db::Database, space_id, fitting_items)
     local selected_item
     space = db.spaces[space_id, :]
-    multicolumn_candidates = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[])
+    multicolumn_candidates = DataFrame()
     for row = eachrow(fitting_items)
         if row[:width] <= 0.5 * space[:width]
             push!(multicolumn_candidates, row)
@@ -162,7 +162,7 @@ function select_fitting_item(db::Database, space_id, fitting_items)
     return selected_item
 end
 
-function select_item_cross_sectional_rotation(db::Database, item, space_id)
+function select_item_cross_sectional_rotation!(db::Database, item, space_id)
     space = db.spaces[space_id,:]
     if item[:width] <= space[:height] && item[:height] <= space[:width]
         if can_complete_column(db, item[:height], space_id) || can_complete_column(db, item[:width], space_id)
@@ -175,7 +175,6 @@ function select_item_cross_sectional_rotation(db::Database, item, space_id)
             end
         end
     end
-    return item
 end
 
 function can_complete_column(db::Database, item_height, space_id)
@@ -193,7 +192,8 @@ function find_amalgamation_partner(db::Database, space_id)
     candidate = filter(row -> row[:layer] == space[:layer] - 1 &&
                         row[:status] == :rejected &&
                         row[:type] == :depthwise &&
-                        row[:height] <= space[:height], db.spaces)
+                        row[:y] <= space[:y] &&
+                        row[:z] + row[:depth] == space[:z], db.spaces)
     if !isempty(candidate)
         return first(candidate)
     end
@@ -205,34 +205,108 @@ function amalgamate(db::Database, space_id, partner_id, flexible_ratio)
     partner = db.spaces[partner_id,:]
     partner[:partner] = new_id(db.spaces)
     x, y, z = max(space.x, partner.x), space.y, partner.z
-    width, height, depth = min(space.x + space.width, partner.x + partner.width) - x, space.height, space.depth + partner.depth
-    println(width)
-    println(height)
-    println(depth)
+    width, height, depth =  space.width - x, space.height, space.depth + partner.depth
     amalgam = add_space!(db, partner[:layer], [width, height, depth], [x, y, z], :amalgam)
     flexible_width = amalgam[:width] * flexible_ratio
     amalgam[:flexible_width] = flexible_width
+    space[:width] = amalgam[:x] - space[:x]
     space[:flexible_width] = flexible_width
 end
 
 function fill_column(db::Database, item, space_id, x)
     space = db.spaces[space_id,:]
-    item_type = db.items[item[:id]]
-    y, z = space[:y], space[:z]
+    item_type = db.items[item[:id],:]
+    y, z = space[[:y,:z]]
     while y + item[:height] <= space[:y] + space[:height] && item_type.quantity > 0
         item_type.quantity -= 1
         add_placement!(db, item[:id], space[:id], item[[:width, :height, :depth]], [x, y, z])
         y += item[:height]
     end
+    return y
 end
 
-function fill_space(db::Database, )
+function fill_space(db::Database, item, space_id)
+    space = db.spaces[space_id,:]
+    sibling = space[:type] != :amalgam && !iszero(space[:sibling]) ? space[:sibling] : nothing
+    item_type = db.items[item[:id],:]
+    x = space[:x]
+    max_col_height, last_col_height = column_height(db, item[:height], space_id), 0
+    used_flexible_width = 0
+    columns = 0
+    while item_type.quantity > 0 && used_flexible_width <= 0
+        used_flexible_width = (x + item[:width]) - (space[:x] + space[:width])
+        if space[:flexible_width] >= used_flexible_width > 0 && !isnothing(sibling)
+            sibling[:x] += used_flexible_width
+            sibling[:width] -= used_flexible_width
+        elseif used_flexible_width > space[:flexible_width]
+            break
+        end
+        last_col_height = fill_column(db, item, space_id, x)
+        columns += 1
+        x += item[:width]
+    end
+    create_new_spaces(db, space_id, columns, item[:width], item[:depth], max_col_height, last_col_height)
+    space[:status] = :filled
+end
+
+function create_new_spaces(db::Database, space_id, columns, item_width, item_depth, max_col_height, last_col_height)
+    space = db.spaces[space_id,:]
+    items = filter(:quantity => >(0), db.items)
+    min_dim = [minimum(items[:,:dim1]), minimum(items[:,:dim2]), minimum(items[:,:dim3])] |> minimum
+    if columns > 1
+        if space[:height] - max_col_height >= min_dim
+            width, height, depth = columns * item_width, space[:height] - max_col_height, space[:depth]
+            x, y, z = space[:x], space[:y] + max_col_height, space[:z]
+            if last_col_height != max_col_height
+                add_space!(db, space[:layer], [width - item_width, height, depth], [x, y, z], :heightwise)
+                last_width, last_height, last_depth = item_width, space[:height] - last_col_height, depth
+                last_x, last_y, last_z = x + width - item_width, space[:y] + last_col_height, space[:z]
+                add_space!(db, space[:layer], [last_width, last_height, last_depth], [last_x, last_y, last_z], :heightwise)
+            else
+                add_space!(db, space[:layer], [width, height, depth], [x, y, z], :heightwise)
+            end
+        end
+    else
+        if space[:height] - last_col_height >= min_dim
+            width, height, depth = columns * item_width, space[:height] - last_col_height, space[:depth]
+            x, y, z = space[:x], space[:y] + last_col_height, space[:z]
+            add_space!(db, space[:layer], [width, height, depth], [x, y, z], :heightwise)
+        end
+    end
+    if space[:width] - columns * item[:width] >= min_dim
+        width, height, depth = space[:width] - columns * item[:width], space[:height], space[:depth]
+        x, y, z = space[:x] + columns * item[:width], space[:y], space[:z]
+        add_space!(db, space[:layer], [width, height, depth], [x, y, z], :widthwise)
+    end
+    if space[:depth] - item_depth > 0
+        width, height, depth = space[:width], space[:height], space[:depth] - item_depth
+        x, y, z = space[:x], space[:y], space[:z] + item_depth
+        add_space!(db, space[:layer], [width, height, depth], [x, y, z], :depthwise)
+    end
+end
 
 ##
 #TESTS
 db = Database()
-add_item!(db, [.4, .4, .5], 122)
-add_item!(db, [.27, .43, .32], 124)
-add_item!(db, [.5, .6, .4], 1383)
-add_container!(db, [2.2, 3.5, 7.2])
+add_item!(db, [40, 40, 50], 122)
+add_item!(db, [17, 43, 32], 124)
+add_item!(db, [50, 60, 40], 1383)
+add_container!(db, [220, 350, 720])
 create_new_layer(db)
+
+fitting_items = find_fitting_items(db, 1)
+item = select_fitting_item(db, 1, fitting_items)
+select_item_cross_sectional_rotation!(db, item, 1)
+fill_space(db, item, 1)
+
+fitting_items = find_fitting_items(db, 2)
+item = select_fitting_item(db, 2, fitting_items)
+select_item_cross_sectional_rotation!(db, item, 2)
+fill_space(db, item, 2)
+
+n = 6
+
+fitting_items = find_fitting_items(db, n)
+item = select_fitting_item(db, n, fitting_items)
+select_item_cross_sectional_rotation!(db, item, n)
+fill_space(db, item, n)
