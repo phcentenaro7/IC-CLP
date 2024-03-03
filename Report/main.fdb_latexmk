@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1708800786 "main.bcf" "main.bbl" "main" 1708801806
+["biber main"] 1709504242 "main.bcf" "main.bbl" "main" 1709504258
   "bibliography.bib" 1708781454 6615 faf6fb3d297517681cc4f0064dcd2fb2 ""
-  "main.bcf" 1708801806 111250 cd6449c5193f06840a7e83daedbc4c89 "lualatex"
+  "main.bcf" 1709504257 111250 cd6449c5193f06840a7e83daedbc4c89 "lualatex"
   (generated)
   "main.bbl"
   "main.blg"
-["lualatex"] 1708801799 "/home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex" "main.pdf" "main" 1708801806
+["lualatex"] 1709504251 "/home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex" "main.pdf" "main" 1709504258
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-Bold.ttf:1" 1707225440 245338 07fa5b5ac35c6438e45ebc2504f294d2 ""
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-BoldOblique.ttf:1" 1707225440 200741 c7cdf1161e47d204e07608eded4620b2 ""
   "/home/pcentenaro/.texlive2021/texmf-var/luatex-cache/generic/fonts/hb/:usr:share:texlive:texmf-dist:fonts:truetype:public:dejavu:DejaVuSansMono-Oblique.ttf:1" 1707225440 200413 beabca220dd6beee2936660db31ef68f ""
@@ -523,15 +523,21 @@
   "images/ChenExampleContainer1.png" 1708627632 60276 d892b62387608410d347d4e3c2ca8910 ""
   "images/ChenExampleContainer2.png" 1708627632 52345 bd2c9f45fb678f1246d2663a991e1836 ""
   "images/Egeblad3Dexample.png" 1708627632 67870 3bf7aae440a2608eda7c219634f82c65 ""
-  "main.aux" 1708801806 9658 1adcd0833bd2a4621f94a60b4d046b28 "lualatex"
-  "main.bbl" 1708800787 29761 256305c9cf82c21ea767d650ed2b58ef "biber main"
+  "images/wb/layer39.tikz" 1709504113 3269 c69e9a103c7216764750c7611d35ded3 ""
+  "images/wb/layer40.tikz" 1709504113 3676 1ebc648d5e57db17c05ba4080320c819 ""
+  "images/wb/layer41.tikz" 1709504113 6077 2b7cb221d82b5d8415d598ab58393a35 ""
+  "images/wb/layer42.tikz" 1709504113 5575 b4d562e7d1d78868c545ea92a7c45727 ""
+  "images/wb/layer43.tikz" 1709504113 7521 8d09b734064e6641afc2433e17fefbaa ""
+  "images/wb/layer44.tikz" 1709504113 5633 e485a4f1b075dc5dd704711a9b0140f0 ""
+  "main.aux" 1709504257 9658 a77f20c684458847333f52163b1e4382 "lualatex"
+  "main.bbl" 1709504243 29761 256305c9cf82c21ea767d650ed2b58ef "biber main"
   "main.glsdefs" 1708627632 1776 95c9940d63ebdc27b3f26fe77ab0e9ec ""
-  "main.out" 1708801803 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
-  "main.run.xml" 1708801806 2415 50de7693698e472fdd8fe73f457ed6e3 "lualatex"
+  "main.out" 1709504254 0 d41d8cd98f00b204e9800998ecf8427e "lualatex"
+  "main.run.xml" 1709504257 2415 50de7693698e472fdd8fe73f457ed6e3 "lualatex"
   "main.tex" 1708801792 709 83bc9d4bc59fcc54bab83a0b2dac38b9 ""
-  "sections/exact.aux" 1708801805 18908 4e11c3a073a26351725b04eae3f05830 "lualatex"
-  "sections/exact.tex" 1708801792 47034 9ee693f65ecdcf79fb3217ba842afdcf ""
-  "sections/introduction.aux" 1708801803 5265 e714186c4d9989088970ab5a98293ac5 "lualatex"
+  "sections/exact.aux" 1709504257 18908 48aa540d3dc284da2bf0ffe99b26ea1c "lualatex"
+  "sections/exact.tex" 1709504234 47221 5d78e3e1d277a30786a1d7f55745580c ""
+  "sections/introduction.aux" 1709504254 5265 e714186c4d9989088970ab5a98293ac5 "lualatex"
   "sections/introduction.tex" 1708627632 27 58f01a41c31b4656fcb996c9c0906eea ""
   "settings/preamble.sty" 1708627632 7470 faa6673d667180f8f8a491a260a926e4 ""
   (generated)

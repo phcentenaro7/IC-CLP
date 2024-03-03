@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+	\begin{axis}[xmin=0, xmax=220, ymin=0, ymax=350, grid=major]
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,0.0) rectangle (axis cs:40.0,50.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,50.0) rectangle (axis cs:40.0,100.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,100.0) rectangle (axis cs:40.0,150.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,150.0) rectangle (axis cs:40.0,200.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,200.0) rectangle (axis cs:40.0,250.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,250.0) rectangle (axis cs:40.0,300.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:0.0,300.0) rectangle (axis cs:40.0,350.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,0.0) rectangle (axis cs:80.0,50.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,50.0) rectangle (axis cs:80.0,100.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,100.0) rectangle (axis cs:80.0,150.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,150.0) rectangle (axis cs:80.0,200.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,200.0) rectangle (axis cs:80.0,250.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,250.0) rectangle (axis cs:80.0,300.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:40.0,300.0) rectangle (axis cs:80.0,350.0);
+		\filldraw[draw=black,fill=blue!40] (axis cs:80,0) rectangle (axis cs:120,50);
+		\filldraw[draw=black,fill=blue!40] (axis cs:80,50) rectangle (axis cs:120,100);
+		\filldraw[draw=black,fill=blue!40] (axis cs:80,100) rectangle (axis cs:120,150);
+		\filldraw[draw=black,fill=blue!40] (axis cs:80,150) rectangle (axis cs:120,200);
+		\filldraw[draw=black,fill=red!40] (axis cs:80.0,200.0) rectangle (axis cs:120.0,240.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:80.0,240.0) rectangle (axis cs:120.0,280.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:80.0,280.0) rectangle (axis cs:120.0,320.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,0.0) rectangle (axis cs:160.0,40.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,40.0) rectangle (axis cs:160.0,80.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,80.0) rectangle (axis cs:160.0,120.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,120.0) rectangle (axis cs:160.0,160.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,160.0) rectangle (axis cs:160.0,200.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,200.0) rectangle (axis cs:160.0,240.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,240.0) rectangle (axis cs:160.0,280.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:120.0,280.0) rectangle (axis cs:160.0,320.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,0.0) rectangle (axis cs:200.0,40.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,40.0) rectangle (axis cs:200.0,80.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,80.0) rectangle (axis cs:200.0,120.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,120.0) rectangle (axis cs:200.0,160.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,160.0) rectangle (axis cs:200.0,200.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,200.0) rectangle (axis cs:200.0,240.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,240.0) rectangle (axis cs:200.0,280.0);
+		\filldraw[draw=black,fill=red!40] (axis cs:160.0,280.0) rectangle (axis cs:200.0,320.0);
+		\filldraw[draw=black,fill=green!40] (axis cs:80.0,320.0) rectangle (axis cs:112.0,347.0);
+		\filldraw[draw=black,fill=green!40] (axis cs:120.0,320.0) rectangle (axis cs:152.0,347.0);
+		\filldraw[draw=black,fill=green!40] (axis cs:152.0,320.0) rectangle (axis cs:184.0,347.0);
+	\end{axis}
+\end{tikzpicture}

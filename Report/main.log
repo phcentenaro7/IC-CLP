@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  24 FEB 2024 16:09
+This is LuaHBTeX, Version 1.14.0 (TeX Live 2022/dev/Debian)  (format=lualatex 2024.2.6)  3 MAR 2024 19:17
  system commands enabled.
  file:line:error style messages enabled.
 **/home/pcentenaro/Documents/UFSC/IC-CLP/Report/main.tex
@@ -2072,12 +2072,22 @@ Missing character: There is no ; (U+003B) in font nullfont!
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[19]) [20]
+[19] (./images/wb/layer39.tikz) (./images/wb/layer40.tikz) (./images/wb/layer41.tikz) (./images/wb/layer42.tikz) (./images/wb/layer43.tikz) (./images/wb/layer44.tikz))
+Overfull \hbox (20.46767pt too wide) in paragraph at lines 39--24
+[][]  []
+ []
+
+
+Overfull \hbox (218.25244pt too wide) in paragraph at lines 39--24
+[]  []  []
+ []
+
+[20] [21]
 Overfull \hbox (80.20464pt too wide) in paragraph at lines 29--29
 []\TU/lmr/m/n/12 Er-win Kalve-la-gen. \TU/lmr/m/it/12 2d knap-sack prob-lem\TU/lmr/m/n/12 . 2021. \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : [][]$\TU/DejaVuSansMono(0)/m/n/12 http : / / yetanothermathprogrammingconsultant .
  []
 
-[21
+[22
 
 
 ]
@@ -2119,7 +2129,7 @@ braces):
 >  {english/babelname}  =>  {american}
 >  {english/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {english/Localnumeral}  =>  {polyglossia@C@localnumeral}.
-[22] (./main.aux
+[23] (./main.aux
 LaTeX Info: Redefining \rmfamily on input line 27.
 LaTeX Info: Redefining \sffamily on input line 27.
 LaTeX Info: Redefining \ttfamily on input line 27.
@@ -2133,12 +2143,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 72591 strings out of 477805
- 100000,2848258 words of node,token memory allocated
+ 72694 strings out of 477805
+ 156259,2848258 words of node,token memory allocated
  2316 words of node memory still in use:
    39 hlist, 8 vlist, 7 rule, 10 math, 51 glue, 19 kern, 45 glyph, 49 attribute, 127 glue_spec, 49 attribute_list, 2 write, 15 pdf_action nodes
-   avail lists: 1:12,2:5595,3:2758,4:314,5:584,6:80,7:5608,8:110,9:1058,10:14,11:316,12:2
- 90531 multiletter control sequences out of 65536+600000
+   avail lists: 1:27,2:18463,3:9087,4:314,5:584,6:81,7:6491,8:110,9:1058,10:14,11:316,12:2
+ 90579 multiletter control sequences out of 65536+600000
  97 fonts using 16855775 bytes
  118i,19n,132p,10674b,2497s stack positions out of 5000i,500n,10000p,200000b,80000s
 
@@ -2148,10 +2158,10 @@ warning  (pdf backend): unreferenced destination with name 'Hfootnote.2'
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.1'
 </usr/share/texmf/fonts/opentype/public/lm/lmromancaps10-regular.otf></usr/share/texlive/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-italic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman8-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman10-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman7-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-bold.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman17-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmsans10-bold.otf></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (22 pages, 373204 bytes).
+Output written on main.pdf (23 pages, 378854 bytes).
 
-PDF statistics: 583 PDF objects out of 1000 (max. 8388607)
- 501 compressed objects within 6 object streams
- 182 named destinations out of 1000 (max. 131072)
+PDF statistics: 587 PDF objects out of 1000 (max. 8388607)
+ 504 compressed objects within 6 object streams
+ 183 named destinations out of 1000 (max. 131072)
  80 words of extra memory for PDF output out of 10000 (max. 100000000)
 
