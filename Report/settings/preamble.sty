@@ -76,12 +76,13 @@
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 \usepackage{parnotes}
 \usepackage{tikz}
-\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows.meta,backgrounds}
+\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows.meta,backgrounds,patterns}
 \usegdlibrary{trees}
 \newcommand*\circled[1]{%
   \tikz[baseline=(C.base)]\node[draw,circle,inner sep=0.5pt](C) {#1};\!
 }
 \usepackage{pgfplots}
+\usepgflibrary{patterns}
 \usepackage{lineno}
 \usepackage{etoolbox} %% <- for \pretocmd, \apptocmd and \patchcmd
 % %% Patch 'normal' math environment: (currently unused, but good to have)
