@@ -397,6 +397,40 @@
       \verb https://www.ime.usp.br/~pf/analise_de_algoritmos/aulas/mochila-bool
       \endverb
     \endentry
+    \entry{GEORGE1980}{article}{}
+      \name{author}{2}{}{%
+        {{hash=88bf33eeaf32055b6b77621c739e8cb5}{%
+           family={George},
+           familyi={G\bibinitperiod},
+           given={John\bibnamedelima A},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=9667405b6d3f5ad661369ce0587a4bbb}{%
+           family={Robinson},
+           familyi={R\bibinitperiod},
+           given={David\bibnamedelima F},
+           giveni={D\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{acb8c422174f98bd73cd79e1512413b0}
+      \strng{fullhash}{acb8c422174f98bd73cd79e1512413b0}
+      \strng{bibnamehash}{acb8c422174f98bd73cd79e1512413b0}
+      \strng{authorbibnamehash}{acb8c422174f98bd73cd79e1512413b0}
+      \strng{authornamehash}{acb8c422174f98bd73cd79e1512413b0}
+      \strng{authorfullhash}{acb8c422174f98bd73cd79e1512413b0}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computers \& Operations Research}
+      \field{number}{3}
+      \field{title}{A heuristic for packing boxes into a container}
+      \field{volume}{7}
+      \field{year}{1980}
+      \field{pages}{147\bibrangedash 156}
+      \range{pages}{10}
+    \endentry
     \entry{HRISTAKEVA2005}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=040c3967ce47564bb4ee697936a09645}{%
@@ -643,9 +677,6 @@
            given={Tsung-Hui},
            giveni={T\bibinithyphendelim H\bibinitperiod}}}%
       }
-      \list{publisher}{1}{%
-        {Elsevier}%
-      }
       \strng{namehash}{a65e9656826462cc23df7d8d11a78280}
       \strng{fullhash}{6fec937d66bbbb7562c38ec73837e489}
       \strng{bibnamehash}{6fec937d66bbbb7562c38ec73837e489}
@@ -656,11 +687,22 @@
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{issn}{0957-4174}
       \field{journaltitle}{Expert Systems with Applications}
       \field{title}{Multiple bin-size bin packing problem considering incompatible product categories}
+      \field{volume}{247}
       \field{year}{2024}
       \field{pages}{123340}
       \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.eswa.2024.123340
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0957417424002057
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0957417424002057
+      \endverb
     \endentry
     \entry{VAZIRANI2001}{book}{}
       \name{author}{1}{}{%
