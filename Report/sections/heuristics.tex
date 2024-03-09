@@ -36,10 +36,10 @@ To choose the depth of a new layer, we must first select a box, which we will ca
     \begin{tikzpicture}[node distance=2cm]
         \node (start) [startstop] {Start};
         %\node (proc1) [process, below of=start] {Filter remaining boxes};
-        \node (dec1) [decision, below of=start, align=center, yshift=-1cm] {Has any remaining\\ box already\\been placed?};
+        \node (dec1) [decision, below of=start, align=center, yshift=-1cm, inner sep=-0.2ex] {Any remaining\\ box placed\\before?};
         \node (proc2) [process, left of=dec1, align=center, xshift=-4cm] {Select box according\\to ranking criteria};
         \node (proc3) [process, right of=dec1, align=center, xshift=4cm] {Select placed box\\with greatest\\quantity left};
-        \node (end) [startstop, below of=dec1, yshift=-1cm] {End};
+        \node (end) [startstop, below of=dec1, yshift=-1cm] {Stop};
 
         \draw [arrow] (start) -- (dec1);
         %\draw [arrow] (proc1) -- (dec1);
@@ -115,30 +115,80 @@ Layers provide an initial space into which boxes can be placed. For this initial
     \label{fig:remaining spaces first filling WBH}
 \end{figure}
 
-To figure out whether a space should be stored in memory for filling, we only need to check if its height or its width (in the case of a height- or width-wise space, respectively) is greater than the smallest dimension of any remaining box. Depth-wise spaces are created regardless of any such check, because they may be \emph{amalgamated} later on. For example, consider the top view of two layers in \cref{fig:amalgamation example}. The previous layer was packed with two depth-wise spaces left unfilled. We select the depth-wise space with minimal depth to amalgamate with the space in the current layer.
+To figure out whether a space should be stored in memory for filling, we only need to check if its height or its width (in the case of a height- or width-wise space, respectively) is greater than the smallest dimension of any remaining box. Depth-wise spaces are created regardless of any such check, because they may be \emph{amalgamated} later on. For example, consider the top view of two layers in \cref{fig:amalgamation example}. The previous layer was packed with two depth-wise spaces left unfilled. We select the depth-wise space with minimal depth to amalgamate with the space in the current layer. The original space is reduced to space $A$, with the amalgam $B \cup C$ to its right. Space $B$ is defined by a \emph{flexible width} parameter, which allows the algorithm to fill space $A$ past its boundaries, as long as its last column of boxes is both in $A$ and $B$, but not in $C$. In such circumstances, the width of $A$ is increased and the width of the amalgam is decreased according to the length of flexible width consumed by this last column of boxes.
 
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
-        \fill[dashed,pattern=north east lines, pattern color=green!60] (0,0) rectangle (3,2);
-        \fill[dashed,pattern=north east lines, pattern color=red!60] (3,0) rectangle (4.5,2.5);
-        \fill[dashed,pattern=north east lines, pattern color=yellow!60] (4.5,0) rectangle (9,2.5);
+        \fill[dashed,pattern=north east lines, pattern color=green!80] (0,0) rectangle (3,2);
+        \fill[dashed,pattern=north east lines, pattern color=red!80] (3,0) rectangle (4.5,2.5);
+        \fill[dashed,pattern=north east lines, pattern color=yellow!80] (4.5,0) rectangle (9,2.5);
         \filldraw[fill=blue!40] (0,2) -- (3,2) -- (3,2.5) -- (5,2.5) -- (5,3.5) -- (9,3.5) -- (9,5) -- (0,5) -- cycle;
         \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (-0.3,2) -- (-0.3,5);
         \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (-0.3,0) -- (-0.3,2);
         \node[anchor=east, align=center] at (-0.3,3.5) {Previous\\layer};
         \node[anchor=east, align=center] at (-0.3,1) {Current\\layer};
-        \draw[dashed] (3,0) -- (3,2);
         \draw[dashed] (5,2.5) -- (9,2.5);
         \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (9.3,0) -- (9.3,2.5);
         \node[anchor=west, align=center] at (9.3,1.25) {Amalgam\\depth};
         \draw (0,0) rectangle (9,5);
+        \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (0,-0.3) -- (3,-0.3);
+        \node[anchor=north, align=center] at (1.5,-0.3) {Min. original\\space width};
         \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (3,-0.3) -- (4.5,-0.3);
         \node[anchor=north, align=center] at (3.75,-0.3) {Flexible\\width};
+        \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (4.5,-0.3) -- (9,-0.3);
+        \node[anchor=north, align=center] at (6.75,-0.3) {Min. amalgam\\width};
         \node[draw,circle] at (1.5,1) {\large{A}};
         \node[draw,circle] at (3.75,1) {\large{B}};
-        \node[draw,circle] at (7,1) {\large{C}};
+        \node[draw,circle] at (6.75,1) {\large{C}};
     \end{tikzpicture}
     \caption{Amalgamation procedure}
     \label{fig:amalgamation example}
+\end{figure}
+
+It should be noted that in this example we assume the depth-wise space chosen is at the same height or lower than the current layer's space. Otherwise, it does not make sense to attempt to amalgamate them.
+
+Finally, we discuss this heuristic's packing method. First, we determine if a space can be filled by filtering the box rotations that fit in it. If there is any, then there are two scenarios:
+
+\begin{enumerate}
+    \item There are box rotations whose width is at most half of the space's width: Choose one such box with maximum depth.
+    \item Otherwise: Choose a box rotation with maximum width-by-depth area.
+\end{enumerate}
+
+Both selections try to minimize the unused base area of the space. In particular, the logic behind scenario 1 is that such boxes can be stacked in columns side by side, so we count the width-by-depth area of all the columns of boxes. After making the selection, we fill the space according to \cref{flow:space filling procedure WBH}.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \node (start) [startstop] {Start};
+        \node (dec1) [decision,below of=start,yshift=-2cm] {Can width\\and height be\\swapped?};
+        \node (proc1) [process,below of=dec1,align=center,yshift=-2cm] {Keep current\\rotation};
+        \node (dec2) [decision,right of=dec1, inner sep=-0.1,xshift=3.5cm] {Can complete\\a column with\\either rotation?};
+        \node (proc2) [process,right of=dec2,xshift=3.5cm] {Choose rotation\\that maximizes\\column height};
+        \node (proc3) [process,below of=dec2,yshift=-2.5cm] {Choose larger\\dimension as\\width};
+        \node (proc4) [process,below of=proc1, yshift=-4cm] {Pack column};
+        \node (dec3) [decision,right of=proc4,xshift=3cm] {Column\\within flexible\\width?};
+        \node (dec4) [decision,below of=dec3, yshift=-3cm] {Are there\\still boxes of\\this type?};
+        \node (dec5) [decision,left of=dec4,xshift=-3cm] {Enough\\space for new\\column?};
+        \node (end) [startstop, right of=dec3, xshift=3.5cm] {Stop};
+
+        \draw [arrow] (start) -- (dec1);
+        \draw [arrow] (dec1) -- node [anchor=south] {Yes} (dec2);
+        \draw [arrow] (dec1) -- node [anchor=east] {No} (proc1);
+        \draw [arrow] (dec2) -- node [anchor=south] {Yes} (proc2);
+        \draw [arrow] (dec2) -- node[anchor=east] {No} (proc3);
+        \draw [arrow] (proc1) -- (proc4) node [midway] (M) {};
+        \draw [arrow, rounded corners=0.2cm] (proc2) |- (M.center);
+        \draw [arrow, rounded corners=0.2cm] (proc3) |- (M.center);
+        \draw [arrow] (proc4) -- (dec3);
+        \draw [arrow] (dec3) -- node[anchor=east] {No} (dec4);
+        \draw [arrow] (dec4) -- node[anchor=south] {Yes} (dec5);
+        \draw [arrow] (dec5) -- node[anchor=east] {Yes} (proc4);
+        \draw [arrow] (dec3) -- node [anchor=south] {Yes} (end) node [midway] (N) {};
+        \draw [arrow, rounded corners] (dec4.east) -- node [anchor=south] {No} (dec4 -| end) -- (end.south);
+        \draw [arrow, rounded corners] (dec5.south) -- node [anchor=east] {No} ([yshift=-0.5cm]dec5.south) -- ([yshift=-0.5cm]dec5.south -| end) -- (end.south);
+    \end{tikzpicture}
+    \caption{Space filling procedure}
+    \renewcommand\figurename{Flowchart}
+    \label[flowchart]{flow:space filling procedure WBH}
 \end{figure}

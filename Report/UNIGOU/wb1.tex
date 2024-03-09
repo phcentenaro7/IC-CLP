@@ -1,0 +1,58 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows,arrows.meta,backgrounds,patterns,shapes.geometric}
+\begin{document}
+\begin{tikzpicture}
+    \begin{scope}[fill=blue!20,thick]
+        \fill (0,0,0) -- (5,0,0) -- (5,0,-10) -- (0,0,-10) -- cycle;
+        \fill (0,5,0) -- (5,5,0) -- (5,5,-10) -- (0,5,-10) -- cycle;
+        \fill (0,0,-10) -- (5,0,-10) -- (5,5,-10) -- (0,5,-10) -- cycle;
+        \fill (0,0,0) -- (5,0,0) -- (5,5,0) -- (0,5,0) -- cycle;
+        \draw (0,0,0) -- (5,0,0) -- (5,5,0) -- (0,5,0) -- cycle;
+        \draw (5,0,0) -- (5,0,-10);
+        \draw (5,5,0) -- (5,5,-10);
+        \draw (0,5,0) -- (0,5,-10);
+        \draw (5,0,-10) -- (5,5,-10) -- (0,5,-10);
+        \draw[dashed] (0,0,0) -- (0,0,-10);
+        \draw[dashed] (0,5,-10) -- (0,0,-10) -- (5,0,-10);
+    \end{scope}
+    \begin{scope}[fill=red,fill opacity=0.3,ultra thick]
+        \filldraw[dashed] (0,0,-3) -- (5,0,-3) -- (5,5,-3) -- (0,5,-3) -- cycle;
+        \fill[dashed] (0,0,0) -- (5,0,0) -- (5,0,-3) -- (0,0,-3) -- cycle;
+        \fill[dashed] (0,0,0) -- (0,0,-3) -- (0,5,-3) -- (0,5,0) -- cycle;
+    \end{scope}
+    \begin{scope}[fill=blue!20,xshift=10cm,thick]
+        \fill (0,0,0) -- (5,0,0) -- (5,0,-10) -- (0,0,-10) -- cycle;
+        \fill (0,5,0) -- (5,5,0) -- (5,5,-10) -- (0,5,-10) -- cycle;
+        \fill (0,0,-10) -- (5,0,-10) -- (5,5,-10) -- (0,5,-10) -- cycle;
+        \fill (0,0,0) -- (5,0,0) -- (5,5,0) -- (0,5,0) -- cycle;
+        \draw (5,0,0) -- (5,0,-10);
+        \draw (5,5,0) -- (5,5,-10);
+        \draw (0,5,0) -- (0,5,-10);
+        \draw (5,0,-10) -- (5,5,-10) -- (0,5,-10);
+        \draw[dashed] (0,0,0) -- (0,0,-10);
+        \draw[dashed] (0,5,-10) -- (0,0,-10) -- (5,0,-10);
+    \end{scope}
+    \begin{scope}[xshift=10cm,fill=red,fill opacity=0.3,ultra thick]
+        \filldraw[dashed] (0,0,-3) -- (5,0,-3) -- (5,5,-3) -- (0,5,-3) -- cycle;
+        \fill[dashed] (0,0,0) -- (5,0,0) -- (5,0,-3) -- (0,0,-3) -- cycle;
+        \fill[dashed] (0,0,0) -- (0,0,-3) -- (0,5,-3) -- (0,5,0) -- cycle;
+    \end{scope}
+    \begin{scope}[xshift=10cm,thick]
+        \filldraw[fill=yellow!40] (2,0,0) -- (2,0,-2.5) -- (2,4,-2.5) -- (2,4,0) -- cycle;
+        \filldraw[fill=yellow!40] (0.3,0,0) -- (0.3,0,-2.5) -- (0.3,4,-2.5) -- (0.3,4,0) -- cycle;
+        \filldraw[fill=yellow!40] (2,4,0) -- (2,4,-2.5) -- (0.3,4,-2.5) -- (0.3,4,0) -- cycle;
+        \filldraw[fill=yellow!40] (0.3,0,0) -- (0.3,4,0) -- (2,4,0) -- (2,0,0) -- cycle;
+        \filldraw[fill=green!40] (5,0,-3) -- (5,3.5,-3) -- (3,3.5,-3) -- (3,2,-3) -- (2,2,-3) -- (2,0,-3) -- cycle;
+        \filldraw[fill=green!40] (5,0,0) -- (5,0,-3) -- (2,0,-3) -- (2,0,0) -- cycle;
+        \filldraw[fill=green!40] (5,0,0) -- (5,3.5,0) -- (5,3.5,-3) -- (5,0,-3) -- cycle;
+        \filldraw[fill=green!40] (5,3.5,0) -- (5,3.5,-3) -- (3,3.5,-3) -- (3,3.5,0) -- cycle;
+        \filldraw[fill=green!40] (3,2,0) -- (3,2,-3) -- (2,2,-3) -- (2,2,0) -- cycle;
+        \filldraw[fill=green!40] (5,0,0) -- (5,3.5,0) -- (3,3.5,0) -- (3,2,0) -- (2,2,0) -- (2,0,0) -- cycle;
+        \filldraw[fill=magenta!40] (3,2,0) -- (3,3.8,0) -- (2.2,3.8,0) -- (2.2,2,0) -- cycle;
+        \filldraw[fill=magenta!40] (2.2,3.8,0) -- (2.2,3.8,-2.5) -- (3,3.8,-2.5) -- (3,3.8,0) -- cycle;
+        \filldraw[fill=magenta!40] (3,3.5,0) -- (3,3.8,0) -- (3,3.8,-2.5) -- (3,3.5,-2.5) -- cycle;
+        \draw (0,0,0) rectangle(5,5,0);
+    \end{scope}
+\end{tikzpicture}
+\end{document}

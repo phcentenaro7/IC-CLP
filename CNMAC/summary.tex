@@ -1,0 +1,172 @@
+\documentclass{pssbmac}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% POR FAVOR, NÃO FAÇA MUDANÇAS NESSE PADRÃO QUE ACARRETEM  EM
+%% ALTERAÇÃO NA FORMATAÇÃO FINAL DO TEXTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% POR FAVOR, ESCOLHA CONFORME O CASO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[brazil]{babel} % texto em Português
+\usepackage[english]{babel} % texto em Inglês
+
+%\usepackage[latin1]{inputenc} % acentuação em Português ISO-8859-1
+\usepackage[utf8]{inputenc} % acentuação em Português UTF-8
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% POR FAVOR, NÃO ALTERAR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{indentfirst}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows,arrows.meta,backgrounds,patterns,shapes.geometric}
+% Ambientes pré-definidos
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{lema}{Lema}[section]
+\newtheorem{prop}{Proposi\c{c}\~ao}[section]
+\newtheorem{defi}{Defini\c{c}\~ao}[section]
+\newtheorem{obs}{Observa\c{c}\~ao}[section]
+\newtheorem{cor}{Corol\'ario}[section]
+
+% ref bibliográficas
+\usepackage[backend=biber, style=numeric-comp, maxnames=50]{biblatex}
+\addbibresource{refs.bib}
+\DeclareTextFontCommand{\emph}{\boldmath\bfseries}
+\DefineBibliographyStrings{brazil}{phdthesis = {Tese de doutorado}}
+\DefineBibliographyStrings{brazil}{mathesis = {Disserta\c{c}\~{a}o de mestrado}}
+\DefineBibliographyStrings{english}{mathesis = {Master dissertation}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TÍTULO E AUTORAS(ES)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{A partial study on container loading methods for a university's relocation}
+
+\author{
+    {\large Pedro H. Centenaro}\thanks{pedro.centenaro@grad.ufsc.br}, {\large Luiz-Rafael Santos}\thanks{l.r.santos@ufsc.br}, {\large Luiz F. Bossa}\thanks{l.f.bossa@ufsc.br}\\
+    {\small UFSC, Blumenau, SC} \\
+}
+\criartitulo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TEXTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The Federal University of Santa Catarina (UFSC) is one of the oldest higher-education institutions in the Brazilian south, with more than six decades of history. The university expanded to Blumenau in 2014, where it offers majors in chemistry, mathematics and three different engineering fields. Due to the relatively small size of the campus, and due to high interest in offering new majors, the university will move to a new campus with twice the area of the original, and lower rent, between the semesters of 2024. Given that this will involve moving classroom furniture, office resources and laboratory paraphernalia, cutting travel expenses is important. Hence, we are currently studying container loading problems (CLPs) to optimize the volume of cargo per container and minimize the number of travels (containers) needed for the university's relocation. Presently, we consider the following sets of boxes and containers.
+
+\begin{table}[H]
+\caption{ {\small List of boxes for packing (measured in cm).}}
+\centering
+\begin{tabular}{ccccc}
+\hline
+Type  & Width & Height & Length & Stock\\ \hline
+Small  & 32 & 27 & 43 & 124\\
+Medium & 50 & 40 & 40 & 122\\
+Large  & 40 & 60 & 50 & 1383\\
+\hline
+\end{tabular}\label{List boxes}
+\end{table}
+
+\begin{table}[H]
+    \caption{ {\small List of containers (measured in cm).}}
+    \centering
+    \begin{tabular}{ccccc}
+    \hline
+    Type & Width & Height & Length\\ \hline
+    A  & 220 & 350 & 720\\
+    B  & 260 & 440 & 1000\\
+    C  & 260 & 440 & 1400\\
+    \hline
+    \end{tabular}\label{List containers}
+\end{table}
+
+Since the sets of boxes and containers are small and of similar size, this CLP is categorized as a multiple stock-size cutting stock problem (MSSCSP) \cite{Bortfeldt2013}. Although there are exact models that can optimally solve this problem \cite{Chen1995}, they cannot do so in an adequate amount of time. Therefore, we resort to heuristics in the hopes of obtaining box placements of comparable quality. At the moment, we are not taking into account constraints on weight, permissible box orientations, which boxes can be stacked on top of each other, and more. For this reason, the simple wall-building heuristic by \textcite{George1980} suffices. This heuristic constructively builds a solution by slicing the container into rectangular layers and applying a packing procedure to each layer. To determine a new layer's depth, we first check if there is any box type with stock left to pack that has already been placed in the container. If so, we choose the box type with the greatest remaining stock. Otherwise, we filter boxes through a series of rankings and then choose one of the types that remain. The rankings are, in order: (i) keep boxes with maximum smallest dimension; (ii) keep boxes with maximum remaining stock; (iii) keep boxes with maximum largest dimension. We then check which of the selected box's dimensions fits the remaining depth of the container and select the largest such dimension as the layer's depth. The initial layer space is then filled with boxes of the selected type, and the heuristic tries to fill any remaining spaces with other box types. When filling a space, we prioritize stacking columns of boxes side by side. When this is possible, we rotate boxes to fill as much vertical space as possible; otherwise, rotations that occupy more horizontal space are chosen. It is also possible to amalgamate the space of the current layer with the previous layer's adjacent unfilled spaces, so as to increase the odds of making space for large objects.
+
+Though the heuristic by \textcite{George1980} was only considered for a single container, we made small adaptations so that our implementation (which can be found at \url{https://github.com/phcentenaro7/IC-CLP}) could fill multiple containers. The heuristic was coded in Julia \cite{Bezanson2017}, with the package \texttt{DataFrames.jl} \cite{Valat2023} being especially useful to connect and keep track of every component of this problem. Table \ref{results} shows our code's results for different container sequences.
+
+\begin{table}[H]
+    \caption{ {\small Wall-building heuristic results.}}
+    \centering
+    \begin{tabular}{cccccc}
+    \hline
+    Container sequence & Layers & \multicolumn{4}{c}{Unfilled container volume (\%)}\\ \cline{3-6}
+    & & 1 & 2 & 3 & 4\\ \hline
+    A,A,A,A & 44 & 9.09 & 9.09 & 9.09 & 47.46\\
+    B,B & 28 & 7.69 & 34.68 & -- & --\\
+    C,C & 28 & 5.22 & 82.19 & -- & --\\
+    B,A,A & 36 & 7.69 & 9.09 & 56.12 & --\\
+    C,A & 32 & 5.22 & 48.54 & -- & --\\
+    \hline
+    \end{tabular}\label{results}
+\end{table}
+
+For this set of boxes, remarkably little space is left in each container, except for the last one, where there are fewer boxes to pack. We conclude that this heuristic satisfies our unconstrained problem, giving us great insight into possible container loading orders. This, combined with information on the cost of transportation for each container, allows us to choose the most economical option.
+
+%Incluir trecho falando sobre lazy constraints.
+%Incluir links para os conjuntos de pontos e modelos da tabela.
+%Incluir citações p/ o 1º parágrafo (questões sociais) e p/ lazy constraints.
+
+% Este é o padrão (formato \LaTeX{} apenas) para a submissão de trabalhos da Categoria 1 do CNMAC, destinados à divulgação de pesquisas em andamento, com resultados preliminares, e pesquisas em nível de Iniciação Científica. \emph{Nesta categoria, os trabalhos devem ser submetidos em Português ou Inglês, em forma de resumo de, no máximo, duas páginas, incluindo-se as referências bibliográficas.} Os \emph{trabalhos submetidos} que \emph{não estiverem de acordo com o formato} apresentado por esse padrão \emph{serão rejeitados} pelo Comitê Editorial do evento, sem análise do mérito científico.
+
+% Equações inseridas no resumo devem ser enumeradas sequencialmente e à direita no texto, por exemplo
+% \begin{equation}
+% \frac{\partial u}{\partial t}-\Delta u = f, \quad  \mathrm{em} \; \Omega. \label{Calor}
+% \end{equation}
+% Consulte o arquivo \verb!.tex! para mais detalhes sobre o código-fonte gerador da equação \eqref{Calor}.
+
+% Tendo em vista tratar-se de um resumo, sugere-se evitar a inserção de seções, tabelas e figuras. Caso necessária, a inserção de tabela deve ser feita com o ambiente \verb!table!, sendo enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e a legenda imediatamente acima dela. Por exemplo, consulte a Tabela \ref{tabela01}.
+
+% \begin{table}[H]
+% \caption{ {\small Categorias dos trabalhos.}}
+% \centering
+% \begin{tabular}{ccc}
+% \hline
+% Categoria do trabalho  & Número de páginas & Tipo do trabalho\\ \hline
+% 1          & 2  & $A$, $B$ e $C$    \\
+% 2          & entre 5 e 7  & apenas $C$ \\
+% \hline
+% \end{tabular}\label{tabela01}
+% \end{table}
+
+% A inser]ção de figura deve ser feita com o ambiente \verb!figure!, ela deve estar enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e legenda imediatamente abaixo dela. \emph{Quando não própria, deve-se indicar/referências a fonte.} Consulte a Figura \ref{figura01}.
+
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=.475\textwidth]{ex_fig}
+% \caption{ {\small Exemplo de imagem. Fonte: indicar.}}
+% \label{figura01}
+% \end{figure}
+
+% As referências bibliográficas devem ser inseridas conforme especificado neste padrão, sendo que serão automaticamente geradas em ordem alfabética pelo sobrenome do primeiro autor. Este {\it template} fornece suporte para a inserção de referências bibliográficas com o Bib\LaTeX{}. Os dados de cada referência do trabalho devem ser adicionados no arquivo \verb+refs.bib+ e a indicação da referência no texto deve ser inserida com o comando \verb+\cite+. Seguem alguns exemplos de referências: livro \cite{Boldrini}, artigos publicados em periódicos \cite{Contiero,Cuminato}, capítulo de livro \cite{daSilva}, dissertação de mestrado \cite{Diniz}, tese de doutorado \cite{Mallet}, livro publicado dentro de uma série \cite{Gomes}, trabalho publicado em anais de eventos \cite{Santos}, {\it website} e outros \cite{CNMAC}. Por padrão, os nomes de todos os autores da obra citada aparecem na bibliografia. Para obras com mais de três autores, é também possível indicar apenas o nome do primeiro autor, seguido da expressão et al. Para implementar essa alternativa, basta remover ``\verb+,maxnames=50+'' do comando correspondente do código-fonte. Sempre que disponível forneça o DOI, ISBN ou ISSN, conforme o caso.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFS BIBLIOGRÁFICAS
+% POR FAVOR, NÃO ALTERAR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\printbibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

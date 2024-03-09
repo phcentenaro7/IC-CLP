@@ -374,6 +374,18 @@ function wall_building(db::Database; flexible_ratio=.0)
     end
 end
 
+function get_unfilled_volume(db::Database, container_id)
+    container = db.containers[container_id,:]
+    unfilled_volume = prod(container[[:width,:height,:depth]] |> collect)
+    layer_ids = filter(row -> row[:container] == container_id, db.layers)[:,:id]
+    space_ids = filter(row -> row[:layer] in layer_ids, db.spaces)[:,:id]
+    placements = filter(row -> row[:space] in space_ids, db.placements)
+    for placement in eachrow(placements)
+        unfilled_volume -= prod(placement[[:quantity,:width,:height,:depth]] |> collect)
+    end
+    return unfilled_volume
+end
+
 function as_tikz(db::Database, layer_id, filename, item_colors; grid="major", view=:front)
     layer = db.layers[layer_id,:]
     spaces = filter(row -> row[:layer] == layer_id, db.spaces)
@@ -422,20 +434,21 @@ end
 
 ##
 #TESTS
-# db = Database()
-# add_item!(db, [40, 40, 50], 122)
-# add_item!(db, [27, 43, 32], 124)
-# add_item!(db, [50, 60, 40], 1383)
-# add_container!(db, [220, 350, 720])
-# add_container!(db, [220, 350, 720])
-# add_container!(db, [220, 350, 720])
-# add_container!(db, [220, 350, 720])
-# add_container!(db, [220, 350, 720])
-# wall_building(db, flexible_ratio=.1)
-
+A = [220,350,720]
+B = [260,440,1000]
+C = [260,440,1400]
 db = Database()
-add_item!(db, [5, 7, 10], 50)
-add_item!(db, [8, 3, 7], 70)
-add_item!(db, [3, 4, 5], 110)
-add_container!(db, [40, 50, 100])
-wall_building(db, flexible_ratio=0)
+add_item!(db, [40, 40, 50], 122)
+add_item!(db, [27, 43, 32], 124)
+add_item!(db, [50, 60, 40], 1383)
+add_container!(db, B)
+add_container!(db, A)
+add_container!(db, A)
+wall_building(db, flexible_ratio=.1)
+
+# db = Database()
+# add_item!(db, [5, 7, 10], 50)
+# add_item!(db, [8, 3, 7], 70)
+# add_item!(db, [3, 4, 5], 110)
+# add_container!(db, [40, 50, 100])
+# wall_building(db, flexible_ratio=0)
