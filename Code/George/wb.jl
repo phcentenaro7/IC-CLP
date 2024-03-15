@@ -179,6 +179,9 @@ function filter_max_greatest_dim(R)
     return R[I,:]
 end
 
+"""
+Applies all primary item selection filters to the database's list of items. When optional argument `open_only` is set to `true`, applies the filters exclusively to items marked as `open`.
+"""
 function all_item_filters(R; open_only=false)
     R = filter_remaining_items(R)
     if open_only
