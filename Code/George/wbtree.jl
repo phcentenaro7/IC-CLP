@@ -42,15 +42,33 @@ end
 mutable struct ContainerNode
     parent::Union{ContainerNode, Nothing}
     children::Vector{ContainerNode}
+    path::Vector{Int}
     container_id::Int
     stock::Vector{Int}
     open::Vector{Bool}
     remaining_depth::Float64
+    filled_volume::Float64
     layers::DataFrame
     spaces::DataFrame
     placements::DataFrame
-    ContainerNode(stock::Vector{Int}) = new(nothing, Vector{ContainerNode}(), 0, stock, repeat([false], length(stock)), 0, new_layer_table(), new_space_table(), new_placement_table())
-    ContainerNode(parent::ContainerNode, container_id::Int, db::Database) = new(parent, Vector{ContainerNode}(), container_id, parent.stock, repeat([false], length(stock)), db.containers[:depth], new_layer_table(), new_space_table(), new_placement_table())
+    ContainerNode(stock::Vector{Int}) = new(nothing, Vector{ContainerNode}(), Int[], 0, copy(stock), repeat([false], length(stock)), 0, 0, new_layer_table(), new_space_table(), new_placement_table())
+    function ContainerNode(parent::ContainerNode, container_id::Int, db::Database)
+        node = new(parent, Vector{ContainerNode}(), copy(parent.path), container_id, copy(parent.stock), repeat([false], length(parent.stock)), db.containers[container_id,:depth], 0, new_layer_table(), new_space_table(), new_placement_table())
+        push!(node.path, container_id)
+        push!(parent.children, node)
+        return node
+    end
+end
+
+function Base.show(io::IO, x::ContainerNode)
+    if isnothing(x.parent)
+        println(io, "Type: Root node")
+    else
+        println(io, "Type: Container $(x.container_id) node")
+    end
+    println(io, "Filled volume: $(x.filled_volume)")
+    println(io, "Stock: $(x.stock)")
+    print(io, "Children: $([x.children[i].container_id for i in 1:length(x.children)])")
 end
 
 """
@@ -190,7 +208,9 @@ function filter_greatest_quantity(table, node::ContainerNode)
     if typeof(table) <: DataFrameRow
         return table
     end
-    I = findall(==(maximum(node.stock)), node.stock)
+    ids = table[:,:id]
+    accepted = findall(==(maximum(node.stock[table[:,:id]])), node.stock[table[:,:id]])
+    I = ids[accepted]
     return filter(row -> row[:id] in I, table)
 end
 
@@ -430,14 +450,14 @@ Amalgamates the current space with a partner. In this process, the original spac
 """
 function amalgamate!(node::ContainerNode, space_id, partner_id, flexible_ratio)
     space = node.spaces[space_id,:]
-    space[:sibling] = new_id(db.spaces)
+    space[:sibling] = new_id(node.spaces)
     space[:partner] = partner_id
-    partner = db.spaces[partner_id,:]
+    partner = node.spaces[partner_id,:]
     partner[:partner] = space[:id]
     partner[:status] = :amalgamated
     x, y, z = max(space.x, partner.x), space.y, partner.z
     width, height, depth =  space.width - x, space.height, space.depth + partner.depth
-    amalgam = add_space!(db, space[:layer], [width, height, depth], [x, y, z], :amalgam)
+    amalgam = add_space!(node, space[:layer], [width, height, depth], [x, y, z], :amalgam)
     flexible_width = amalgam[:width] * flexible_ratio
     amalgam[:flexible_width] = flexible_width
     amalgam[:sibling] = space[:id]
@@ -516,19 +536,19 @@ function create_new_spaces!(db::Database, node::ContainerNode, space_id, columns
     min_dim = [minimum(items[:,:dim1]), minimum(items[:,:dim2]), minimum(items[:,:dim3])] |> minimum
     if columns > 1 && last_col_height < max_col_height
         if space[:height] - max_col_height >= min_dim
-            create_heightwise_space!!(db, space_id, columns - 1, item_width, max_col_height)
+            create_heightwise_space!(node, space_id, columns - 1, item_width, max_col_height)
         end
         if space[:height] - last_col_height >= min_dim
-            create_heightwise_space!!(db, space_id, columns, item_width, last_col_height, last_column=true)
+            create_heightwise_space!(node, space_id, columns, item_width, last_col_height, last_column=true)
         end
     elseif space[:height] - last_col_height >= min_dim
-        create_heightwise_space!!(db, space_id, columns, item_width, last_col_height)
+        create_heightwise_space!(node, space_id, columns, item_width, last_col_height)
     end
     if space[:width] - item_width * columns >= min_dim
-        create_widthwise_space!(db, space_id, item_width, columns)
+        create_widthwise_space!(node, space_id, item_width, columns)
     end
     if space[:depth] - item_depth > 0
-        create_depthwise_space!(db, space_id, item_depth)
+        create_depthwise_space!(node, space_id, item_depth)
     end
 end
 
@@ -539,7 +559,7 @@ function fill_space!(db::Database, node::ContainerNode, item, space_id)
     space = node.spaces[space_id,:]
     sibling = nothing
     if space[:type] != :amalgam && !iszero(space[:sibling])
-        sibling = db.spaces[space[:sibling],:]
+        sibling = node.spaces[space[:sibling],:]
     end
     item_type = db.items[item[:id],:]
     x = space[:x]
@@ -582,21 +602,130 @@ function fill_container!(db::Database, node::ContainerNode; flexible_ratio=.0, s
         end
         if i == nrow(node.spaces)
             if !any_items_left(node)
-                return
+                break
             end
             create_new_layer!(db, node, separate_rankings=separate_rankings)
         end
         i += 1
     end
+    node.filled_volume = get_filled_volume(db, node)
 end
 
-function get_unfilled_volume(node::ContainerNode)
+function get_container_volume(db::Database, node::ContainerNode)
     container = db.containers[node.container_id,:]
-    unfilled_volume = prod(container[[:width,:height,:depth]] |> collect)
+    return prod(container[[:width,:height,:depth]])
+end
+
+"""
+When optional argument `mode` is equal to `:volume` (which it is by default), returns the container's filled volume. When equal to `:percent`, returns the percentage of filled volume.
+"""
+function get_filled_volume(db::Database, node::ContainerNode; mode=:volume)
+    filled_volume = 0
     for placement in eachrow(node.placements)
-        unfilled_volume -= prod(placement[[:quantity,:width,:height,:depth]] |> collect)
+        filled_volume += prod(placement[[:quantity,:width,:height,:depth]])
     end
-    return unfilled_volume
+    if mode == :volume
+        return filled_volume
+    elseif mode == :percent
+        return 100 * filled_volume / get_container_volume(db, node)
+    end
+end
+
+"""
+Returns a specific node in the container tree given by `path`.
+"""
+function get_node(root_node, path)
+    node = root_node
+    for i in path
+        node = node.children[i]
+    end
+    return node
+end
+
+"""
+Filters previous container fillings that can be repeated in the current empty container. Three filters are applied:
+
+* Empty container must be of the same type as the one listed;
+* There must be enough stock left for the empty container to replicate the listed container exactly;
+* The container to be replicated must be in the same position as the empty container, or earlier, in its filling sequence. This last point assures that the listed container won't be too empty.
+"""
+function find_repeatable_container_filling(reference_table, node::ContainerNode)
+    candidates = filter(row -> row[:container] == node.container_id && 
+                        all(row[:placed] .<= node.stock) && 
+                        length(row[:path]) < length(node.path), reference_table)
+    return filter(row -> row[:filled_volume] == maximum(candidates[:,:filled_volume]), candidates) |> safe_first
+end
+
+"""
+Points all the relevant placement information from one node (`src`) to another (`dst`). This includes:
+
+* Source's layers;
+* Source's spaces;
+* Source's remaining depth;
+* Source's placements;
+* Source's filled volume.
+
+Note that this function does *not* point the source's stock to the destination, since that would break the container tree's logic.
+"""
+function copy_node_placements!(src, dst)
+    dst.layers = src.layers
+    dst.spaces = src.spaces
+    dst.remaining_depth = src.remaining_depth
+    dst.placements = src.placements
+    dst.filled_volume = src.filled_volume
+end
+
+"""
+Creates a new node in the containter tree to which `parent` belongs. This involves applying the wall-building heuristic to the node, or the best solution that has already been calculated for this node.
+"""
+function create_new_node(parent, container_id, db, reference_table; flexible_ratio=.0, separate_rankings=true)
+    node = ContainerNode(parent, container_id, db)
+    repeatable_filling = find_repeatable_container_filling(reference_table, node)
+    if isnothing(repeatable_filling)
+        fill_container!(db, node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings)
+        push!(reference_table, [node.container_id, node.path, node.parent.stock .- node.stock, node.filled_volume])
+    else
+        repeat_node = get_node(root_node, repeatable_filling[:path])
+        node.stock .-= repeatable_filling[:placed]
+        copy_node_placements!(repeat_node, node)
+    end
+    return node
+end
+
+"""
+Builds a container tree. Each path towards a leaf represents a possible sequence of containers to which the wall-building heuristic is applied.
+"""
+function build_container_tree(db::Database; full_tree=false, root_node=nothing, container_id=0, parent=nothing, flexible_ratio=0.0, separate_rankings=true, reference_table=DataFrame(container=Int[], path=Vector{Int}[], placed=Vector{Int}[], filled_volume=Float64[]), verbose=true)
+    if isnothing(parent)
+        root_node = ContainerNode(db.items[:,:quantity])
+        for container in eachrow(db.containers)
+            build_container_tree(db, root_node=root_node, container_id=container[:id], parent=root_node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings, reference_table=reference_table, verbose=verbose)
+        end
+        return root_node
+    end
+    if all(==(0), parent.stock)
+        return
+    end
+    node = create_new_node(parent, container_id, db, reference_table, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings)
+    for container in eachrow(db.containers)
+        build_container_tree(db, root_node=root_node, container_id=container[:id], parent=node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings, reference_table=reference_table, verbose=verbose)
+    end
+end
+
+function find_best_container_tree_solution(db::Database, root_node::ContainerNode; cost_sum=.0, best_cost=Inf, best_path=[])
+    node = root_node
+    if isempty(node.children)
+        if cost_sum < best_cost
+            best_cost = cost_sum
+            best_path = node.path
+        end
+        return best_cost, best_path
+    end
+    for child in node.children
+        child_cost = db.containers[child.container_id,:cost]
+        best_cost, best_path = find_best_container_tree_solution(db, child, cost_sum=cost_sum+child_cost, best_cost=best_cost, best_path=best_path)
+    end
+    return best_cost, best_path
 end
 
 ##
@@ -608,8 +737,6 @@ add_item!(db, [50, 60, 40], 1383)
 add_container!(db, [220,350,720], 50)
 add_container!(db, [260,440,1000], 70)
 add_container!(db, [260,440,1400], 100)
-node = ContainerNode([122,124,1383])
-node.container_id = 1
-node.remaining_depth = 720
-fill_container!(db, node) 
+root_node = build_container_tree(db)
+find_best_container_tree_solution(db, root_node)
 #wall_building!(db, flexible_ratio=.1)
