@@ -1,7 +1,7 @@
 PWD /home/pcentenaro/Documents/UFSC/IC-CLP/Report/UNIGOU
 INPUT /var/lib/texmf/web2c/luahbtex/lualatex.fmt
-INPUT /home/pcentenaro/Documents/UFSC/IC-CLP/Report/UNIGOU/wb1.tex
-OUTPUT wb1.log
+INPUT /home/pcentenaro/Documents/UFSC/IC-CLP/Report/UNIGOU/bb.tex
+OUTPUT bb.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/latexconfig/lualatexquotejobname.lua
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ltluatex.lua
 INPUT /usr/share/texlive/texmf-dist/tex/luatex/luaotfload/luaotfload-main.lua
@@ -288,9 +288,9 @@ INPUT /usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrarys
 INPUT /usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
 INPUT /usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
 INPUT /usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
-INPUT ./wb1.aux
-INPUT ./wb1.aux
-OUTPUT wb1.aux
+INPUT ./bb.aux
+INPUT ./bb.aux
+OUTPUT bb.aux
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -300,5 +300,5 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-OUTPUT wb1.pdf
-INPUT ./wb1.aux
+OUTPUT bb.pdf
+INPUT ./bb.aux

@@ -1,5 +1,7 @@
 using DataFrames
 using Combinatorics
+using JuMP
+using GLPK
 
 mutable struct Database
     containers::DataFrame
@@ -11,14 +13,14 @@ end
 Creates a new table of containers. Each container is defined by its width, height and depth.
 """
 function new_container_table()
-    return DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], cost=Float64[])
+    return DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], cost=Float64[], volume=Float64[])
 end
 
 """
 Creates a new table of item types. Each item type is defined by three dimensions and an initial quantity in stock.
 """
 function new_item_table()
-    return DataFrame(id=Int[], dim1=Real[], dim2=Real[], dim3=Real[], quantity=Int[])
+    return DataFrame(id=Int[], dim1=Real[], dim2=Real[], dim3=Real[], quantity=Int[], volume=Float64[])
 end
 
 """
@@ -26,8 +28,19 @@ Adds a container to the database.
 """
 function add_container!(db::Database, dims::Vector{<:Real}, cost::Union{Float64, Int})
     id = new_id(db.containers)
-        push!(db.containers, [id, dims..., cost])
+        push!(db.containers, [id, dims..., cost, prod(dims)])
     return db.containers[id,:]
+end
+
+function get_container_volume_vector(db::Database)
+    return [prod(dims) for dims in eachrow(db.containers[:,[:width,:height,:depth]])]
+end
+
+function sort_containers_by_decreasing_volume!(db::Database)
+    sort!(db.containers, :volume, rev=true)
+    for i in 1:nrow(db.containers)
+        db.containers[i,:id] = i
+    end
 end
 
 """
@@ -35,14 +48,27 @@ Adds an item to the database.
 """
 function add_item!(db::Database, dims::Vector{<:Real}, quantity::Int)
     id = new_id(db.items)
-    push!(db.items, [id, dims..., quantity])
+    push!(db.items, [id, dims..., quantity, prod(dims)])
     return db.items[id,:]
 end
 
+function sort_items_by_decreasing_volume!(db::Database)
+    sort!(db.items, :volume, rev=true)
+    for i in 1:nrow(db.items)
+        db.items[i,:id] = i
+    end
+end
+
+"""
+Returns the sum volume of all items registered in the database.
+"""
+function get_total_item_volume(db::Database)
+    return sum(prod(dims) for dims in eachrow(db.items[:,[:dim1,:dim2,:dim3,:quantity]]))
+end
+
 mutable struct ContainerNode
-    parent::Union{ContainerNode, Nothing}
-    children::Vector{ContainerNode}
-    path::Vector{Int}
+    previous::Union{ContainerNode, Nothing}
+    next::Union{ContainerNode, Nothing}
     container_id::Int
     stock::Vector{Int}
     open::Vector{Bool}
@@ -51,24 +77,19 @@ mutable struct ContainerNode
     layers::DataFrame
     spaces::DataFrame
     placements::DataFrame
-    ContainerNode(stock::Vector{Int}) = new(nothing, Vector{ContainerNode}(), Int[], 0, copy(stock), repeat([false], length(stock)), 0, 0, new_layer_table(), new_space_table(), new_placement_table())
-    function ContainerNode(parent::ContainerNode, container_id::Int, db::Database)
-        node = new(parent, Vector{ContainerNode}(), copy(parent.path), container_id, copy(parent.stock), repeat([false], length(parent.stock)), db.containers[container_id,:depth], 0, new_layer_table(), new_space_table(), new_placement_table())
-        push!(node.path, container_id)
-        push!(parent.children, node)
+    ContainerNode(db::Database) = new(nothing, nothing, 0, copy(db.items[:,:quantity]), repeat([false], nrow(db.items)), 0, 0, new_layer_table(), new_space_table(), new_placement_table())
+    function ContainerNode(parent::Union{ContainerNode,Nothing}, container_id::Int, db::Database)
+        node = new(parent, nothing, container_id, copy(parent.stock), repeat([false], length(parent.stock)), db.containers[container_id,:depth], 0, new_layer_table(), new_space_table(), new_placement_table())
+        parent.next = node
         return node
     end
 end
 
 function Base.show(io::IO, x::ContainerNode)
-    if isnothing(x.parent)
-        println(io, "Type: Root node")
-    else
-        println(io, "Type: Container $(x.container_id) node")
-    end
+    println(io, "$(get_node_index(x))-index container node")
+    println(io, "Container type: $(x.container_id)")
     println(io, "Filled volume: $(x.filled_volume)")
     println(io, "Stock: $(x.stock)")
-    print(io, "Children: $([x.children[i].container_id for i in 1:length(x.children)])")
 end
 
 """
@@ -253,7 +274,12 @@ end
 """
 Safe version of Julia's `first` function. Returns `nothing` if the passed argument is empty.
 """
-safe_first(table) = isempty(table) ? nothing : first(table)
+noerror_first(R) = isempty(R) ? nothing : first(R)
+
+"""
+Safe version of Julia's `last` function. Returns `nothing` if the passed argument is empty.
+"""
+noerror_last(R) = isempty(R) ? nothing : last(R)
 
 """
 Selects a layer's primary item. If no item is marked as `open` in the container, then a series of ranking filters is applied to the items in stock, and the first remaining option is selected. The filters are:
@@ -270,12 +296,12 @@ function select_primary_item(db::Database, node::ContainerNode; separate_ranking
         table = filter_open_items(table, node)
         if separate_rankings
             table = filter_greatest_quantity(table, node)
-            return safe_first(table)
+            return noerror_first(table)
         end
     end
     table = filter_fitting_depths(db.items, node)
     table = all_item_filters(table, node)
-    return safe_first(table)
+    return noerror_first(table)
 end
 
 """
@@ -311,7 +337,7 @@ end
 Finds all item rotations that fit within the specified space.
 """
 function find_fitting_items(db::Database, node::ContainerNode, space_id)
-    fitting_items = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[])
+    fitting_items = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[], volume=Float64[])
     space_dims = node.spaces[space_id,[:width,:height,:depth]] |> collect |> sort
     candidates = filter_remaining_items(db.items, node)
     for candidate in eachrow(candidates)
@@ -403,7 +429,7 @@ Selects an item to fill a given space and rotates it according to the wall-build
 """
 function select_item_for_space(node::ContainerNode, space_id)
     space = node.spaces[space_id,:]
-    selected_item = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[])
+    selected_item = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[], volume=Float64[])
     if space[:type] == :primary
         layer = node.layers[space[:layer],:]
         primary_item = db.items[layer[:item],:]
@@ -634,12 +660,56 @@ end
 """
 Returns a specific node in the container tree given by `path`.
 """
-function get_node(root_node, path)
+function get_node(root_node, index)
     node = root_node
-    for i in path
-        node = node.children[i]
+    for i in 1:index
+        node = node.next
     end
     return node
+end
+
+function get_root_node(node)
+    while node.previous |> !isnothing
+        node = node.previous
+    end
+    return node
+end
+
+function get_first_node(node)
+    while node.previous.previous |> !isnothing
+        node = node.previous
+    end
+    return node
+end
+
+function get_node_index(node)
+    i = 0
+    while true
+        previous = node.previous
+        if isnothing(previous)
+            return i
+        end
+        i += 1
+        node = previous
+    end
+end
+
+function get_minimal_container_sequence(db::Database, optimizer)
+    V = get_total_item_volume(db)
+    v = get_container_volume_vector(db)
+    c = db.containers[:,:cost] |> collect
+    n = length(v)
+    model = Model(optimizer)
+    @variable(model, x[1:n] >= 0, Int)
+    @objective(model, Min, sum(c[i]*x[i] for i in 1:n))
+    @constraint(model, sum(v[i]*x[i] for i in 1:n) >= V)
+    optimize!(model)
+    container_sequence = Int[]
+    xvals = Int.(value.(model[:x]))
+    for i in 1:n
+        append!(container_sequence, repeat([i], xvals[i]))
+    end
+    return container_sequence
 end
 
 """
@@ -651,9 +721,8 @@ Filters previous container fillings that can be repeated in the current empty co
 """
 function find_repeatable_container_filling(reference_table, node::ContainerNode)
     candidates = filter(row -> row[:container] == node.container_id && 
-                        all(row[:placed] .<= node.stock) && 
-                        length(row[:path]) < length(node.path), reference_table)
-    return filter(row -> row[:filled_volume] == maximum(candidates[:,:filled_volume]), candidates) |> safe_first
+                        all(row[:placed] .<= node.stock), reference_table)
+    return filter(row -> row[:filled_volume] == maximum(candidates[:,:filled_volume]), candidates) |> noerror_first
 end
 
 """
@@ -675,60 +744,42 @@ function copy_node_placements!(src, dst)
     dst.filled_volume = src.filled_volume
 end
 
+function new_reference_table()
+    return DataFrame(container=Int[], index=Int[], placed=Vector{Int}[], filled_volume=Float64[])
+end
+
 """
 Creates a new node in the containter tree to which `parent` belongs. This involves applying the wall-building heuristic to the node, or the best solution that has already been calculated for this node.
 """
-function create_new_node(parent, container_id, db, reference_table; flexible_ratio=.0, separate_rankings=true)
+function create_new_node!(parent, container_id, db, reference_table; flexible_ratio=.0, separate_rankings=true)
     node = ContainerNode(parent, container_id, db)
-    repeatable_filling = find_repeatable_container_filling(reference_table, node)
-    if isnothing(repeatable_filling)
+    rf = find_repeatable_container_filling(reference_table, node)
+    if isnothing(rf)
         fill_container!(db, node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings)
-        push!(reference_table, [node.container_id, node.path, node.parent.stock .- node.stock, node.filled_volume])
+        push!(reference_table, [node.container_id, get_node_index(node), node.previous.stock .- node.stock, node.filled_volume])
     else
-        repeat_node = get_node(root_node, repeatable_filling[:path])
-        node.stock .-= repeatable_filling[:placed]
-        copy_node_placements!(repeat_node, node)
+        source = get_node(get_root_node(node), rf[:index])
+        node.stock .-= rf[:placed]
+        copy_node_placements!(source, node)
     end
     return node
 end
 
-"""
-Builds a container tree. Each path towards a leaf represents a possible sequence of containers to which the wall-building heuristic is applied.
-"""
-function build_container_tree(db::Database; full_tree=false, root_node=nothing, container_id=0, parent=nothing, flexible_ratio=0.0, separate_rankings=true, reference_table=DataFrame(container=Int[], path=Vector{Int}[], placed=Vector{Int}[], filled_volume=Float64[]), verbose=true)
-    if isnothing(parent)
-        root_node = ContainerNode(db.items[:,:quantity])
-        for container in eachrow(db.containers)
-            build_container_tree(db, root_node=root_node, container_id=container[:id], parent=root_node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings, reference_table=reference_table, verbose=verbose)
-        end
-        return root_node
+function solve_CLP(db::Database, optimizer)
+    sort_containers_by_decreasing_volume!(db)
+    sort_items_by_decreasing_volume!(db)
+    rt = new_reference_table()
+    cids = get_minimal_container_sequence(db, optimizer)
+    node = ContainerNode(db)
+    for cid in cids
+        node = create_new_node!(node, cid, db, rt)
     end
-    if all(==(0), parent.stock)
-        return
+    while any_items_left(node)
+        push!(cids, db.containers[:,:id] |> last)
+        cid = last(cids)
+        node = create_new_node!(node, cid, db, rt)
     end
-    node = create_new_node(parent, container_id, db, reference_table, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings)
-    for container in eachrow(db.containers)
-        build_container_tree(db, root_node=root_node, container_id=container[:id], parent=node, flexible_ratio=flexible_ratio, separate_rankings=separate_rankings, reference_table=reference_table, verbose=verbose)
-    end
-end
-
-"""
-Finds the best solution in a container tree.
-"""
-function find_best_container_tree_solution(db::Database, root_node::ContainerNode; cost_sum=.0, best_cost=Inf, best_path=[])
-    node = root_node
-    if isempty(node.children)
-        if cost_sum < best_cost
-            best_cost = cost_sum
-            best_path = node.path
-        end
-        return best_cost, best_path
-    end
-    for child in node.children
-        child_cost = db.containers[child.container_id,:cost]
-        best_cost, best_path = find_best_container_tree_solution(db, child, cost_sum=cost_sum+child_cost, best_cost=best_cost, best_path=best_path)
-    end
-    return best_cost, best_path
+    return get_first_node(node)
 end
 
 """
@@ -806,9 +857,14 @@ db = Database()
 add_item!(db, [40, 40, 50], 122)
 add_item!(db, [27, 43, 32], 124)
 add_item!(db, [50, 60, 40], 1383)
-add_container!(db, [220,350,720], 50)
-add_container!(db, [260,440,1000], 70)
-add_container!(db, [260,440,1400], 100)
-root_node = build_container_tree(db)
-find_best_container_tree_solution(db, root_node)
-#wall_building!(db, flexible_ratio=.1)
+add_container!(db, [220,350,720], 220*350*720)
+add_container!(db, [260,440,1000], 260*440*1000)
+add_container!(db, [260,440,1400], 260*440*1400)
+add_container!(db, [240,360,790], 240*360*790)
+add_container!(db, [200,300,450], 200*300*450)
+add_container!(db, [200,250,700], 200*250*700)
+add_container!(db, [250,500,1000], 250*500*1000)
+add_container!(db, [300,550,1200], 300*550*1200)
+add_container!(db, [210,410,1100], 210*410*1100)
+add_container!(db, [180,380,800], 180*380*800)
+seq = solve_CLP(db, Gurobi.Optimizer)
