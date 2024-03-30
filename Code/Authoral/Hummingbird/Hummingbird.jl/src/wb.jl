@@ -56,13 +56,24 @@ end
 Finds all item rotations that fit within the specified space.
 """
 function find_fitting_items(db::Database, node::ContainerNode, space_id)
-    fitting_items = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[], volume=Float64[])
-    space_dims = node.spaces[space_id,[:width,:height,:depth]] |> collect |> sort
+    fitting_items = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], fixed_height=Bool[], quantity=Int[], volume=Float64[])
     candidates = filter_remaining_items(db.items, node)
+    space_dims = node.spaces[space_id,[:width,:height,:depth]] |> collect
     for candidate in eachrow(candidates)
+        if candidate[:fixed_height]
+            if all(space_dims .>= candidate[[:dim1,:dim2,:dim3]] |> collect)
+                push!(fitting_items, candidate |> collect)
+            end
+            if all(space_dims .>= candidate[[:dim3,:dim2,:dim1]] |> collect)
+                candidate[:dim1], candidate[:dim3] = candidate[:dim3], candidate[:dim1]
+                push!(fitting_items, candidate |> collect)
+            end
+            continue
+        end
         for perm in permutations(candidate[[:dim1,:dim2,:dim3]])
+            sorted_dims = space_dims |> sort
             perm = collect(perm)
-            if all(space_dims .>= perm)
+            if all(sorted_dims .>= perm)
                 candidate[[:dim1,:dim2,:dim3]] = perm
                 push!(fitting_items, candidate |> collect)
             end
@@ -129,6 +140,9 @@ Selects a cross-sectional rotation for an item. This function first checks if th
 * If none of the rotations can complete a column, and the swap rotation gives the lesser item height.
 """
 function select_item_cross_sectional_rotation!(node::ContainerNode, item, space_id)
+    if item[:fixed_height]
+        return
+    end
     space = node.spaces[space_id,:]
     if item[:width] <= space[:height] && item[:height] <= space[:width]
         if any(can_complete_column(node.stock[item[:id]], item[dim], space[:height]) for dim in [:width,:height])
@@ -148,7 +162,7 @@ Selects an item to fill a given space and rotates it according to the wall-build
 """
 function select_item_for_space(db::Database, node::ContainerNode, space_id)
     space = node.spaces[space_id,:]
-    selected_item = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], quantity=Int[], volume=Float64[])
+    selected_item = DataFrame(id=Int[], width=Real[], height=Real[], depth=Real[], fixed_height=Bool[], quantity=Int[], volume=Float64[])
     if space[:type] == :primary
         layer = node.layers[space[:layer],:]
         primary_item = db.items[layer[:item],:]

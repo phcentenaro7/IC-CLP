@@ -17,7 +17,7 @@ end
 Creates a new table of item types. Each item type is defined by three dimensions and an initial quantity in stock.
 """
 function new_item_table()
-    return DataFrame(id=Int[], dim1=Real[], dim2=Real[], dim3=Real[], quantity=Int[], volume=Float64[])
+    return DataFrame(id=Int[], dim1=Real[], dim2=Real[], dim3=Real[], fixed_height=Bool[], quantity=Int[], volume=Float64[])
 end
 
 """
@@ -44,9 +44,9 @@ end
 """
 Adds an item to the database.
 """
-function add_item!(db::Database, dims::Vector{<:Real}, quantity::Int)
+function add_item!(db::Database, dims::Vector{<:Real}, fixed_height, quantity::Int)
     id = new_id(db.items)
-    push!(db.items, [id, dims..., quantity, prod(dims)])
+    push!(db.items, [id, dims..., fixed_height, quantity, prod(dims)])
     return db.items[id,:]
 end
 
@@ -61,8 +61,8 @@ end
 """
 Returns the sum volume of all items registered in the database.
 """
-function get_total_item_volume(db::Database)
-    return sum(prod(dims) for dims in eachrow(db.items[:,[:dim1,:dim2,:dim3,:quantity]]))
+function get_stock_volume(db::Database, stock::Vector{Int})
+    return sum(prod(item[[:dim1,:dim2,:dim3]]) * stock[item[:id]] for item in eachrow(db.items[:,:]))
 end
 
 mutable struct ContainerNode
@@ -221,9 +221,9 @@ function get_node_index(node)
     end
 end
 
-function get_sequence_length(root_node)
+function get_sequence_length(node)
+    node = get_root_node(node)
     i = 0
-    node = root_node
     while true
         next = node.next
         if isnothing(next)

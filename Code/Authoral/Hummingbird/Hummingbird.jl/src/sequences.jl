@@ -1,8 +1,8 @@
 using JuMP
 using Logging
 
-function get_minimal_container_sequence(db::Database, optimizer, verbose)
-    V = get_total_item_volume(db)
+function get_minimal_container_sequence(db::Database, stock, optimizer, verbose)
+    V = get_stock_volume(db, stock)
     v = get_container_volume_vector(db)
     c = db.containers[:,:cost] |> collect
     n = length(v)
@@ -20,7 +20,7 @@ function get_minimal_container_sequence(db::Database, optimizer, verbose)
     for i in 1:n
         append!(container_sequence, repeat([i], xvals[i]))
     end
-    @info "minimal container sequence determined."
+    @info "minimal container sequence determined." xvals
     return container_sequence
 end
 
@@ -65,7 +65,6 @@ end
 Creates a new node in the containter tree to which `parent` belongs. This involves applying the wall-building heuristic to the node, or the best solution that has already been calculated for this node.
 """
 function create_new_node!(parent, container_id, db, reference_table; flexible_ratio=.0, separate_rankings=true, solution::Union{CLPSolution,Nothing}=nothing)
-    @info "creating node..."
     node = ContainerNode(parent, container_id, db)
     rf = find_repeatable_container_filling(reference_table, node)
     if isnothing(rf)
@@ -82,25 +81,29 @@ function create_new_node!(parent, container_id, db, reference_table; flexible_ra
     return node
 end
 
-function solve_CLP(db::Database, optimizer; verbose=false)
+function solve_CLP(db::Database, optimizer; verbose=false, flexible_ratio=.0, separate_rankings=true)
     default_logger = global_logger()
-    tmp_logger = SimpleLogger(stdout, verbose ? Logging.Info : Logging.Warn)
+    tmp_logger = ConsoleLogger(stdout, verbose ? Logging.Info : Logging.Warn, meta_formatter=(level, _module, group, id, file, line) -> (:light_cyan, "CLP: ", ""), show_limited=false)
     global_logger(tmp_logger)
+    @info "beginning solution process with specified settings" flexible_ratio, separate_rankings
     sort_containers_by_decreasing_volume!(db)
     sort_items_by_decreasing_volume!(db)
     rt = new_reference_table()
-    cids = get_minimal_container_sequence(db, optimizer, verbose)
     solution = CLPSolution(db)
     node = solution.sequence
-    for cid in cids
-        node = create_new_node!(node, cid, db, rt, solution=solution)
+    while any_items_left(node)
+        cids = get_minimal_container_sequence(db, node.stock, optimizer, verbose)
+        @info "creating nodes..."
+        for cid in cids
+            node = create_new_node!(node, cid, db, rt, solution=solution)
+        end
     end
     while any_items_left(node)
         push!(cids, db.containers[:,:id] |> last)
         cid = last(cids)
         node = create_new_node!(node, cid, db, rt, solution=solution)
     end
-    @info "solution reached using $(get_first_node(node) |> get_sequence_length) containers; total cost is $(get_sequence_cost(db, node))."
+    @info "solution reached using $(get_sequence_length(node)) containers; total cost is $(get_sequence_cost(db, node))."
     global_logger(default_logger)
     return solution
 end
