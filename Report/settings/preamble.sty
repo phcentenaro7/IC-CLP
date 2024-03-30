@@ -1,0 +1,223 @@
+\RequirePackage{etex}
+\usepackage{notoccite}
+\usepackage{iftex}
+\usepackage[shortlabels]{enumitem}
+\ifPDFTeX
+    \usepackage[english]{babel}
+	\usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{cmap}
+\else
+	\usepackage{fontspec}
+	\usepackage{polyglossia}
+	\setdefaultlanguage{english}
+	\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+\fi
+\usepackage{indentfirst}
+\usepackage{amsthm,amssymb}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{algorithm}
+\renewcommand{\listalgorithmname}{List of Algorithms}
+\usepackage[noend]{algpseudocode}
+\floatname{algorithm}{Algorithm}
+\floatname{algorithmic}{Algorithm}
+% \renewcommand{\algorithmicend}{\textbf{fim}}
+% \renewcommand{\algorithmicif}{\textbf{se}}
+% \renewcommand{\algorithmicthen}{\textbf{então}}
+% \renewcommand{\algorithmicelse}{\textbf{senão, }}
+% \renewcommand{\algorithmicwhile}{\textbf{enquanto}}
+% \renewcommand{\algorithmicdo}{\textbf{fazer}}
+% \renewcommand{\algorithmicreturn}{\textbf{retornar}}
+\usepackage{minted}
+\setmintedinline{breaklines}
+\newcommand{\julia}[1]{\mintinline[breakanywhere]{julia}{#1}}
+%\renewcommand{\listingscaption}{Código}
+%\renewcommand{\listoflistingscaption}{Lista de Códigos}
+\setlength{\parindent}{1cm} % padrão 15pt.
+\usepackage[acronym]{glossaries}
+\usepackage{nomencl}
+\usepackage{faktor}
+\usepackage{mathtools}
+\usepackage{optidef}
+\usepackage{graphicx}
+\usepackage{grffile} 
+\usepackage{anysize}
+\usepackage{cancel}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage[]{mdframed}
+\usepackage[colorlinks=true,urlcolor=cyan,
+        pdfpagelabels=true,hypertexnames=true,
+        plainpages=false,naturalnames=true]{hyperref}
+%
+\usepackage[shortlabels]{enumitem}
+\usepackage{calrsfs}
+\usepackage{dsfont}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{xargs}
+\setlength{\marginparwidth}{2cm}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage[brazilian,capitalize,nameinlink,noabbrev]{cleveref}
+\usepackage[english,capitalize,nameinlink,noabbrev]{cleveref}
+% \creflabelformat{algorithm}{#2\textup{(#1)}#3}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\usepackage{parnotes}
+\usepackage{tikz}
+\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows,arrows.meta,backgrounds,patterns,shapes.geometric}
+\usegdlibrary{trees}
+\newcommand*\circled[1]{%
+  \tikz[baseline=(C.base)]\node[draw,circle,inner sep=0.5pt](C) {#1};\!
+}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30, align=center]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30, align=center]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30, align=center]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30, aspect=1, inner sep=-0.6ex, align=center]
+\tikzstyle{arrow} = [thick, ->, >=stealth]
+\usepackage{pgfplots}
+\usepgflibrary{patterns}
+\usepackage{lineno}
+\usepackage{etoolbox} %% <- for \pretocmd, \apptocmd and \patchcmd
+% %% Patch 'normal' math environment: (currently unused, but good to have)
+\newcommand*\linenomathpatch[1]{%
+  \expandafter\pretocmd\csname #1\endcsname {\linenomath}{}{}%
+  \expandafter\pretocmd\csname #1*\endcsname{\linenomath}{}{}%
+  \expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}%
+  \expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}%
+}
+% %% Patch AMS math environment:
+\newcommand*\linenomathpatchAMS[1]{%
+  \expandafter\pretocmd\csname #1\endcsname {\linenomathAMS}{}{}%
+  \expandafter\pretocmd\csname #1*\endcsname{\linenomathAMS}{}{}%
+  \expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}%
+  \expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}%
+}
+
+% Definition of \linenomathAMS depends on whether the mathlines option is provided
+\expandafter\ifx\linenomath\linenomathWithnumbers
+  \let\linenomathAMS\linenomathWithnumbers
+  %% The following line gets rid of an extra line numbers at the bottom:
+  \patchcmd\linenomathAMS{\advance\postdisplaypenalty\linenopenalty}{}{}{}
+\else
+  \let\linenomathAMS\linenomathNonumbers
+\fi
+
+% \linenomathpatch{equation} %% <- unnecessary, equation is already patched
+\linenomathpatchAMS{gather}
+\linenomathpatchAMS{multline}
+\linenomathpatchAMS{align}
+\linenomathpatchAMS{alignat}
+\linenomathpatchAMS{flalign}
+\linenomathpatchAMS{displaymath}
+
+\usepackage{setspace}
+
+\crefname{equation}{Equação}{Equações}
+\Crefname{equation}{Equação}{Equações}
+
+\crefalias{flowchart}{figure}
+\crefname{flowchart}{Flowchart}{Flowcharts}
+\Crefname{flowchart}{Flowchart}{Flowcharts}
+\creflabelformat{ip}{#2\textup{(#1)}#3}
+
+\crefalias{ip}{align}
+\crefname{ip}{Integer Program}{Integer Programs}
+\Crefname{ip}{Integer Program}{Integer Programs}
+\creflabelformat{ip}{#2\textup{(#1)}#3}
+
+\crefalias{mip}{align}
+\crefname{mip}{Mixed-Integer Program}{Mixed-Integer Programs}
+\Crefname{mip}{Mixed-Integer Program}{Mixed-Integer Programs}
+\creflabelformat{mip}{#2\textup{(#1)}#3}
+
+\crefalias{problem}{align}
+\crefname{problem}{Problema}{Problemas}
+\Crefname{problem}{Problema}{Problemas}
+\creflabelformat{problem}{#2\textup{(#1)}#3}
+
+\crefalias{method}{align}
+\crefname{method}{Método}{Métodos}
+\Crefname{method}{Método}{Métodos}
+% \creflabelformat{method}{#2\textup{(#1)}#3}
+
+\crefalias{ray}{equation}
+\crefname{ray}{Semirreta}{Semirretas}
+\Crefname{ray}{Semirreta}{Semirretas}
+\creflabelformat{ray}{#2\textup{(#1)}#3}
+
+\crefalias{constraint}{equation}
+\crefname{constraint}{Constraint}{Constraints}
+\Crefname{constraint}{Constraint}{Constraints}
+\creflabelformat{constraint}{#2\textup{(#1)}#3}
+
+\crefalias{constraints}{equation}
+\crefname{constraints}{Constraints}{Constraints}
+\Crefname{constraints}{Constraints}{Constraints}
+\creflabelformat{constraints}{#2\textup{(#1)}#3}
+
+\crefalias{constraint set}{equation}
+\crefname{constraint set}{Constraint Set}{Constraint Sets}
+\Crefname{constraint set}{Constraint Set}{Constraint Sets}
+\creflabelformat{constraint set}{#2\textup{(#1)}#3}
+
+\crefalias{equation set}{equation}
+\crefname{equation set}{Equation Set}{Equation Sets}
+\Crefname{equation set}{Equation Set}{Equation Sets}
+\creflabelformat{equation set}{#2\textup{(#1)}#3}
+
+\crefalias{expression}{equation}
+\crefname{expression}{Expression}{Expression}
+\Crefname{expression}{Expression}{Expression}
+\creflabelformat{expression}{#2\textup{(#1)}#3}
+
+\crefalias{code}{listing}
+\crefname{code}{Código}{Códigos}
+\Crefname{code}{Código}{Códigos}
+\creflabelformat{code}{#2\textup{#1}#3}
+
+\crefalias{output}{listing}
+\crefname{output}{Saída}{Saídas}
+\Crefname{output}{Saída}{Saídas}
+\creflabelformat{output}{#2\textup{#1}#3}
+
+\theoremstyle{plain}% default
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corolary}
+
+\theoremstyle{definition}
+\newtheorem{mydef}[theorem]{Definition}
+\newtheorem{conj}[theorem]{Conjecture}
+\newtheorem{fact}[theorem]{Fact}
+
+\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{rem}[theorem]{Observation}
+\newtheorem*{note}{Note}
+\newtheorem{case}{Case}
+\usepackage{csquotes}
+\MakeOuterQuote{"}
+\usepackage[percent]{overpic}
+\usepackage{systeme}
+\usepackage{etoolbox}
+%\cslet{blx@noerroretextools}\empty
+\usepackage[backend=biber,style=numeric-comp,
+maxnames=6,maxcitenames=3,isbn=false,sorting=nyt,sortcites=true,date=year]{biblatex}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\allowdisplaybreaks
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\sysdelim..
