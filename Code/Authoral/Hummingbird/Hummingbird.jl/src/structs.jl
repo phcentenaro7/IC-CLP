@@ -247,9 +247,10 @@ function get_sequence_cost(db::Database, node)
 end
 
 struct CLPSolution
+    db::Database
     sequence::ContainerNode
     summary::DataFrame
-    CLPSolution(db::Database) = new(ContainerNode(db), DataFrame(container_id=Int[], stock=Vector{Int}[], percent_filled=Float64[], cost=Float64[]))
+    CLPSolution(db::Database) = new(db, ContainerNode(db), DataFrame(container_id=Int[], stock=Vector{Int}[], percent_filled=Float64[], cost=Float64[]))
 end
 
 function Base.show(io::IO, x::CLPSolution)

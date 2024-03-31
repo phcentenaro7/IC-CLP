@@ -7,4 +7,5 @@ include("noerror.jl")
 include("wb.jl")
 include("sequences.jl")
 include("tikz.jl")
+include("3Dview.jl")
 end # module

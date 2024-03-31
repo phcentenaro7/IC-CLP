@@ -1,26 +1,28 @@
 using JuMP
 using Logging
+using GLPK
 
-function get_minimal_container_sequence(db::Database, stock, optimizer, verbose)
+function get_minimal_container_sequence(db::Database, stock, optimizer, correction_factor; time_limit_sec=30, solver_parameters)
     V = get_stock_volume(db, stock)
     v = get_container_volume_vector(db)
     c = db.containers[:,:cost] |> collect
+    Cf = correction_factor
     n = length(v)
-    @info "invoking solver to determine minimal container sequence..."
     model = Model(optimizer)
-    if !verbose
-        set_silent(model)
-    end
     @variable(model, x[1:n] >= 0, Int)
     @objective(model, Min, sum(c[i]*x[i] for i in 1:n))
-    @constraint(model, sum(v[i]*x[i] for i in 1:n) >= V)
+    @constraint(model, Cf * sum(v[i]*x[i] for i in 1:n) >= V)
+    for (key, value) in solver_parameters
+        set_optimizer_attribute(model, key, value)
+    end
+    set_time_limit_sec(model, time_limit_sec)
     optimize!(model)
     container_sequence = Int[]
     xvals = Int.(value.(model[:x]))
     for i in 1:n
         append!(container_sequence, repeat([i], xvals[i]))
     end
-    @info "minimal container sequence determined." xvals
+    @info "minimal container sequence determined." xvals'
     return container_sequence
 end
 
@@ -81,27 +83,52 @@ function create_new_node!(parent, container_id, db, reference_table; flexible_ra
     return node
 end
 
-function solve_CLP(db::Database, optimizer; verbose=false, flexible_ratio=.0, separate_rankings=true)
+function get_average_container_filling(db::Database, node::ContainerNode)
+    node = get_first_node(node)
+    sum = 0
+    N = 0
+    while !isnothing(node)
+        sum += get_filled_volume(db, node, mode=:percent)
+        N += 1
+        node = node.next
+    end
+    return sum / N
+end
+
+function solve_CLP(db::Database, optimizer; verbose=false, flexible_ratio=.0, separate_rankings=true, time_limit_sec=30, solver_parameters=Dict())
     default_logger = global_logger()
-    tmp_logger = ConsoleLogger(stdout, verbose ? Logging.Info : Logging.Warn, meta_formatter=(level, _module, group, id, file, line) -> (:light_cyan, "CLP: ", ""), show_limited=false)
+    tmp_logger = ConsoleLogger(stdout, verbose ? Logging.Info : Logging.Warn, meta_formatter=(level, _module, group, id, file, line) -> (:light_cyan, "Hummingbird: ", ""), show_limited=false)
     global_logger(tmp_logger)
     @info "beginning solution process with specified settings" flexible_ratio, separate_rankings
     sort_containers_by_decreasing_volume!(db)
     sort_items_by_decreasing_volume!(db)
-    rt = new_reference_table()
     solution = CLPSolution(db)
-    node = solution.sequence
+    root_node = node = solution.sequence
+    tries = 0
+    local cids
     while any_items_left(node)
-        cids = get_minimal_container_sequence(db, node.stock, optimizer, verbose)
+        root_node.next = nothing
+        empty!(solution.summary)
+        rt = new_reference_table()
+        @info "invoking solver to determine minimal container sequence..."
+        if tries == 0
+            @info "attempt number 1 with correction factor 1..."
+            cids = get_minimal_container_sequence(db, root_node.stock, optimizer, 1, time_limit_sec=time_limit_sec, solver_parameters=solver_parameters)
+        else
+            Cf = get_average_container_filling(db, node)
+            Cf = 0.01*Cf - (0.05 * (tries - 1))
+            @info "attempt number $(tries+1) with correction factor $Cf..."
+            cids = get_minimal_container_sequence(db, root_node.stock, optimizer, Cf, time_limit_sec=time_limit_sec, solver_parameters=solver_parameters)
+        end
+        node = root_node
+        tries += 1
         @info "creating nodes..."
         for cid in cids
             node = create_new_node!(node, cid, db, rt, solution=solution)
+            if !any_items_left(node)
+                break
+            end
         end
-    end
-    while any_items_left(node)
-        push!(cids, db.containers[:,:id] |> last)
-        cid = last(cids)
-        node = create_new_node!(node, cid, db, rt, solution=solution)
     end
     @info "solution reached using $(get_sequence_length(node)) containers; total cost is $(get_sequence_cost(db, node))."
     global_logger(default_logger)

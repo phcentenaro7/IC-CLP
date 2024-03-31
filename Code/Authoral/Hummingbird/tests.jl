@@ -1,4 +1,5 @@
 using GLPK
+using Gurobi
 using BenchmarkTools
 import .Hummingbird as HB
 
@@ -18,6 +19,5 @@ HB.add_container!(db, [250,500,1000], 250*500*1000/den)
 HB.add_container!(db, [300,550,1200], 300*550*1200/den)
 HB.add_container!(db, [210,410,1100], 210*410*1100/den)
 HB.add_container!(db, [180,380,800], 180*380*800/den)
-t0 = Dates.time()
 sol = HB.solve_CLP(db, GLPK.Optimizer, flexible_ratio=0.1, separate_rankings=false, verbose=true)
 ##
