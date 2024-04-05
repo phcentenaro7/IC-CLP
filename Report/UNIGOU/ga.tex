@@ -1,0 +1,17 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{graphs,graphdrawing,quotes,calc,arrows,arrows.meta,backgrounds,patterns,shapes.geometric}
+\begin{document}
+\begin{tikzpicture}
+    \begin{scope}[very thick]
+        \draw (0,0) rectangle (1,-0.5) node[midway]{$G_1$};
+        \draw (0,-0.5) rectangle (1,-1) node[midway]{$G_2$};
+        \path (0,-1) rectangle (1,-1.5) node[draw=none,midway] {$\vdots$};
+        \draw (0,-1.7) rectangle (1,-2.2) node[midway]{$G_M$};
+        \node[draw=none] at (2, -0.25) {$B_1$};
+        \node[draw=none] at (2, -0.75) {$B_2$};
+        \node[draw=none] at (2, -1.25) {$B_3$};
+        \node[draw=none] at (2, -1.75) {$B_4$};
+    \end{scope}
+\end{tikzpicture}
+\end{document}

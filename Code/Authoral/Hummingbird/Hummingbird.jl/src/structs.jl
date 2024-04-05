@@ -84,6 +84,10 @@ mutable struct ContainerNode
     end
 end
 
+function get_stock_volume(db::Database, node::ContainerNode)
+    return sum(prod(item[[:dim1,:dim2,:dim3]]) * node.stock[item[:id]] for item in eachrow(db.items[:,:]))
+end
+
 function Base.show(io::IO, x::ContainerNode)
     println(io, "$(get_node_index(x))-index container node")
     println(io, "Container type: $(x.container_id)")
@@ -209,6 +213,13 @@ function get_first_node(node)
     return node
 end
 
+function get_last_node(node)
+    while node.next |> !isnothing
+        node = node.next
+    end
+    return node
+end
+
 function get_node_index(node)
     i = 0
     while true
@@ -244,6 +255,21 @@ function get_sequence_cost(db::Database, node)
         sum_cost += db.containers[node.container_id,:cost]
         node = node.next
     end
+end
+
+function get_average_container_filling(db::Database, node::ContainerNode)
+    node = get_first_node(node)
+    if node |> isnothing
+        return 0
+    end
+    sum = 0
+    N = 0
+    while !isnothing(node)
+        sum += get_filled_volume(db, node, mode=:percent)
+        N += 1
+        node = node.next
+    end
+    return sum / N
 end
 
 struct CLPSolution

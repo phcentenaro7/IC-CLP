@@ -8,4 +8,5 @@ include("wb.jl")
 include("sequences.jl")
 include("tikz.jl")
 include("3Dview.jl")
+include("logger.jl")
 end # module
