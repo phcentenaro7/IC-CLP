@@ -1,0 +1,18 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.25, transform shape]
+        \tikzcuboidset{all faces/.style={fill=green!40}}
+        \pic at (0,0,0) {cuboid=5--2--9};
+        \pic at (10,0,0) {cuboid=9--2--5};
+        \pic at (24,0,0) {cuboid=5--9--2};
+        \pic at (33,0,0) {cuboid=2--9--5};
+        \pic at (40,0,0) {cuboid=2--5--9};
+        \pic at (50,0,0) {cuboid=9--5--2};
+        \draw[rounded corners=0.2cm, color=red, dashed] (-1,12) rectangle(61,-3);
+        \draw[rounded corners=0.2cm, color=blue, dashed] (-0.5, 5) rectangle (22, -1);
+        \node[scale=4,color=red,anchor=west] at (0, 13) {Variable-height rotations};
+        \node[scale=4,color=blue,anchor=west] at (0, 6) {Fixed-height rotations};
+    \end{tikzpicture}
+    \caption{All possible box rotations}
+    \label{fig:cuboid rotations}
+\end{figure}

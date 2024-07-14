@@ -1,0 +1,34 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
+        \node (start) [startstop] {Start};
+        \node (proc1a) [process, right of=start, xshift=2cm] {Filter boxes with\\nonzero stock};
+        \node (proc1b) [process, right of=proc1a, xshift=2.75cm] {Filter boxes that\\can fit remaining depth};
+        \node (dec1) [decision, below of=proc1b, yshift=-0.5cm] {Box\\list\\empty?};
+        \node (dec2) [decision, below of=dec1, yshift=-1.5cm, inner sep=-0.8ex, aspect=1.5] {Any\\previously loaded\\boxes?};
+        \node (proc2) [process, below of=dec2, yshift=-1cm] {Filter previously\\loaded boxes};
+        \node (proc3) [process, below of=start] {Filter boxes with\\max smallest dimension};
+        \node (proc4) [process, below of=proc3] {Filter boxes with\\max stock};
+        \node (proc5) [process, below of=proc4] {Filter boxes with\\max greatest dimension};
+        \node (proc6) [process, below of=proc5] {Select any\\filtered box};
+        \node (end) [startstop, below of=proc6] {End};
+        \node (proc7) [process, below of=proc2] {No further loading\\is possible};
+
+        \draw [arrow] (start) -- (proc1a);
+        \draw [arrow] (proc1a) -- (proc1b);
+        \draw [arrow] (proc1b) -- (dec1);
+        \draw [arrow] (dec1) -- node[anchor=east] {No} (dec2);
+        \draw [arrow] (dec2) -- node[anchor=east] {Yes} (proc2);
+        \draw [arrow] (dec2) -| node[xshift=2.75cm,anchor=south] {No}([xshift=1.25cm]proc3.east) -- (proc3.east);
+        \draw [arrow] (proc2.west) -| ([xshift=1.25cm]proc3.east) -- (proc3.east);
+        \draw [arrow] (dec1.east) -| node[xshift=-0.75cm, anchor=south] {Yes} ([xshift=0.75cm]proc7.east) -- (proc7.east);
+        \draw [arrow] (proc3) -- (proc4);
+        \draw [arrow] (proc4) -- (proc5);
+        \draw [arrow] (proc5) -- (proc6);
+        \draw [arrow] (proc6) -- (end);
+        \draw [arrow] (proc7.west) -| (end.south);
+    \end{tikzpicture}
+    \renewcommand\figurename{Flowchart}
+    \caption{Primary box selection procedure}
+    \label[flowchart]{flow:primary box selection WBH}
+\end{figure}

@@ -1,0 +1,31 @@
+\section{Literature review}
+
+According to \textcite{FANSLAU2010}, inexact methods for CLPs can be divided into three categories:
+
+\begin{enumerate}[(a)]
+    \item Conventional heuristics: Methods that were conceived specifically for the purpose of solving CLPs. Examples include the wall-building \cite{GEORGE1980}, layer-building \cite{BISCHOFF1995} and block-building \cite{ELEY2002} heuristics.
+    \item Metaheuristics: Methods that can be adapted to solve a wide variety of problems. Generally, metaheuristics owe their flexibility to the natural processes they are based on, which can be easily abstracted. Two common examples for solving CLPs are simulated annealing \cite{EGEBLAD2009} and genetic algorithms \cite{GONÇALVES2011}.
+    \item Tree search: Methods that create trees of possible loadings in an attempt to filter promising solutions. These include the method by \textcite{FANSLAU2010}, the improvement step of the block-building heuristic \cite{ELEY2002}, and the tree search method by \textcite{LIU2014}.
+\end{enumerate}
+
+Of particular interest to us are the wall-building and genetic algorithm methods, which we describe in greater detail ahead.
+
+\subsection{Wall-building heuristic}
+
+The literature review on CLPs conducted by \textcite{BORTFELDT2012} marks the wall-building heuristic (WB) by \textcite{GEORGE1980} as the oldest method in the literature. Regardless, WB has proven to be very successful, with a few of the most robust methods in the literature drawing inspiration from it (e.g. \cite{EGEBLAD2010}). WB builds solutions by sequentially cutting the container into cuboid spaces of same width and height, but lesser depth, called layers, which are then filled with boxes according to a set of rules. \cref{sec:wb implementation} contains a detailed description of our WB implementation.
+
+\subsection{Genetic algorithms}
+
+Genetic algorithms (GAs) are methods that take inspiration from evolutionary principles to solve problems. To achieve this goal, a GA must first encode solutions in the form of chromosomes. Usually, this means that solutions are converted into strings of numbers, with each position in the string representing a different characteristic of the solution (a gene). Once the conversion process is properly defined, we must establish a fitness function, which will be responsible for evaluating the quality of a given solution.
+
+According to \textcite{SASTRY2005}, GAs take the following steps to evolve the pool of available solutions, known as a population:
+
+\begin{enumerate}
+    \item Initialization: A population of $n$ solutions is generated, either randomly or following a specialized method. Though $n$ is arbitrary, research indicates that if it is too small for a given problem, GA may get stuck in a local optimum; if it is too large, it may consume more computational resources without improving the population \cite{ROEVA2013}.
+    \item Evaluation: All solutions in the population are evaluated using the fitness function.
+    \item Selection: A subset of the population is chosen to breed solutions for the next generation. This takes the fitness function's evaluations into account.
+    \item Recombination: Two or more selected parents are combined to create new chromosomes.
+    \item Mutation: The solutions resulting from the recombination step may randomly have part of their genes changed. This is important to explore neighboring solutions and avoid convergence to local optima, if the parents are too similar.
+    \item Replacement: The current population is either partially or completely replaced by the offspring of the recombination and mutation processes.
+    \item Steps 2 through 7 are repeated until contextual criteria are met.
+\end{enumerate}

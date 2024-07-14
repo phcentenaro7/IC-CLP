@@ -1,0 +1,31 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
+        \node (start) [startstop] {Start};
+        \node (check nonzero stock) [decision, below of = start, yshift=-2cm, inner sep=0.2ex] {Box\\stock\\nonzero?};
+        \node (check next placement) [decision, right of = check nonzero stock, xshift=3cm] {Next box\\exceeds space\\width?};
+        \node (check amalgam overlap) [decision, right of = check next placement, xshift=3cm] {Space\\overlaps with\\amalgam?};
+        \node (check flexible width) [decision, below of = check amalgam overlap, yshift=-2cm, inner sep=0.2ex] {Box\\exceeds\\$w_L + \hat{w}$?};
+        \node (place column) [process, above of=check next placement, yshift=1cm] {Place box column};
+        \node (adjust widths) [process, left of=check flexible width, xshift=-3cm] {Adjust space and\\amalgam widths};
+        \node (place column 2) [process, below of=adjust widths, yshift=0.25cm] {Place box column};
+        \node (end) [startstop, left of=place column 2,xshift=-3cm, yshift=-1cm] {End};
+        
+        \draw [arrow] (start) -- (check nonzero stock);
+        \draw [arrow] (check nonzero stock) -- node [anchor=south] {Yes} (check next placement);
+        \draw [arrow] (check nonzero stock) -- node [anchor=east] {No} (end);
+        \draw [arrow] (check next placement) -- node [anchor=east] {No} (place column);
+        \draw [arrow] (check next placement) -- node [anchor=south] {Yes} (check amalgam overlap);
+        \draw [arrow] (check amalgam overlap) -- node [anchor=east] {Yes} (check flexible width);
+        \draw [arrow] (check flexible width) -- node [anchor=south] {No} (adjust widths);
+        \draw (place column.west) -| (check nonzero stock.north);
+        \draw [arrow] (check flexible width.south) |- (end.east);
+        \draw (check amalgam overlap.east) -- node [anchor=south] {No} +(0.5cm,0) |- (end.east);
+        \draw [arrow] (adjust widths) -- (place column 2);
+        \draw [arrow] (place column 2) |- (end.east);
+        % \draw (check amalgam overlap.east) -- +(0.5cm,0) |- (check)
+    \end{tikzpicture}
+    \renewcommand\figurename{Flowchart}
+    \caption{Box loading procedure}
+    \label[flowchart]{flow:box loading procedure WBH}
+\end{figure}

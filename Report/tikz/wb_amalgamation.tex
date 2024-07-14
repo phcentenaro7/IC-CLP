@@ -1,0 +1,21 @@
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \fill[dashed,pattern=north east lines, pattern color=green!80] (0,0) rectangle (9,2);
+        \fill[dashed,pattern=north east lines, pattern color=pink!200] (3,2) rectangle (9,3);
+        \filldraw[fill=blue!40] (0,2) -- (3,2) -- (3,3) -- (5,3) -- (5,3.5) -- (9,3.5) -- (9,5) -- (0,5) -- cycle;
+        \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (-0.3,2) -- (-0.3,5);
+        \draw[{|Stealth[length=2mm]}-{Stealth[length=2mm]|}] (-0.3,0) -- (-0.3,2);
+        \node[anchor=east, align=center] at (-0.3,3.5) {Previous\\layer};
+        \node[anchor=east, align=center] at (-0.3,1) {Current\\layer};
+        \draw (0,0) rectangle (9,5);
+        \draw [dashed] (3,0) -- (3,2);
+        \draw [dashed] (3,2) -- (9,2);
+        \draw [dashed] (5,3) -- (9,3);
+        \node at (6,2.5) {\huge$\Omega$};
+        \node at (1.5,1) {\huge L};
+        \node at (6,1) {\huge R};
+    \end{tikzpicture}
+    \caption{Amalgamation procedure}
+    \label{fig:amalgamation example}
+\end{figure}

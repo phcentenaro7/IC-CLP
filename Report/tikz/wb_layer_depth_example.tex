@@ -1,0 +1,15 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.5, transform shape]
+        \tikzcuboidset{hidden edges/.style={dashed}, all faces/.style={fill=blue!20}, zangle=225}
+        \pic at (10,0,0) {cuboid=5--5--15};
+        \tikzcuboidset*{hidden edges/.style={dashed}, all faces/.style={fill=red, fill opacity=0.3}}
+        \pic at (10,0,0) {cuboid=5--5--4};
+        \tikzcuboidset*{hidden edges/.style={draw=none}, all faces/.style={fill=green!40}}
+        \pic at (0,0,0) {cuboid=2--2--4};
+        \draw[dashed] (2,0,-3.675) -- (10,0,-3.675);
+        \draw[dashed] (2,0,0) -- (10,0,0);
+    \end{tikzpicture}
+    \caption{A selected box (left) defining the depth of a container layer (right)}
+    \label{fig:WB layer example}
+\end{figure}
