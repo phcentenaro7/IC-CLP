@@ -102,24 +102,25 @@ function subtract_space!(node::ContainerNode, S1, S2)
     node.spaces[S1, :status] = :readjusted
     for space in spaces
         add_space!(node, space[2] .- space[1], space[1])
-        new_space = node.spaces[end, :]
-        if new_space[:y] > 0
-            merge_candidates = filter(row -> row[:y] == new_space[:y] && row[:status] != :filled, node.spaces)
-            for merge_candidate in eachrow(merge_candidates)
-                if are_spaces_adjacent(node, new_space[:id], merge_candidate[:id])
-                    local nx1, nx2, nz1, nz2
-                    ny1, ny2 = new_space[:y], new_space[:height]
-                    if new_space[:x] >= merge_candidate[:x] + merge_candidate[:width] || merge_candidate[:x] >= new_space[:x] + new_space[:width]
-                        nx1, nx2 = min(new_space[:x], merge_candidate[:x]), max(new_space[:x] + new_space[:width], merge_candidate[:x] + merge_candidate[:width])
-                        nz1, nz2 = max(new_space[:z], merge_candidate[:z]), min(new_space[:z] + new_space[:depth], merge_candidate[:z] + merge_candidate[:depth])
-                    else
-                        nx1, nx2 = max(new_space[:x], merge_candidate[:x]), min(new_space[:x] + new_space[:width], merge_candidate[:x] + merge_candidate[:width])
-                        nz1, nz2 = min(new_space[:z], merge_candidate[:z]), max(new_space[:z] + new_space[:depth], merge_candidate[:z] + merge_candidate[:depth])
-                    end
-                    add_space!(node, [nx2, ny2, nz2] - [nx1, ny1, nz1], [nx1, ny1, nz1], type = :merge)
-                end
-            end
-        end
+        # new_space = node.spaces[end, :]
+        # if new_space[:y] > 0
+        #     merge_candidate = filter(row -> row[:y] == new_space[:y] && row[:status] == :new && are_spaces_adjacent(node, new_space[:id], row[:id]), node.spaces) |> noerror_first
+        #     if merge_candidate |> isnothing
+        #         continue
+        #     end
+        #     local nx1, nx2, nz1, nz2
+        #     ny1, ny2 = new_space[:y], new_space[:y] + new_space[:height]
+        #     if new_space[:x] >= merge_candidate[:x] + merge_candidate[:width] || merge_candidate[:x] >= new_space[:x] + new_space[:width]
+        #         nx1, nx2 = min(new_space[:x], merge_candidate[:x]), max(new_space[:x] + new_space[:width], merge_candidate[:x] + merge_candidate[:width])
+        #         nz1, nz2 = max(new_space[:z], merge_candidate[:z]), min(new_space[:z] + new_space[:depth], merge_candidate[:z] + merge_candidate[:depth])
+        #     else
+        #         nx1, nx2 = max(new_space[:x], merge_candidate[:x]), min(new_space[:x] + new_space[:width], merge_candidate[:x] + merge_candidate[:width])
+        #         nz1, nz2 = min(new_space[:z], merge_candidate[:z]), max(new_space[:z] + new_space[:depth], merge_candidate[:z] + merge_candidate[:depth])
+        #     end
+        #     add_space!(node, [nx2, ny2, nz2] - [nx1, ny1, nz1], [nx1, ny1, nz1], type=:merge)
+        #     new_space[:status] = :merge
+        #     merge_candidate[:status] = :merge
+        # end
     end
 end
 

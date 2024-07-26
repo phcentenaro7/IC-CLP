@@ -66,7 +66,7 @@ function as_3Dview(db::Database, node::ContainerNode; colors=cgrad(:rainbow, nro
     append!(drawables, meshes[1:n])
     append!(drawables, outlines[1:12*n])
     return Plotly.plot(drawables, Layout(scene=attr(
-        #=aspectmode="data",=#
+        aspectmode="data",
         xaxis=attr(title="x", #=range=[0,W + 1],=# autorange="reversed"),
         yaxis=attr(title="z"#=, range=[0,D + 1]=#),
         zaxis=attr(title="y"#=, range=[0,H + 1]=#))))

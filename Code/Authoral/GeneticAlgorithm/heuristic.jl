@@ -62,31 +62,45 @@ function get_chromosome_layer_vector(db::Database, item_vector, chromosome)
     return layers
 end
 
+function evaluate_chromosome(db::Database, chromosome, item_vector)
+    item_order = reorder_item_vector(item_vector, chromosome)
+    layer_order = get_chromosome_layer_vector(db, item_vector, chromosome)
+    root_node = ContainerNode(db)
+    node = ContainerNode(root_node, 1, db)
+    for i in eachindex(item_order)
+        if node.stock[item_order[i]] == 0
+            continue
+        end
+        S = bbl_procedure(db, node, item_order[i], layer_order[i][1])
+        if S == 0
+            continue
+        end
+        place_item!(db, node, item_order[i], layer_order[i][1], layer_order[i][2])
+        filled_space_id = node.spaces[end, :id]
+        for space in eachrow(filter(row -> row[:status] == :new || row[:status] == :merge, node.spaces))
+            subtract_space!(node, space[:id], filled_space_id)
+        end
+    end
+    fitness = 100*sum(prod(space[[:width,:height,:depth]]) for space in eachrow(filter(row -> row[:status] == :filled, node.spaces)))/prod(node.spaces[1, [:width,:height,:depth]])
+    log("", fitness=fitness)
+    if fitness > 100
+        for item in eachrow(filter(row -> row[:status] == :filled, node.spaces))
+            for other in eachrow(filter(row -> row[:id] != item[:id] && row[:status] == :filled, node.spaces))
+                if(do_spaces_overlap(node, item[:id], other[:id]))
+                    println("overlap ($(item[:id]), $(other[:id]))")
+                end
+            end
+        end
+    end
+    return fitness
+end
+
 function solve_CLP(db::Database, population_size)
     population = generate_population(db, population_size)
     item_vector = get_database_item_vector(db)
     pop_fitness = []
     for chromosome in population
-        item_order = reorder_item_vector(item_vector, chromosome)
-        layer_order = get_chromosome_layer_vector(db, item_vector, chromosome)
-        root_node = ContainerNode(db)
-        node = ContainerNode(root_node, 1, db)
-        for i in eachindex(item_order)
-            if node.stock[item_order[i]] == 0
-                continue
-            end
-            S = bbl_procedure(db, node, item_order[i], layer_order[i][1])
-            if S == 0
-                continue
-            end
-            place_item!(db, node, item_order[i], layer_order[i][1], layer_order[i][2])
-            filled_space_id = node.spaces[end, :id]
-            for space in eachrow(filter(row -> row[:status] == :new, node.spaces))
-                subtract_space!(node, space[:id], filled_space_id)
-            end
-        end
-        push!(pop_fitness, 100*sum(prod(space[[:width,:height,:depth]]) for space in eachrow(filter(row -> row[:status] == :filled, node.spaces)))/prod(node.spaces[1, [:width,:height,:depth]]))
-        return node
+        push!(pop_fitness, evaluate_chromosome(db, chromosome, item_vector))
     end
     return pop_fitness
 end
