@@ -174,7 +174,7 @@ end
 """
 Places item with ID `I` in the container, with the specified rotation `r`, along the specified plane `p`. The `r` parameter may be any permutation of axes, as provided by function `axis_permutation`. The `plane` parameter may be any permutation of axes, as provided by function `plane`. Importantly, the first axis in `p` is the one that the algorithm attempts to maximize. For instance, if `p = :xy`, then priority is given to filling the `x` axis over the `y` axis.
 """
-function place_item!(db::Database, node::ContainerNode, I, r, p)
+function place_item!(db::Database, node::ContainerNode, stock, I, r, p)
     S = bbl_procedure(db, node, I, r)
     r = axis_permutation(r)
     p = plane(p)
@@ -185,16 +185,16 @@ function place_item!(db::Database, node::ContainerNode, I, r, p)
     item_dims = collect(db.items[I, [:dim1,:dim2,:dim3]])[r]
     strip_size = floor(space_dims[p[1]] / item_dims[p[1]])
     layer_dims = copy(item_dims)
-    if node.stock[I] >= strip_size
+    if stock[I] >= strip_size
         layer_dims[p[1]] *= strip_size
-        node.stock[I] -= strip_size
-        while layer_dims[p[2]] + item_dims[p[2]] <= space_dims[p[2]] && node.stock[I] >= strip_size
+        stock[I] -= strip_size
+        while layer_dims[p[2]] + item_dims[p[2]] <= space_dims[p[2]] && stock[I] >= strip_size
             layer_dims[p[2]] += item_dims[p[2]]
-            node.stock[I] -= strip_size
+            stock[I] -= strip_size
         end
     else
-        layer_dims[p[1]] *= node.stock[I]
-        node.stock[I] = 0
+        layer_dims[p[1]] *= stock[I]
+        stock[I] = 0
     end
     add_space!(node, layer_dims, collect(node.spaces[S, [:x,:y,:z]]), item=I, type=:filled)
 end

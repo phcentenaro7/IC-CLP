@@ -2,28 +2,23 @@ using JuMP
 using Logging
 using GLPK
 
-function get_minimal_container_sequence(db::Database, node, optimizer; time_limit_sec=30, solver_parameters)
-    V = get_stock_volume(db, get_root_node(node))
-    Vhat = get_stock_volume(db, get_last_node(node))
-    C = get_average_container_filling(db, node) / 100
+function get_minimal_container_sequence(db::Database, node, optimizer, Vc; time_limit_sec=30, solver_parameters)
+    Vs = get_stock_volume(db, get_last_node(node))
     root_node = get_root_node(node)
     root_node.next = nothing
-    R = C == 0 ? 0 : Vhat/C
     v = get_container_volume_vector(db)
     n = length(v)
     c = db.containers[:,:cost] |> collect
-    if iszero(Vhat)
-        return container_sequence
-    end
     model = Model(optimizer)
     @variable(model, x[1:n] >= 0, Int)
     @objective(model, Min, sum(c[i]*x[i] for i in 1:n))
-    @constraint(model, sum(v[i]*x[i] for i in 1:n) >= V + R)
+    @constraint(model, sum(v[i]*x[i] for i in 1:n) >= Vc + Vs)
     for (key, value) in solver_parameters
         set_optimizer_attribute(model, key, value)
     end
     set_time_limit_sec(model, time_limit_sec)
     optimize!(model)
+    print(model)
     container_sequence = Int[]
     xvals = Int.(value.(model[:x]))
     for i in 1:n
@@ -90,7 +85,7 @@ function create_new_node!(parent, container_id, db, reference_table; flexible_ra
     return node
 end
 
-function solve_CLP(db::Database, optimizer; verbose=false, flexible_ratio=.0, separate_rankings=true, time_limit_sec=30, solver_parameters=Dict())
+function solve_CLP(db::Database, optimizer; verbose=true, flexible_ratio=.0, separate_rankings=true, time_limit_sec=30, solver_parameters=Dict())
     verbose ? logging_on() : nothing
     log("beginning solution process with specified settings", flexible_ratio = flexible_ratio, separate_rankings = separate_rankings)
     sort_containers_by_decreasing_volume!(db)
@@ -98,15 +93,17 @@ function solve_CLP(db::Database, optimizer; verbose=false, flexible_ratio=.0, se
     solution = CLPSolution(db)
     root_node = node = solution.sequence
     tries = 0
-    local cids
+    Vc = 0
+    local cids #container IDs
     while any_items_left(node)
+        Vc = get_container_volume_sum(solution)
         empty!(solution.summary)
         rt = new_reference_table()
         log("invoking solver to determine minimal container sequence...")
         if any_items_left(get_last_node(node))
             tries += 1
             log("attempt number $(tries)...")
-            cids = get_minimal_container_sequence(db, root_node, optimizer, time_limit_sec=time_limit_sec, solver_parameters=solver_parameters)
+            cids = get_minimal_container_sequence(db, root_node, optimizer, Vc, time_limit_sec=time_limit_sec, solver_parameters=solver_parameters)
         end
         node = root_node
         log("creating nodes...")

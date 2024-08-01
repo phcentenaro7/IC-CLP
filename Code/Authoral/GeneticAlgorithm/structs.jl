@@ -72,6 +72,15 @@ function get_total_database_item_quantities(db::Database)
     return sum(quantity for quantity in eachrow(db.items[:, :quantity])) |> first
 end
 
+get_total_stock(db::Database) = get_total_database_item_quantities(db)
+
+"""
+Returns the vector of all item quantities registered in the database.
+"""
+function get_stock_vector(db::Database)
+    return [item[:quantity] for item in eachrow(db.items[:,:])]
+end
+
 """
 Returns the sum volume of all items registered in the database.
 """
@@ -95,6 +104,11 @@ mutable struct ContainerNode
         add_space!(node, db.containers[container_id, [:width,:height,:depth]], [0, 0, 0])
         return node
     end
+end
+
+function get_container_volume(db::Database, node::ContainerNode)
+    container = db.containers[node.container_id,:]
+    return prod(container[[:width,:height,:depth]])
 end
 
 """
@@ -208,6 +222,17 @@ function Base.show(io::IO, x::ContainerNode)
     println(io, "Container type: $(x.container_id)")
     println(io, "Filled volume: $(x.filled_volume)")
     println(io, "Stock: $(x.stock)")
+end
+
+function get_container_volume_sum(db::Database, root_node)
+    S = 0
+    println(root_node)
+    node = root_node.next
+    while !isnothing(node)
+        S += get_container_volume(db, node)
+        node = node.next
+    end
+    return S
 end
 
 """

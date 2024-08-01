@@ -265,7 +265,7 @@ function get_average_container_filling(db::Database, node::ContainerNode)
     sum = 0
     N = 0
     while !isnothing(node)
-        sum += get_filled_volume(db, node, mode=:percent)
+        sum += get_filled_volume(db, node, mode=:volume)
         N += 1
         node = node.next
     end
@@ -285,4 +285,14 @@ end
 
 function add_node_summary!(CLP::CLPSolution, container_id::Int, stock::Vector{Int}, percent_filled::Float64, cost::Float64)
     push!(CLP.summary, [container_id, stock, percent_filled, cost])
+end
+
+function get_container_volume_sum(CLP::CLPSolution)
+    S = 0
+    node = CLP.sequence.next
+    while !isnothing(node)
+        S += get_container_volume(CLP.db, node)
+        node = node.next
+    end
+    return S
 end

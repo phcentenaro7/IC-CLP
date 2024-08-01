@@ -2,7 +2,7 @@ using Logging
 
 logging_allowed = false
 default_logger = global_logger()
-hb_logger = ConsoleLogger(stdout, Logging.Info, meta_formatter=(level, _module, group, id, file, line) -> (:light_cyan, "Hummingbird: ", ""), show_limited=false)
+hb_logger = ConsoleLogger(stdout, Logging.Info, meta_formatter=(level, _module, group, id, file, line) -> (:light_cyan, "Logger: ", ""), show_limited=false)
 
 function logging_on()
     global_logger(hb_logger)

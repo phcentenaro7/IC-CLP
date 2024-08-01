@@ -47,17 +47,16 @@ function rgb_as_string(rgb)
     return "rgb($(round(255*rgb.r)),$(round(255*rgb.g)),$(round(255*rgb.b)))"
 end
 
-function as_3Dview(db::Database, node::ContainerNode, layer_id; colors=cgrad(:rainbow, nrow(db.items), categorical=true))
-    drawables = meshes = outlines = Vector{GenericTrace}()
-    space_ids = filter(row -> row[:layer] == layer_id, node.spaces)[:,:id]
-    placements = filter(row -> row[:space] in space_ids, node.placements)
-    for placement in eachrow(placements)
-        x, y, z = collect(placement[[:x, :y, :z]]) - [0, 0, node.layers[layer_id,:z]]
+function as_3Dview(db::Database, node::ContainerNode; colors=cgrad(:rainbow, nrow(db.items), categorical=true))
+    drawables, meshes, outlines = Vector{GenericTrace}(), Vector{GenericTrace}(), Vector{GenericTrace}()
+    for placement in eachrow(node.placements)
+        x, y, z = placement[[:x, :y, :z]]
         w, d, h = collect(placement[[:width, :height, :depth]]) .* [1,placement[:quantity],1] 
         m = create_box_mesh((x, z, y), (w, h, d), colors[placement[:item]] |> rgb_as_string)
         m.name = "($(placement[:item]), $(Int(placement[:quantity])))"
         push!(meshes, m)
-        append!(outlines, create_box_outline_vector((x, z, y), (w, h, d), "rgb(0,0,0)"))
+        append!(outlines, create_box_outline_vector((0, 0, 0), Tuple(collect(db.containers[node.container_id, [:width,:depth,:height]])), "rgb(0,0,0)"))
+        # append!(outlines, create_box_outline_vector((x, z, y), (w, h, d), "rgb(0,0,0)"))
     end
     append!(drawables, meshes)
     append!(drawables, outlines)

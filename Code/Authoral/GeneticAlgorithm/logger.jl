@@ -14,13 +14,13 @@ function logging_off()
     global logging_allowed = false
 end
 
-function log(message::String)
+function logger(message::String)
     if logging_allowed
         @info message
     end
 end
 
-function log(message::String; vars...)
+function logger(message::String; vars...)
     if logging_allowed
         if length(vars) > 0
             @info message vars...
