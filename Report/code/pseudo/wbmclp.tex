@@ -1,0 +1,22 @@
+\begin{algorithm}
+    \begin{algorithmic}[1]
+        \floatname{algorithm}{Algorithm}
+        \caption{Wall-building heuristic for multiple containers}\label[algorithm]{alg:wb mclp}
+        \State $C_{List} \gets \text{List of containers obtained through IP model}$
+        \While{there are items left to load}
+            \State apply primary box selection procedure to remaining item types
+            \State $L_{depth} \gets \text{depth of the new layer}$
+            \For{$C$ \textbf{in} $C_{List}$}
+                \State $C_{depth} \gets \text{depth of remaining unfilled space in $C$}$
+                \If{$C_{depth} \geq L_{depth}$}
+                    \State apply placement procedure to $C$
+                    \Break
+                \EndIf
+            \EndFor
+            \If{placement procedure not applied}
+                \State \Return cannot place all the items
+            \EndIf
+        \EndWhile
+        \State \Return all items placed
+    \end{algorithmic}
+\end{algorithm}

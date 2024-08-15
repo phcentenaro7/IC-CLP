@@ -19,7 +19,7 @@
         \draw [arrow] (check amalgam overlap) -- node [anchor=east] {Yes} (check flexible width);
         \draw [arrow] (check flexible width) -- node [anchor=south] {No} (adjust widths);
         \draw (place column.west) -| (check nonzero stock.north);
-        \draw [arrow] (check flexible width.south) |- (end.east);
+        \draw [arrow] (check flexible width.south) node [anchor=east, yshift=-0.5cm] {Yes} |- (end.east);
         \draw (check amalgam overlap.east) -- node [anchor=south] {No} +(0.5cm,0) |- (end.east);
         \draw [arrow] (adjust widths) -- (place column 2);
         \draw [arrow] (place column 2) |- (end.east);

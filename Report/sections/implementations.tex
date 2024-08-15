@@ -1,4 +1,4 @@
-\section{Heuristics}
+\section{Implementations}
 
 In this section, we describe our implementations of multiple heuristics, which can be found \href{https://github.com/phcentenaro7/IC-CLP/tree/main/Code/Authoral/Hummingbird}{here}.
 
@@ -30,3 +30,13 @@ Before we discuss the loading procedure, we must introduce the concept of amalga
 We now describe the loading procedure. Let $B_{wh}$ be the box selected through \cref{flow:primary box selection WBH} or \cref{flow:secondary box selection WBH}, and $B_{hw}$ a rotation that swaps its width and height. If $B_{wh}$ has a fixed height, or if $B_{hw}$ does not fit in the space, then we keep $B_{wh}$. Otherwise, if enough stock exists to complete a column with either rotation, we select the rotation that results in the highest column. If neither rotation completes a column, we choose the rotation with the greatest height. This leads us to \cref{flow:box loading procedure WBH}, which describes how spaces are filled using the selected box type. Since spaces are filled by side-by-side columns of a single box rotation, determining the cuboid spaces that remain after loading is trivial.
 
 \input{tikz/wb_loading_procedure.tex}
+
+With this procedure, a single container can be loaded with items. To generalize the loading process to multiple containers, \cref{alg:wb mclp} is used.
+
+\input{code/pseudo/wbmclp.tex}
+
+\subsection{Genetic algorithm}
+
+The GA developed is a simplified version of the one presented by \textcite{GONÇALVES2011}. Let $N$ be the number of items in stock. In this case, each chromosome is composed of $2N$ alleles, with genes in the interval $[0, 1]$. Let $L$ be a list of all the items in stock. The first $N$ genes of a chromosome rearrange the items in $L$ in ascending order. Subsequently, the algorithm places the items in the order specified by the rearranged version of $L$.
+
+As an example, suppose $L = (1, 1, 2, 2, 3)$, where each number corresponds to the type of a certain item in stock. Now suppose a chromosome whose first five genes are $(0.93, 0.42, 0.17, 0.48, 0.80)$. If we rearrange these numbers in ascending order, we obtain $(0.17, 0.42, 0.48, 0.80, 0.93)$. By equivalently swapping the items in $L$, we get its rearrangement $L_r = (2, 1, 2, 3, 1)$.

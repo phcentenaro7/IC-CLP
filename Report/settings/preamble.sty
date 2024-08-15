@@ -151,9 +151,13 @@
 \Crefname{problem}{Problema}{Problemas}
 \creflabelformat{problem}{#2\textup{(#1)}#3}
 
+\crefalias{algorithm}{align}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+
 \crefalias{method}{align}
-\crefname{method}{Método}{Métodos}
-\Crefname{method}{Método}{Métodos}
+\crefname{method}{Method}{Methods}
+\Crefname{method}{Method}{Methods}
 % \creflabelformat{method}{#2\textup{(#1)}#3}
 
 \crefalias{ray}{equation}
@@ -218,7 +222,7 @@
 \usepackage{systeme}
 \usepackage{etoolbox}
 %\cslet{blx@noerroretextools}\empty
-\usepackage[backend=biber,style=ieee-alphabetic,
+\usepackage[backend=biber,style=numeric-comp,
 maxnames=6,maxcitenames=3,isbn=false,sorting=nyt,sortcites=true,date=year]{biblatex}
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 \allowdisplaybreaks
