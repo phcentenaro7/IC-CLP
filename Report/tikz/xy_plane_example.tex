@@ -1,0 +1,34 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.5, transform shape]
+        \tikzcuboidset{hidden edges/.style={dashed}, all faces/.style={fill=blue!20}, zangle=225}
+        \pic at (0,0,0) {cuboid=5--5--5};
+        \draw[-stealth, ultra thick] (-2.5,0,0) -- (-1, 0, 0) node[right]{\scalebox{2}{$x$}};
+        \draw[-stealth, ultra thick] (-2.5,0,0) -- (-2.5, 1.5, 0) node[above]{\scalebox{2}{$y$}};
+        \draw[-stealth, ultra thick] (-2.5,0,0) -- (-2.5, 0, -3) node[above]{\scalebox{2}{$z$}};
+        \tikzcuboidset*{hidden edges/.style={dashed}, all faces/.style={fill=red, fill opacity=0.3}}
+        \draw[-stealth, ultra thick] (7,3.5,0) -- (9,3.5,0);
+        \tikzcuboidset{hidden edges/.style={dashed}, all faces/.style={fill=blue!20}, zangle=225}
+        \pic at (9.3,0,0) {cuboid=5--5--5};
+        \pic at (18,0,0) {cuboid=5--5--5};
+        \draw (17,3.5,0) node{\huge{or}};
+        \tikzcuboidset{all faces/.style={fill=yellow!20}, zangle=225}
+        \pic at (0,0,0) {cuboid=2--1.5--2.75};
+        \pic at (9.3,0,0) {cuboid=2--1.5--2.75};
+        \pic at (11.3,0,0) {cuboid=2--1.5--2.75};
+        \pic at (9.3,1.5,0) {cuboid=2--1.5--2.75};
+        \pic at (11.3,1.5,0) {cuboid=2--1.5--2.75};
+        \pic at (18,0,0) {cuboid=2--1.5--2.75};
+        \pic at (18,1.5,0) {cuboid=2--1.5--2.75};
+        \pic at (18,3,0) {cuboid=2--1.5--2.75};
+        \tikzcuboidset{all faces/.style={fill=blue!20}, zangle=225}
+        \pic at (18,5,0) {cuboid=5--0--5};
+        \pic at (23,0,0) {cuboid=0--5--5};
+        \pic at (9.3,5,0) {cuboid=5--0--5};
+        \pic at (14.3,0,0) {cuboid=0--5--5};
+        \pic at (0,5,0) {cuboid=5--0--5};
+        \pic at (5,0,0) {cuboid=0--5--5};
+    \end{tikzpicture}
+    \caption{Two possible ways of filling the $xy$ plane of a given space with a cuboid item}
+    \label{fig:xy plane example}
+\end{figure}

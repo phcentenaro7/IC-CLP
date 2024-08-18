@@ -37,6 +37,31 @@ With this procedure, a single container can be loaded with items. To generalize 
 
 \subsection{Genetic algorithm}
 
-The GA developed is a simplified version of the one presented by \textcite{GONÇALVES2011}. Let $N$ be the number of items in stock. In this case, each chromosome is composed of $2N$ alleles, with genes in the interval $[0, 1]$. Let $L$ be a list of all the items in stock. The first $N$ genes of a chromosome rearrange the items in $L$ in ascending order. Subsequently, the algorithm places the items in the order specified by the rearranged version of $L$.
+The GA developed is a simplified version of the one presented by \textcite{GONÇALVES2011}. To understand this method, we first need to enumerate the different item types from 1 to $n$. Then, let $q_1, \dots, q_n$ be the quantities of each item type. A non-decreasing sequence $S$ can be defined, containing item $k$ a total of $q_k$ times, for $k = 1,\dots,n$. For example, given 3 item types with $q_1 = q_2 = 2$, $q_3 = 1$, it follows that $S = (1, 1, 2, 2, 3)$.
 
-As an example, suppose $L = (1, 1, 2, 2, 3)$, where each number corresponds to the type of a certain item in stock. Now suppose a chromosome whose first five genes are $(0.93, 0.42, 0.17, 0.48, 0.80)$. If we rearrange these numbers in ascending order, we obtain $(0.17, 0.42, 0.48, 0.80, 0.93)$. By equivalently swapping the items in $L$, we get its rearrangement $L_r = (2, 1, 2, 3, 1)$.
+For a problem with $Q = \sum_{k=1}^{n}q_k$ items, a population of chromosomes with $2Q$ genes is generated, with values in the $[0, 1]$ interval. The first $Q$ genes specify the order in which the heuristic attempts to place items. This is done by associating each gene to the item type with the same index in $S$, and then reordering $S$ the same way as needed to put the first $Q$ genes in ascending order. As an example, suppose $S = (1, 1, 2, 2, 3)$, and a chromosome whose first five genes are $(0.93, 0.42, 0.17, 0.48, 0.80)$. If we rearrange these numbers in ascending order, we obtain $(0.17, 0.42, 0.48, 0.80, 0.93)$. By equivalently swapping the items in $S$, we get its rearrangement, $\bar{S} = (2, 1, 2, 3, 1)$.
+
+The remaining $Q$ genes inform how each item must be placed. Specifically, gene $g_{Q+k}$ is used to determine the rotation and plane of item $\bar{S}_k$, $k = 1, \dots, Q$. Valid rotations for an item can be either variable- or fixed-height rotations, as shown in \cref{fig:cuboid rotations}. The plane can be $xy$, $xz$ or $yz$, and it indicates the axes along which the item is placed. \cref{fig:xy plane example} illustrates the filling of a cuboid space along the $xy$ plane, supposing that there are four items to place. The process consists of selecting one of the axes, $x$ or $y$, and attempting to fill it with as many strips of items as possible, such that the resulting packing is a cuboid. In the first packing, the $x$ plane is prioritized. As a result, one horizontal strip with two items is placed. Since there is enough vertical and horizontal space left, another strip of two boxes is placed on top of the first. In the second packing, the $y$ plane is prioritized. Three items can be stacked vertically, which leaves one. This remaining item is not enough to complete another column, therefore it is not placed.
+
+\input{tikz/xy_plane_example.tex}
+
+Since there are at most six rotations, and each plane can be filled in two different ways, there is a maximum of 36 possible ways to place an item in a given space. In order to select one of the item configurations, all possibilities are mapped to different subintervals of equal length of $[0,1]$. Then, whichever interval the respective gene belongs to is used to define the item's placement.
+
+To select the space in which to place an item, the back-bottom-left procedure (BBL) is used. Let $E_k$ be the $k$-th empty space available for packing. BBL orders spaces such that $E_i < E_j$ if $x_i < x_j$, or $x_i = x_j$ and $y_i < y_j$, or $x_i = x_j$ and $y_i = y_j$ and $z_i < z_j$. Then, the first space in the ordering where the item fits is selected. After an item is placed, new empty cuboid spaces are created, adjacent to the item. To calculate these spaces, the method described by \textcite{LAI1997} is used, with one difference: The space on top of the item is limited to the area the item occupies. This is to guarantee the vertical stability of items, by ensuring that they are either placed on the ground or that their base area is completely supported by an item directly below.
+
+In order to extend the GA by \textcite{GONÇALVES2011} to multiple containers, the BBL procedure is applied to the first container in the sequence. If the current item does not fit in any of the remaining spaces, the next container in the sequence is selected, and the BBL procedure is applied again. This process is repeated until a fitting space is found, or there are no containers left to check.
+
+A chromosome's fitness is calculated as follows: Let $V_{Ti}$ and $V_{Fi}$ be, respectively, the total and the filled volume of container $i$. Let $k$ be the number of containers in the sequence determined by the IP model. We first calculate the fitness of a given chromosome as:
+
+\begin{equation}
+    F = \frac{100}{k}\sum_{i=1}^{k}\frac{V_{Fi}}{V_{Ti}}.
+\end{equation}
+
+Which gives us the mean percentage of filled volume per container. Now let $L$ be the number of items left out of the containers after the packing process is finished. If $L > 0$, a penalty must be applied to the fitness value. In our case, we chose
+
+\begin{equation}
+    \bar{F} = \frac{F}{10L}
+\end{equation}
+as the new fitness value, because it greatly decreases with the number of items that are left outside of the containers.
+
+Once a population is generated and the fitness value of each solution is determined, the chromosomes are sorted according to their fitness values. A certain number of top solutions, called the population's elite, is immediately copied to the next population. Another set of chromosomes of the next population is randomly generated, which can be interpreted as a form of mutation. Finally, the remaining spots left in the next population are filled by chromosomes resulting from the crossover of randomly selected elite solutions and randomly selected solutions from the entirety of the population.
