@@ -1,6 +1,24 @@
 \section{Implementations}
 
-In this section, we describe our implementations of multiple heuristics, which can be found \href{https://github.com/phcentenaro7/IC-CLP/tree/main/Code/Authoral/Hummingbird}{here}.
+This section details the method used to determine container sequences, as well as two heuristics that were implemented to fill the containers. By container sequence, we mean a list of the containers that will be used to pack items. For example, given container types 1, 2 and 3, a valid container sequence is $(1, 2, 2, 3, 3)$. Heuristics should try to put each item within the first container in the sequence. If that is not possible, they should try to place the item in the second container, and so on.
+
+Determining a container sequence is a complex task: In the best scenario, the sequence is such that no items are left outside of a container, and the cost associated with the set of selected containers is minimal. Since it is computationally expensive to test every possible container sequence for a problem, we propose an integer programming (IP) model to find sequences that should at least come close to meeting these criteria. Afterwards, we adapt two heuristics from the literature to this method, which allows them to solve MCLPs.
+
+\subsection{Container sequence determination via integer programming}
+
+Suppose a set of $n$ cuboid container types of different widths ($W_k$), heights ($H_k$) and depths ($D_k$), with $k = 1,\dots,n$. We want to find a sequence of containers that all items can be packed into, with the possibility of repeating containers of each type, while also minimizing the costs associated with each container in the sequence. To do so, we propose the use of the IP presented in \cref{ip1,ip2,ip3,ip4}, where $c \in \mathbb{R}^n$ represents the cost of each container type, $s \in \mathbb{R}^n$ is the vector of decision variables that indicate how many units of each container to use, and $v \in \mathbb{R}^n$ is the vector containing the volume of each container ($v_i = W_iH_iD_i$).  
+
+\begin{align}
+        \min\ &c's& \label{ip1}\\
+        \text{s.t. } &\sum_{i=1}^{n}v_is_i \geq V_s + V_c,& \label{ip2}\\
+        &s_i \geq 0,\ &\forall i \in \{1,\dots,n\}, \label{ip3}\\
+        &s_i \in \mathbb{Z},\ &\forall i \in \{1,\dots,n\}.
+        \label{ip4}
+\end{align}
+
+\cref{ip1} minimizes the objective function, which is defined as the total cost of all selected containers. \cref{ip2} imposes that the total volume of the selected containers must be greater than the total volume of the items in stock ($V_s$) and the containers selected in a previous iteration of the IP model ($V_c$). At first, $V_c = 0$ and $V_s$ is the sum of all item volumes. Now suppose that the IP model is used to determine a sequence of containers, and the heuristic used is not able to load all the items into the selected containers. In this case, $V_c$ becomes the volume sum of all containers in the previous sequence, and $V_s$ becomes the volume sum of all items that the heuristic was unable to load. This ensures that the IP model searches for a new sequence of containers, since it must now determine a sequence of greater volume than before. Finally, \cref{ip3,ip4} establish that the containers are unitary.
+
+With the values of $s$ determined, a sequence can be built by repeating container $i$ a total of $s_i$ times, for all $i \in \{1,\dots,n\}$. There are many ways to build this sequence, but we assume that it is better to start with the largest selected containers and finish with the smallest containers, since that might help to load larger items first, which can facilitate the packing process of smaller items later on.
 
 \subsection{Wall-building}
 \label{sec:wb implementation}
@@ -64,4 +82,6 @@ Which gives us the mean percentage of filled volume per container. Now let $L$ b
 \end{equation}
 as the new fitness value, because it greatly decreases with the number of items that are left outside of the containers.
 
-Once a population is generated and the fitness value of each solution is determined, the chromosomes are sorted according to their fitness values. A certain number of top solutions, called the population's elite, is immediately copied to the next population. Another set of chromosomes of the next population is randomly generated, which can be interpreted as a form of mutation. Finally, the remaining spots left in the next population are filled by chromosomes resulting from the crossover of randomly selected elite solutions and randomly selected solutions from the entirety of the population.
+Once a population is generated and the fitness value of each solution is determined, the chromosomes are sorted according to their fitness values. A certain subset of the population, containing the best fitness values, is immediately copied to the next population, so as to ensure that the best fitness does not decrease from each iteration to the next. This subset of the population is called its \emph{elite}.
+
+Another part of the next population is made of crossovers between solutions from the elite and solutions from the whole population, both chosen at random. Uniform crossover is used to generate a single offspring, with a higher chance of selecting genes from the elite chromosome. Finally, the last part of the next population is created by randomly generating as many chromosomes as needed to match the number of solutions in the current population. This can be seen as an extreme case of mutation.
